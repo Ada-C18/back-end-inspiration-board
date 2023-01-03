@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response,abort
 from app.models.board import Board
 from app.models.card import Card
 from app import db
@@ -26,3 +26,24 @@ def get_all_boards():
     for board in boards:
         return_list.append(board.dictionfy())
     return make_response(jsonify(return_list),200)
+
+@board_bp.route('/<board_id>', methods=['GET'])
+def get_one_board_with_cards(board_id):
+    board = validate_id(Board,board_id)
+    board_info = board.dictionfy()
+    return make_response(jsonify(board_info),200)
+
+"""Card Routes"""
+
+
+
+
+def validate_id(cls,id):
+    try:
+        model_id = int(id)
+    except TypeError:
+        abort(make_response({'details':'Invalid, id must be integer'}),400)
+    model = cls.query.get(model_id)
+    if not model:
+        abort(make_response({'details':'ID is invalid'}),404)
+    return model

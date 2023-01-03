@@ -1,4 +1,5 @@
 from app import db
+from app.models.card import Card
 
 class Board(db.Model):
     board_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
@@ -7,11 +8,15 @@ class Board(db.Model):
     cards = db.relationship('Card', back_populates='board')
 
     def dictionfy(self):
-        return {
+        board_info =  {
             'id':self.board_id,
             'title':self.title,
-            'owner':self.owner
+            'owner':self.owner,
+            'cards':[]
         }
+        for card in self.cards:
+            board_info['cards'].append(card.dictionfy())
+        return board_info
 
     @classmethod
     def create_board(cls,request_body):
