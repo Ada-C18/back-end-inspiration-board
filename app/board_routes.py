@@ -51,6 +51,18 @@ def get_one_board(board_id):
     board = validate_model(Board, board_id)
     return board.to_dict()
 
+@boards_bp.route("/<board_id>", methods=["DELETE"])
+def delete_board(board_id):
+    board = validate_model(Board, board_id)
+    
+    for card in board.cards:
+        db.session.delete(card)
+    
+    db.session.delete(board)
+    db.session.commit()
+    
+    return make_response(jsonify(f"Board #{board.board_id} and its cards successfully deleted"))
+
 ### CARD-RELATED ROUTES ###
 
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
