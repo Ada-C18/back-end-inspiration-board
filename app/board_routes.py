@@ -28,4 +28,8 @@ def read_all_boards():
 
     return make_response(jsonify(board_response), 200)
 
-
+@board_bp.route("/<board_id>/cards", methods=["GET"])
+def read_all_cards(board_id):
+    board = validate_model(Board, board_id)
+    boards_response = [card.to_dict() for card in board.cards]
+    return(jsonify(boards_response))
