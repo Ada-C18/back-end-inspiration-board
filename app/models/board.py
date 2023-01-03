@@ -6,3 +6,8 @@ class Board(db.Model):
     owner = db.Column(db.String)
     cards = db.relationship("Card", back_populates="board")
     
+    @classmethod
+    def from_dict(cls, board_data):
+        new_board = Board(title=board_data["title"],
+                        owner=board_data["owner"])
+        return new_board

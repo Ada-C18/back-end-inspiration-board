@@ -17,3 +17,29 @@ def validate_model(cls, model_id):
         abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))
 
     return model
+
+@boards_bp.route("", methods=["POST"])
+def create_board():
+    request_body = request.get_json()
+    new_board = Board.from_dict(request_body)
+    
+    db.session.add(new_board)
+    db.session.commit()
+    
+    return make_response(jsonify(f"Board {new_board.title} successfully created"), 201)
+
+@boards_bp.route("", methods=["GET"])
+def read_all_boards():
+    
+    boards = Board.query.all()
+    
+    boards_response = []
+    for board in boards:
+        boards_response.append(
+            {
+                "id": board.board_id,
+                "title": board.title,
+                "owner": board.owner
+            }
+        )
+    return jsonify(boards_response)
