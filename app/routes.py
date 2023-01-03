@@ -11,3 +11,15 @@ def get_all_boards():
     result = []
     for item in boards:
         result.append(item.to_dict())
+    
+    return jsonify(result)
+
+@board_bp.route("", methods=["POST"])
+def add_board():
+    request_body = request.get_json()
+
+    new_board = Board.from_dict(request_body)
+    db.session.add(new_board)
+    db.session.commit()
+
+    return {"message": f"Successfully created new board with id = {new_board.board_id}"}, 201
