@@ -35,6 +35,22 @@ def get_one_board_with_cards(board_id):
 
 """Card Routes"""
 
+@board_bp.route('/<board_id>', methods=['POST'])
+def add_one_card(board_id):
+    request_body=request.get_json()
+    try:
+        new_card=Card.create_card(board_id,request_body)
+    except KeyError:
+        return make_response(jsonify({'warning':'invalid message'}),400)
+    db.session.add(new_card)
+    db.session.commit()
+
+    return make_response(jsonify({'msg':f'Card with id {new_card.card_id} created'}),201)
+
+@board_bp.route('/<board_id>/<card_id>', )
+
+
+
 
 
 
