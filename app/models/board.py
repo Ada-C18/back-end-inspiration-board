@@ -18,7 +18,7 @@ class Board(db.Model):
 
     @classmethod
     def from_dict(cls, board_dict):
-        if "board_id" in board_dict  and "title" in board_dict and "owner" in board_dict:
+        if "title" in board_dict and "owner" in board_dict:
             new_obj = cls(
             # board_id=board_dict["board_id"], 
             title=board_dict["title"], 
