@@ -41,7 +41,7 @@ def create_card():
     request_body = request.get_json()
     new_card = Card(
         body=request_body["body"],
-        liked=False,
+        likes= 0,
         board_id=request_body["board_id"])
 
     db.session.add(new_card)
@@ -58,7 +58,7 @@ def get_cards():
         card_list.append({
             "card_id":card.card_id,
             "body":card.body,
-            "liked": card.liked,
+            "likes": card.likes,
             "board_id": card.board_id
         })
     return jsonify(card_list)
@@ -71,14 +71,34 @@ def get_card(card_id):
     return ({
         "card_id": card.card_id, 
         "body" : card.body,
-        "liked": card.liked,
+        "likes": card.likes,
         "board_id": card.board_id})
 
-# UPDATE CARD - LIKED STATUS, ETC
-
+# UPDATE CARD - LIKE STATUS, ETC
 @cards_bp.route("/<card_id>", methods=["PATCH"])
 def update_card(card_id):
     card_id = int(card_id)
+    card = Card.query.get(card_id)
+    request_body = request.get_json()
+
+    card.body = request_body["body"]
+    card.likes = request_body["likes"]
+    card.board_id = request_body["board_id"]
+
+    db.session.commit()
+
+    make_response(f"card '{card.title}' updated")
+
+# DELETE CARD
+@cards_bp.route("/<card_id>", methods=["DELETE"])
+def delete_card(card_id):
+    card = Card.Query.get(card_id)
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return make_response(f"card '{card.title}' deleted")
+
 # -----------------------------------------------------------------
 
 # CREATE A NEW BOARD
@@ -122,7 +142,7 @@ def get_board(board_id):
         card_dict = {
             "card_id": card.card_id,
             "body": card.body,
-            "liked": card.liked
+            "likes": card.likes
         }
         card_list.append(card_dict)
     board_dict["board_id"] = board.board_id
