@@ -1,7 +1,7 @@
 import pytest
 from app import create_app
 from app import db
-
+from app.models.board import Board
 
 @pytest.fixture
 def app():
@@ -20,3 +20,12 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def one_board(app):
+    new_board = Board(
+        title = "Get Healthy",
+        owner = "Isabella"
+    )
+    db.session.add(new_board)
+    db.session.commit()
