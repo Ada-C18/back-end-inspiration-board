@@ -9,6 +9,23 @@ class Board(db.Model):
     cards = db.relationship("Card", back_populates="board")
 
 
+    def to_dict(self):
+        return {
+            "title": self.title
+            "owner": self.owner
+            "id": self.board_id
+        }
+
+
+    @classmethod
+    def from_dict(cls, request_body):
+        return Board(
+            title=request_body["title"],
+            owner=request_body["owner"], 
+        )
+
+
+
 
 
 
