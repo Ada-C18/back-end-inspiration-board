@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
 
@@ -27,3 +27,13 @@ def read_all_boards():
     boards_response = [board.to_dict() for board in boards]
 
     return jsonify(boards_response), 200
+
+
+@bp.route("/<board_title>", methods=["GET"])
+def read_one_board(board_title):
+    try:
+        test_board = Board.query.filter(Board.title == board_title).first()
+
+        return make_response(jsonify({"board": test_board.to_dict()}))
+    except:
+        abort(make_response({"details": f"Board {board_title} invalid"}, 400))
