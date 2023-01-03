@@ -1,7 +1,7 @@
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 from flask import Blueprint, request, jsonify, make_response, abort
-
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
@@ -30,8 +30,6 @@ def get_all_boards():
 @boards_bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
-    # if "title" not in request_body or "owner" not in request_body:
-    #     return make_response({"details": "Invalid data"}, 400)
 
     new_board = Board.instance_from_json(request_body)
 
@@ -39,3 +37,24 @@ def create_board():
     db.session.commit()
 
     return {"board":new_board.to_dict()}, 201
+
+# get a list of cards for a single board
+@boards_bp.route("/<board_id>/cards", methods=["GET"])
+def get_all_cards(board_id):
+    board = validate_model(Board, board_id)
+    cards = board.cards
+    response = [card.to_dict() for card in cards]
+    
+    return jsonify(response)
+
+# create a card for a board
+@boards_bp.route("/<board_id>/cards", methods=["POST"])
+def create_card(board_id):
+    board = validate_model(Board, board_id)
+    request_body = request.get_json()
+    new_card = Card.instance_from_json(request_body, board_id)
+
+    db.session.add(new_card)
+    db.session.commit()
+
+    return new_card.to_dict(), 201
