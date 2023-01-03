@@ -21,7 +21,7 @@ def create_app():
     # from app.models.ExampleModel import ExampleModel
     from app.models.board import Board
     from app.models.card import Card
-    
+
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -29,6 +29,9 @@ def create_app():
     # Register Blueprints here
     from .routes_board import boards_bp
     app.register_blueprint(boards_bp)
+
+    from .routes_card import cards_bp
+    app.register_blueprint(cards_bp)
 
     CORS(app)
     return app
