@@ -18,3 +18,12 @@ def create_board():
     return make_response(jsonify({"board": board_dict}), 201)
 
     # add a try/except later for missing data
+
+
+@bp.route("", methods=["GET"])
+def read_all_boards():
+    boards = Board.query.all()
+
+    boards_response = [board.to_dict() for board in boards]
+
+    return jsonify(boards_response), 200
