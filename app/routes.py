@@ -3,4 +3,4 @@ from app import db
 
 # example_bp = Blueprint('example_bp', __name__)
 
-#here we go! 
+cards_bp = Blueprint("cards",__name__, url_prefix="/cards")
