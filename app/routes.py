@@ -1,5 +1,21 @@
 from flask import Blueprint, request, jsonify, make_response
 from app import db
+from app.models.board import Board
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
+
+@boards_bp.route('', methods=['GET'])
+def get_all_boards():
+    boards = Board.query.all()
+    board_response = []
+    for board in boards:
+        board_response.append(
+            {
+                "id": board.id,
+                "title": board.title,
+                "owner": board.owner,
+                # "cards": board.cards,
+            }
+        )
+    return jsonify(board_response)
