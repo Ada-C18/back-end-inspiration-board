@@ -51,7 +51,7 @@ def get_one_board(board_id):
     board = validate_model(Board, board_id)
     return board.to_dict()
 
-### CARD ROUTES ###
+### CARD-RELATED ROUTES ###
 
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def create_card(board_id):
@@ -59,7 +59,7 @@ def create_card(board_id):
     board = validate_model(Board, board_id)
     
     request_body = request.get_json()
-    new_card = Card(message=request_body["message"], board=board)
+    new_card = Card(message=request_body["message"], likes_count=0, board=board)
     
     db.session.add(new_card)
     db.session.commit()
@@ -75,6 +75,7 @@ def get_cards(board_id):
         cards_response.append(
             {
             "id": card.card_id,
+            "likes_count": card.likes_count,
             "message": card.message,
             }
         )
