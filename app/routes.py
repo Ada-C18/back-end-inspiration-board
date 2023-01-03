@@ -18,3 +18,11 @@ def add_one_board():
     db.session.commit()
 
     return make_response(jsonify({'msg':f'Board with id {new_board.board_id} created'}),201)
+
+@board_bp.route("", methods=['GET'])
+def get_all_boards():
+    boards=Board.query.all()
+    return_list=[]
+    for board in boards:
+        return_list.append(board.dictionfy())
+    return make_response(jsonify(return_list),200)

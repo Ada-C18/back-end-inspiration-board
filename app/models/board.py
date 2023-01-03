@@ -6,6 +6,13 @@ class Board(db.Model):
     owner = db.Column(db.String)
     cards = db.relationship('Card', back_populates='board')
 
+    def dictionfy(self):
+        return {
+            'id':self.board_id,
+            'title':self.title,
+            'owner':self.owner
+        }
+
     @classmethod
     def create_board(cls,request_body):
         return Board(title=request_body['title'], owner=request_body['owner'])
