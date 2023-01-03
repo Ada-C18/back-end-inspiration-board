@@ -1,9 +1,16 @@
 from flask import Blueprint, request, jsonify, make_response
 from app import db
+from app.models.board import Board
 
-hello_world_bp = Blueprint("hello_world", __name__)
+boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
-@hello_world_bp.route("/hello-world", methods=["GET"])
-def endpoint_name():
-    my_beautiful_response_body = "Hello, World!"
-    return my_beautiful_response_body
+@boards_bp.route("", methods=["POST"])
+def create_board():
+    request_body = request.get_json()
+    print(request_body)
+    new_board = Board.from_dict(request_body)
+
+    db.session.add(new_board)
+    db.session.commit()
+
+    return make_response(jsonify(f"Board {new_board.title} successfully created"), 201)
