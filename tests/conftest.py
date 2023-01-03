@@ -2,6 +2,7 @@ import pytest
 from app import create_app
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 
 @pytest.fixture
@@ -26,7 +27,7 @@ def client(app):
 @pytest.fixture
 def one_board(app):
     new_board = Board(
-        title='Cool programming websites to checkout' ,
+        title='Cool programming websites to checkout',
         owner='Sika'
     )
     db.session.add(new_board)
@@ -39,4 +40,3 @@ def one_card_belongs_to_one_board(app, one_board, one_card):
     board = Board.query.first()
     board.cards.append(card)
     db.session.commit()
-    
