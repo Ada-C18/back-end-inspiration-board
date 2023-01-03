@@ -6,12 +6,25 @@ from app.models.card import Card
 
 cards_bp = Blueprint("cards",__name__, url_prefix="/cards")
 
-@cards_bp.route("", methods=["POST"])
+@cards_bp.route("", methods=["POST", "GET"])
 def handle_cards():
-    request_body = request.get_json()
-    new_card = Card(message= request_body["message"])
+    if request.method=="GET":
+        cards=Card.query.all()
+        cards_response=[]
+        for card in cards:
+            cards_response.append({
+                "id":card.id,
+                "message":card.message
+            })
+        return jsonify(cards_response)
+    
+    elif request.method =="POST" :
+        request_body=request.get_json()
+        new_card = Card(message= request_body["message"])
 
-    db.session.add(new_card)
-    db.session.commit()
+        db.session.add(new_card)
+        db.session.commit()
 
-    return make_response(f"Card {new_card.message} successfully created", 201)
+        return make_response(f"Card {new_card.message} successfully created", 201)
+
+
