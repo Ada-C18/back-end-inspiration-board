@@ -11,3 +11,6 @@ class Board(db.Model):
             "title": self.title,
             "owner": self.owner,
         }
+    @classmethod
+    def from_dict(cls, cls_dict):
+        return cls(title = cls_dict["title"], owner = cls_dict["owner"])
