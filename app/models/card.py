@@ -8,9 +8,16 @@ class Card(db.Model):
     board = db.relationship("Board", back_populates="cards", lazy=True)
 
     def from_instance_to_dict(self):
-        instance_dict = {"id":self.card_id, "message": self.message, "likes": self.likes}
+        instance_dict = {
+            "id":self.card_id, 
+            "message": self.message, 
+            "likes": self.likes
+            }
         return instance_dict
 
     @classmethod
     def from_dict_to_instance(cls, card_dict):
-        return cls(message=card_dict["message"], likes=card_dict["likes"])
+        return cls(
+            message=card_dict["message"], 
+            likes=card_dict["likes"]
+            )
