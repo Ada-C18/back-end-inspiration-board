@@ -5,3 +5,7 @@ class Board(db.Model):
     title = db.Column(db.String)
     owner = db.Column(db.String)
     cards = db.relationship('Card', back_populates='board')
+
+    @classmethod
+    def create_board(cls,request_body):
+        return Board(title=request_body['title'], owner=request_body['owner'])
