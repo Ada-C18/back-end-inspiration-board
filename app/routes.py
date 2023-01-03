@@ -97,7 +97,7 @@ def create_board():
 
 # GET LIST OF ALL BOARDS
 @boards_bp.route("", methods=["GET"])
-def get_boards():
+def get_all_boards():
     # retrieve all boards from database
     all_boards = Board.query.all()
     board_list = []
@@ -130,6 +130,28 @@ def get_board(board_id):
     board_dict["cards"] = card_list
 
     return board_dict
+
+# UPDATE BOARD INFO - only title so far
+@boards_bp.route("/<board_id>", methods=["PATCH"])
+def update_board(board_id):
+    board = Board.query.get(board_id)
+    request_body = request.get_json()
+
+    board.title = request_body["title"]
+    
+    db.session.commit()
+
+    return make_response(f"board '{board.title}' updated")
+
+# DELETE BOARD
+@boards_bp.route("/<board_id>", methods=["DELETE"])
+def delete_board(board_id):
+    board = Board.query.get(board_id)
+
+    db.session.delete(board)
+    db.session.commit()
+
+    return make_response(f"board '{board.title}' deleted")
 
 
 
