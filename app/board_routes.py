@@ -21,23 +21,11 @@ def create_board():
 
     return make_response(jsonify({"board": new_board.to_dict()}), 201)
 
-# @tasks_bp.route("", methods=["GET"])
-# def read_all_tasks():
-#     title_query = request.args.get('title')
-#     sort_query = request.args.get('sort')
+@board_bp.route("", methods=["GET"])
+def read_all_boards():
+    boards = Board.query.all()
+    board_response = [board.to_dict() for board in boards]
 
-#     if title_query:
-#         tasks = Task.query.filter_by(title=title_query)
-        
-#     if sort_query == "asc":
-#         tasks = Task.query.order_by(Task.title.asc())
-        
-#     if sort_query == "desc":
-#         tasks = Task.query.order_by(Task.title.desc())
-        
-#     if not title_query and not sort_query:
-#         tasks = Task.query.all()
-#     tasks_response = [task.to_dict() for task in tasks]
-#     return jsonify(tasks_response)
+    return make_response(jsonify(board_response), 200)
 
 
