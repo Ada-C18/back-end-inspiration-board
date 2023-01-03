@@ -48,3 +48,15 @@ def get_all_boards():
 def get_one_board(board_id):
     board = validate_model(Board, board_id)
     return board.to_dict()
+
+@boards_bp.route("/<board_id>/cards", methods=["POST"])
+def create_card(board_id):
+    
+    board = validate_model(Board, board_id)
+    
+    request_body = request.get_json()
+    new_card = Card(message=request_body["message"], board=board)
+    
+    db.session.add(new_card)
+    db.session.commit()
+    return make_response(jsonify(f"Card {new_card.message} in {new_card.board.title} successfully created"), 201)
