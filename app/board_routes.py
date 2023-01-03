@@ -33,3 +33,34 @@ def read_all_cards(board_id):
     board = validate_model(Board, board_id)
     boards_response = [card.to_dict() for card in board.cards]
     return(jsonify(boards_response))
+
+
+@board_bp.route("/<board_id>/cards", methods=["POST"])
+def create_card(board_id):
+    request_body = request.get_json()
+    if len(request_body) != 1:
+        return {"details": "Invalid Data"}, 400
+    new_card = Card.from_dict_to_object(request_body)
+
+    board = validate_model(Board,board_id)
+    board = board.to_dict(cards=True)
+    board.cards.append(new_card)
+    
+    db.session.add(new_card)
+    db.session.commit()
+
+    return make_response(jsonify({{'board_id': board.board_id, 'messages': [card.message for card in board['cards']]}}))
+
+    # return make_response(jsonify({"card": new_card.to_dict()}), 201)
+
+# @board_bp.route("/<board_id>/cards", methods=["POST"])
+# def add_card_to_board(board_id):
+
+#     board = validate_model(Board, board_id)
+#     new_card = create_card()
+
+#     request_body = request.get_json()
+#     board.cards += Card.query.get(card_id)
+
+#     db.session.commit()
+#     return make_response(jsonify({{'board_id': board.board_id, 'messages': [card.message for card in board.cards]}}))
