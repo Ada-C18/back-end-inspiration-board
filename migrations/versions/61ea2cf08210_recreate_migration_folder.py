@@ -1,8 +1,8 @@
-""" adds Boards and Cards models
+"""recreate migration folder
 
-Revision ID: 6ea2ecf28fe0
+Revision ID: 61ea2cf08210
 Revises: 
-Create Date: 2023-01-03 10:48:08.965604
+Create Date: 2023-01-03 10:58:48.467516
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '6ea2ecf28fe0'
+revision = '61ea2cf08210'
 down_revision = None
 branch_labels = None
 depends_on = None
