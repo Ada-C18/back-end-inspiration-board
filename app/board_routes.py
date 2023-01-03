@@ -18,6 +18,8 @@ def validate_model(cls, model_id):
 
     return model
 
+### BOARD ROUTES ###
+
 @boards_bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
@@ -49,6 +51,8 @@ def get_one_board(board_id):
     board = validate_model(Board, board_id)
     return board.to_dict()
 
+### CARD ROUTES ###
+
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def create_card(board_id):
     
@@ -60,3 +64,18 @@ def create_card(board_id):
     db.session.add(new_card)
     db.session.commit()
     return make_response(jsonify(f"Card {new_card.message} in {new_card.board.title} successfully created"), 201)
+
+@boards_bp.route("/<board_id>/cards", methods=["GET"])
+def get_cards(board_id):
+    
+    board = validate_model(Board, board_id)
+    
+    cards_response = []
+    for card in board.cards:
+        cards_response.append(
+            {
+            "id": card.card_id,
+            "message": card.message,
+            }
+        )
+    return jsonify(cards_response)
