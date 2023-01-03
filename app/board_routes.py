@@ -29,7 +29,7 @@ def create_board():
     return make_response(jsonify(f"Board {new_board.title} successfully created"), 201)
 
 @boards_bp.route("", methods=["GET"])
-def read_all_boards():
+def get_all_boards():
     
     boards = Board.query.all()
     
@@ -43,3 +43,8 @@ def read_all_boards():
             }
         )
     return jsonify(boards_response)
+
+@boards_bp.route("/<board_id>", methods=["GET"])
+def get_one_board(board_id):
+    board = validate_model(Board, board_id)
+    return board.to_dict()
