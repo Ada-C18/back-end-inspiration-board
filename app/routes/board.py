@@ -13,6 +13,7 @@ def read_one_board(id):
     return jsonify({"board": board.to_dict()}), 200
      
     
+    
 # read all boards (GET)
 @boards_bp.route("", methods=["GET"])
 def read_all_boards():
