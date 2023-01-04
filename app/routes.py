@@ -52,4 +52,5 @@ def delete_card(id):
     db.session.delete(card)
     db.session.commit()
     return make_response({"details":f'Card {id} " {card.message} "  successfully deleted'})
-    
+
+boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
