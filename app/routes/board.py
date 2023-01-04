@@ -18,7 +18,7 @@ def create_board():
     return make_response(jsonify({"board": board_dict}), 201)
 
     # add a try/except later for missing data
-    # check if title is already in table, if it is, raise 400 error 
+    # check if title is already in table, if it is, raise 400 error
     # and in front end let user know
 
 
@@ -36,6 +36,6 @@ def read_one_board(board_title):
     try:
         test_board = Board.query.filter(Board.title == board_title).first()
 
-        return make_response(jsonify({"board": test_board.to_dict()}))
+        return make_response(jsonify({"board": test_board.to_dict(cards=True)}))
     except:
         abort(make_response({"details": f"Board {board_title} invalid"}, 400))
