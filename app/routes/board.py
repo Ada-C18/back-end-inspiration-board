@@ -29,7 +29,6 @@ def read_all_boards():
 # def get_cards_by_board_id(id):
     # pass
 
-
 # create one card under board id
 @boards_bp.route("/<id>/cards", methods=["POST"])
 def create_card(id):
