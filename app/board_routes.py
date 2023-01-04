@@ -28,7 +28,7 @@ def create_board():
     db.session.add(new_board)
     db.session.commit()
     
-    return make_response(jsonify(f"Board {new_board.title} successfully created"), 201)
+    return make_response(jsonify(new_board.to_dict()), 201)
 
 @boards_bp.route("", methods=["GET"])
 def get_all_boards():
@@ -61,7 +61,7 @@ def delete_board(board_id):
     db.session.delete(board)
     db.session.commit()
     
-    return make_response(jsonify(f"Board #{board.board_id} and its cards successfully deleted"))
+    return make_response(jsonify(board.to_dict()), 200)
 
 ### CARD-RELATED ROUTES ###
 
@@ -75,7 +75,7 @@ def create_card(board_id):
     
     db.session.add(new_card)
     db.session.commit()
-    return make_response(jsonify(f"Card {new_card.message} in {new_card.board.title} successfully created"), 201)
+    return make_response(jsonify(new_card.to_dict()), 201)
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def get_cards(board_id):
