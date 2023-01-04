@@ -6,8 +6,8 @@ import os, requests
 from app.board_routes import validate_model
 
 # Card
-# CREATE a new card to a board
-# READ all cards belonging to a board
+# CREATE a new card to a board (in board_routes)
+# READ all cards belonging to a board (in board_routes)
 # UPDATE ‘+1’s for a card
 # DELETE a card
 
@@ -42,3 +42,15 @@ card_bp = Blueprint("Card", __name__, url_prefix="/cards")
 #     return {"card": new_card.to_dict()}, 201
 
 # read all cards
+
+# # send a request to delete a card from a particular board in the database
+# @card_bp.route("boards/<board_id>/cards/<id>", methods=["DELETE"])
+# def delete_card(board_id, card_id):
+#     board = validate_model(Board, board_id)
+#     card = validate_model(Card, card_id)
+
+#     db.session.delete(card)
+#     db.session.commit()
+
+#     # return {"details": f'Card {card.id} "{card.message}" successfully deleted'}
+#     return make_response(jsonify(f"Card {card.id} on {board.title} successfully deleted"), 200)

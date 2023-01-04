@@ -24,6 +24,5 @@ class Card(db.Model):
         return Card(
             message=request_body["message"],
             likes_count=request_body["likes_count"]
-
         )
     
