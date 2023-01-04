@@ -75,6 +75,34 @@ def retrieve_cards(board_id):
         )
     return jsonify(cards_response)
 
+
+#  delete route 
+
+@boards_bp.route("/<board_id>", methods=["DELETE"])
+def delete_board(board_id):
+    board = validate_board(board_id)
+
+    db.session.delete(board)
+    db.session.commit()
+
+    return make_response(jsonify(f"Board {board.title} with id #{board.board_id} successfully deleted"))
+
+# helper function quality control
+
+def validate_board(board_id):
+    try:
+        board_id = int(board_id)
+    except:
+        abort(make_response({"message": f"board id {board_id} invalid"}, 400))
+
+    board = Board.query.get(board_id)
+
+    if not board:
+        abort(make_response(
+            {"message": f"board with {board_id} not found"}, 404))
+
+    return board
+
 @boards_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
 def delete_card(board_id, card_id):
 
@@ -111,4 +139,3 @@ def update_likes(board_id, card_id):
                 }
     db.session.commit()
     return jsonify(card_response)
-    
