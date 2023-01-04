@@ -6,7 +6,7 @@ from .models.card import Card
 # example_bp = Blueprint('example_bp', __name__)
 boards_bp = Blueprint('boards_bp', __name__, url_prefix="/boards")
 # create a board
-@boards_bp.routes("", methods =["POST"])
+@boards_bp.route("", methods =["POST"])
 def create_board():
     request_body = request.get_json()
     if "title" not in request_body or "owner" not in request_body:
