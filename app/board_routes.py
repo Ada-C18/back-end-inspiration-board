@@ -37,7 +37,7 @@ def create_card_associated_with_board(board_id):
     )
 
     db.session.add(new_card)
-    db.session.commit
+    db.session.commit()
 
     # return {"card": new_card.to_dict()}, 201
     return make_response(jsonify(f"Card {new_card.message} on {new_card.board.title} successfully created"), 201)
