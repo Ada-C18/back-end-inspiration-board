@@ -44,6 +44,45 @@ def test_get_all_boards_one_board_three_cards(client, one_board_three_cards):
     ]
 
 
+def test_post_new_board_empty_db(client):
+    # Arrange
+    new_board = {"name": "Test Name", "owner": "Test Owner"}
+
+    # Act
+    response = client.post("/boards", json=new_board)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 201
+    assert response_body == f"Board {new_board['name']} successfully created"
+
+
+def test_post_new_board_no_name(client):
+    # Arrange
+    new_board = {"owner": "Test Owner"}
+
+    # Act
+    response = client.post("/boards", json=new_board)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {"details": "Invalid data"}
+
+
+def test_post_new_board_no_owner(client):
+    # Arrange
+    new_board = {"name": "Test Name"}
+
+    # Act
+    response = client.post("/boards", json=new_board)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {"details": "Invalid data"}
+
+
 def test_get_all_cards_one_board_no_cards(client, one_board):
     # Arrange
     board_id = Board.query.first().board_id
@@ -74,16 +113,28 @@ def test_get_all_cards_one_board_three_cards(client, one_board_three_cards):
     ]
 
 
-def test_delete_card(client, one_card):
-    # Arrange
-    card_id = Card.query.first().card_id
-
+def test_update_likes_on_card(client, add_like):
     # Act
-    response = client.delete(f"/cards/{card_id}")
+    response = client.put("/cards/1")
     response_body = response.get_json()
 
     # Assert
     assert response.status_code == 200
     assert response_body == {
-        f"details": f'Card {card_id} successfully deleted'
+        "id": 1,
+        "message": "Updated Card Message",
+        "likes": 6
     }
+
+
+def test_add_like_card_not_found(client):
+    # Act
+    response = client.put("/cards/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {
+        "Message": "Card 1 not found"
+    }
+    assert Card.query.all() == []

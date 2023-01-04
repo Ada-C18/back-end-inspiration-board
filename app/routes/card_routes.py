@@ -9,8 +9,7 @@ card_bp = Blueprint('card_bp', __name__, url_prefix='/cards')
 def change_card_likes(card_id):
     card = validate_model(Card, card_id)
     
-    request_body = request.get_json(card_id)
-    card.update(request_body)
+    card.likes_count = card.likes_count + 1
 
     db.session.commit()
 
