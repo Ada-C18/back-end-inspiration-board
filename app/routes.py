@@ -37,7 +37,7 @@ boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
 @hello_bp.route("", methods=["GET"])
 def readme_page():
-    return ("Welcome to our Inspiration Board API")
+    return ("Welcome to our Inspiration Board API! Valid routes include </boards> </cards> </boards/<board_id>/cards> and others!")
 
 # CREATE A NEW CARD
 @cards_bp.route("", methods=["POST"])
