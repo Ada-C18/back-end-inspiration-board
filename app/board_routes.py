@@ -2,45 +2,54 @@ from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
 
-board_bp = Blueprint("board",__name__,url_prefix = "/boards")
+board_bp = Blueprint("board", __name__, url_prefix="/boards")
+
 
 def get_validate_model(cls, model_id):
     try:
         model_id = int(model_id)
     except:
-        abort(make_response({"message":f"{cls.__name__} {model_id} invalid"}, 400))
+        abort(make_response(
+            {"message": f"{cls.__name__} {model_id} invalid"}, 400))
 
     model = cls.query.get(model_id)
 
     if not model:
-        abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))
+        abort(make_response(
+            {"message": f"{cls.__name__} {model_id} not found"}, 404))
 
     return model
 
-#Read ALL boards
-@board_bp.route("/", strict_slashes=False, methods="GET")
+# Read ALL boards
+
+
+@board_bp.route("", strict_slashes=False, methods=["GET"])
 def read_all_boards():
     boards = Board.query.all()
     print(boards)
     boards_list = [board.to_dict() for board in boards]
     return make_response(jsonify(boards_list), 200)
 
-#Delete Board
-@board_bp.route("/<board_id>", strict_slashes=False, methods="DELETE")
+# Delete Board
+
+
+@board_bp.route("/<board_id>", strict_slashes=False, methods=["DELETE"])
 def delete_board(board_id):
     board = get_validate_model(Board, board_id)
 
     db.session.delete(board)
     db.session.commit()
 
-    response_body = {"message": f'Board "{board.name}": #{board_id} was deleted.'}
+    response_body = {
+        "message": f'Board "{board.name}": #{board_id} was deleted.'}
     return make_response(jsonify(response_body), 200)
 
-#Update Board
-@board_bp.route("/<board_id>", strict_slashes=False, methods="PUT")
+# Update Board
 
-#Create Board
-@board_bp.route("/", strict_slashes=False, methods="POST")
+
+@board_bp.route("/<board_id>", strict_slashes=False, methods=["PUT"])
+# Create Board
+@board_bp.route("/", strict_slashes=False, methods=["POST"])
 def create_board():
     try:
         request_body = request.get_json()
@@ -54,5 +63,7 @@ def create_board():
 
     return make_response(jsonify(new_board.to_dict()), 201)
 
-#Read ALL cards
-@board_bp.route("/<board_id>/cards", strict_slashes=False, methods="GET")
+# Read ALL cards
+
+
+# @board_bp.route("/<board_id>/cards", strict_slashes=False, methods=["GET"])
