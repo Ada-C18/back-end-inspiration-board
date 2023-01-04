@@ -17,7 +17,17 @@ def add_card():
         "message": f"Successfully created new card with id: {new_card.card_id}"
     }, 201
 
+@card_bp.route("/<card_id>", methods=["DELETE"])
+def delete_one_card(card_id):
+    chosen_card = get_one_obj_or_abort(Card, card_id)
+
+    db.session.delete(chosen_card)
     
+    db.session.commit() 
+    
+    return jsonify({
+        "message": f"Successfully deleted card with id: {card_id}"
+    }), 200
 
 
 
