@@ -12,10 +12,10 @@ def add_card():
 
     db.session.add(new_card)
     db.session.commit()
-    
+
     return {
         "message": f"Successfully created new card with id: {new_card.card_id}"
     }, 201
 
-    
+
 
