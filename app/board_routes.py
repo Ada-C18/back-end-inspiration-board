@@ -57,8 +57,8 @@ def read_all_cards_from_board(board_id):
 @board_bp.route("", methods=["GET"])
 def get_all_boards():
     response = []
-
-    for board in board:
+    boards = Board.query.all()
+    for board in boards:
         response.append(board.to_dict())
     return jsonify(response)
     # return response.to_dict()
@@ -68,10 +68,10 @@ def get_all_boards():
 def get_one_board(board_id):
 
     board = validate_model(Board, board_id)
-    if board.card_id is None:
-        return {"board": board.to_dict()}
-    else:
-        return {"board": board.to_new_dict()}
+    # if board.card_id is None:
+    #     return {"board": board.to_dict()}
+    # else:
+    return {"board": board.to_dict()}
 
 # UPDATE BOARD/ PUT
 # UPDATE BOARD/ PATCH

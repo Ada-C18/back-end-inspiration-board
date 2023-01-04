@@ -23,13 +23,6 @@ class Board(db.Model):
             title=request_body["title"],
             owner=request_body["owner"], 
         )
-    def to_new_dict(self):
-        return {
-            "title": self.title,
-            "owner": self.owner,
-            "id": self.board_id,
-            "card_id": self.card_id
-        }
 
 
 
