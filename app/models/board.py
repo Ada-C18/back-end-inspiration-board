@@ -14,3 +14,4 @@ class Board(db.Model):
             "owner": self.owner
             
         }
+        return dict

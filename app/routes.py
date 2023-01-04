@@ -23,3 +23,20 @@ def get_board_from_id(board_id):
     if chosen_board is None:
         return abort(make_response({"msg": f"Could not find board with id: {board_id}"}, 404))
     return chosen_board
+
+
+#POST route for ONE board
+@board_bp.route("",methods=["POST"])
+def create_one_board():
+    request_body = request.get_json()
+    try:
+        new_board = Board(
+            title=request_body["title"],
+            owner=request_body["owner"]            
+        )
+    except:
+        return abort(make_response({"details": "Invalid data"}, 400))
+    db.session.add(new_board)
+    db.session.commit()
+    return jsonify({"board":new_board.to_dict()}),201
+    
