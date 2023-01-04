@@ -38,3 +38,33 @@ def test_get_specific_board(client, one_board):
             "owner": "Isabella"
         }
     }
+def test_get_board_not_found(client):
+    response = client.get("/boards/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {'message': "Board 1 was not found"}
+
+
+def test_create_board(client):
+    response = client.post("/boards", json={
+        "title": "Atomic Habits",
+        "owner": "Presley",
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert "board" in response_body
+    assert response_body == {
+        "board": {
+            "id": 1,
+            "title": "Atomic Habits",
+            "owner": "Presley"
+        }
+    }
+
+    new_board = Board.query.get(1)
+
+    assert new_board
+    assert new_board.title == "Atomic Habits"
+    assert new_board.owner == "Presley"
