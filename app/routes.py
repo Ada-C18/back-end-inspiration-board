@@ -41,7 +41,7 @@ def create_one_board():
     return jsonify({"board":new_board.to_dict()}),201
 
 #POST route for ONE card
-@card_bp.route("", methods=["POST"])
+@card_bp.route("/<board_id>", methods=["POST"])
 def create_one_card():
     request_body = request.get_json()
     try:
@@ -52,4 +52,19 @@ def create_one_card():
         return abort(make_response({"details": "Invalid data"}, 400))
     db.session.add(new_card)
     db.session.commit()
-    return jsonify({"board":new_card.to_dict()}),201
+    return jsonify({"card":new_card.to_dict()}),201
+
+#Get route for ALL cards
+@card_bp.route("/<board_id>", methods=["GET"])
+def get_all_cards(board_id):
+    board = get_board_from_id(board_id)
+    cards = Card.query.all()
+    result = []
+    for card in cards:
+        result.append(card.to_dict())
+    # lines 63-65 will be a seperate function in Board model
+    # function: get_cards_list()
+    # need to create a to_dict_relationship in Board model
+    # id, title, owner, cards: self.get_cards_list()
+    # result = board.to_dict_relationship
+    return jsonify(result), 200
