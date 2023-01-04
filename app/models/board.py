@@ -15,3 +15,19 @@ class Board(db.Model):
             
         }
         return dict
+    
+    def to_dict_relationship(self):
+        return {
+            "id": self.board_id,
+            "title": self.title,
+            "owner": self.owner,
+            "cards": self.get_cards_list()
+            
+        }
+    
+    
+    def get_cards_list(self):
+        list_of_cards = []
+        for card in self.cards:
+            list_of_cards.append(card.to_dict())
+        return list_of_cards
