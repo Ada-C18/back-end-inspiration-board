@@ -29,6 +29,7 @@ def one_board(app):
     db.session.add(new_board)
     db.session.commit()
 
+@pytest.fixture
 def three_boards(app):
     db.session.add_all([
         Board(title="Reminders", owner="Thao"),
@@ -36,3 +37,6 @@ def three_boards(app):
         Board(title="Inspiration", owner="Neema")
     ])
     db.session.commit()
+
+# TO DO:
+#    - Testing fixtures for cards
