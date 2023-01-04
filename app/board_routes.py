@@ -49,6 +49,18 @@ def delete_board(board_id):
 
 
 @board_bp.route("/<board_id>", strict_slashes=False, methods=["PUT"])
+def update_board(board_id):
+    board = get_validate_model(Board, board_id)
+
+    request_body = request.get_json()
+    board.name = request_body["name"]
+    board.owner = request_body["owner"]
+
+    db.session.commit()
+
+    current_board_response = board.to_dict()
+    return make_response(jsonify(current_board_response), 200)
+
 # Create Board
 @board_bp.route("/", strict_slashes=False, methods=["POST"])
 def create_board():
