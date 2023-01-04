@@ -38,6 +38,28 @@ def get_all_boards():
     return jsonify(boards_response), 200
 
 
+@board_bp.route("", methods=["POST"])
+def create_board():
+
+    request_body = request.get_json()
+
+    attributes = ["name", "owner"]
+
+    for attribute in attributes:
+        if attribute not in request_body or len(request_body[attribute]) == 0:
+            abort(make_response({"details": "Invalid data"}, 400))
+
+    new_board = Board(
+        name=request_body["name"],
+        owner=request_body["owner"]
+    )
+
+    db.session.add(new_board)
+    db.session.commit()
+
+    return make_response(f"Board {new_board.name} successfully created", 201)
+
+
 @board_bp.route("/<board_id>/cards", methods=["GET"])
 def get_cards_from_board(board_id):
     board = validate_model(Board, board_id)
