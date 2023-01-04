@@ -7,7 +7,7 @@ class Board(db.Model):
     cards = db.relationship("Card", back_populates="board")
 
     def from_instance_to_dict(self, cards=False):
-        instance_dict = {"id":self.board_id, "title": self.title, "owner": self.owner, "cards": self.cards}
+        instance_dict = {"id":self.board_id, "title": self.title, "owner": self.owner}
         return instance_dict
 
     @classmethod
