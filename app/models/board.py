@@ -1,8 +1,9 @@
 from app import db
+from datetime import datetime
 
 class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    date_created = db.Column(db.DateTme)
+    date_created = db.Column(db.DateTime)
     board_title = db.Column(db.String)
     visible = db.Column(db.Boolean)
     board_owner = db.Column(db.String, db.ForeignKey('user.id'))

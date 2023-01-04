@@ -1,8 +1,9 @@
 from app import db
+from datetime import datetime
 
 class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    date_created = db.Column(db.DateTme)
+    date_created = db.Column(db.DateTime)
     card_title = db.Column(db.String)
     visible = db.Column(db.Boolean)
     card_owner = db.Column(db.String, db.ForeignKey('user.id'))

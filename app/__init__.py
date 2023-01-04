@@ -21,13 +21,13 @@ def create_app():
     # from app.models.ExampleModel import ExampleModel
     from app.models.board import Board
     from app.models.card import Card
-    
+
 
     db.init_app(app)
     migrate.init_app(app, db)
 
     # Register Blueprints here
-    from .routes import boards_bp
+    from .board_routes import boards_bp
     app.register_blueprint(boards_bp)
 
     CORS(app)
