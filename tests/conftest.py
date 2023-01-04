@@ -43,8 +43,8 @@ def one_board_three_cards(one_board):
     """Creates an app with one board and three cards."""
     board = Board.query.first()
     db.session.add_all([
-        Card(board_id=board.id, message="Hello", likes=0),
-        Card(board_id=board.id, message="Test", likes=1),
-        Card(board_id=board.id, message="Goodbye", likes=2),
+        Card(board_id=board.board_id, message="Hello", likes_count=0),
+        Card(board_id=board.board_id, message="Test", likes_count=1),
+        Card(board_id=board.board_id, message="Goodbye", likes_count=2),
     ])
     db.session.commit()
