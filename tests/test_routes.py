@@ -74,3 +74,18 @@ def test_get_all_cards_one_board_three_cards(client, one_board_three_cards):
             {board_id: board.board_id, message: "Goodbye", likes_count: 2},
         }
     ]
+
+
+def test_delete_card(client, one_card):
+    # Arrange
+    card_id = Card.query.first().card_id
+
+    # Act
+    response = client.delete(f"/cards/{card_id}")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == {
+        f"details": f'Card {card_id} successfully deleted'
+    }
