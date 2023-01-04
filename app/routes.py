@@ -60,6 +60,7 @@ def retrieve_cards(board_id):
         )
     return jsonify(cards_response)
 
+<<<<<<< HEAD
 
 #  delete route 
 
@@ -88,3 +89,42 @@ def validate_board(board_id):
 
     return board
 
+=======
+@boards_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
+def delete_card(board_id, card_id):
+
+    board = validate_model(Board, board_id)
+
+    cards_response = []
+    for card in board.cards:
+        if card.id == int(card_id):
+            db.session.delete(card)
+        else:
+            cards_response.append(
+                {
+                "id": card.id,
+                "message": card.message,
+                "likes": card.likes
+                }
+            )
+    db.session.commit()
+    return jsonify(cards_response)
+
+@boards_bp.route("/<board_id>/cards/<card_id>", methods=["PATCH"])
+def update_likes(board_id, card_id):
+
+    board = validate_model(Board, board_id)
+
+    card_response = {}
+    for card in board.cards:
+        if card.id == int(card_id):
+            card.likes += 1
+            card_response =  {
+                "id": card.id,
+                "message": card.message,
+                "likes": card.likes
+                }
+    db.session.commit()
+    return jsonify(card_response)
+    
+>>>>>>> fb18560c8d56345c4ae4afb631aa805204a90bd4
