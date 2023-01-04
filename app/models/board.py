@@ -19,7 +19,7 @@ class Board(db.Model):
     @classmethod
     def from_dict(cls, data_dict):
         if "title" in data_dict and "owner" in data_dict:
-            new_obj = cls(title=data_dict["title"]),
-            owner = data_dict["owner"]
+            new_obj = cls(title=data_dict["title"],
+            owner = data_dict["owner"])
 
             return new_obj
