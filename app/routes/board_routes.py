@@ -49,4 +49,13 @@ def post_card_belonging_to_a_board(board_id):
 
     return jsonify({"message":f"Card {new_card.message} belonging to {new_card.board.title} successfully added"}), 201
 
+# get all cards belonging to a board
+@board_bp.route("/<board_id>/card", methods=["GET"]) 
+def get_all_cards_belonging_to_a_board(board_id):
+    board = get_one_obj_or_abort(Board, board_id)
+    
+    cards_response = [card.to_dict() for card in board.cards]
+
+    return jsonify(cards_response), 200
+    
 
