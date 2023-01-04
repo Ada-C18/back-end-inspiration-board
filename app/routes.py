@@ -42,7 +42,7 @@ def create_one_board():
     db.session.commit()
     return jsonify({"board":new_board.to_dict()}),201
 
-#POST route for ONE card
+#POST route for ONE card for specific board
 @card_bp.route("/<board_id>", methods=["POST"])
 def create_one_card(board_id):
     board = get_board_from_id(board_id)
@@ -60,18 +60,30 @@ def create_one_card(board_id):
     db.session.commit()
     return jsonify({"card":new_card.to_dict()}),201
 
-#Get route for ALL cards
-@card_bp.route("/<board_id>", methods=["GET"])
+#Get route for ONE Board and ALL its cards
+@board_bp.route("/<board_id>", methods=["GET"])
 def get_all_cards(board_id):
     board = get_board_from_id(board_id)
-    # cards = Card.query.all()
-
-    # lines 63-65 will be a seperate function in Board model
-    # function: get_cards_list()
-    # need to create a to_dict_relationship in Board model
-    # id, title, owner, cards: self.get_cards_list()
-    # result = board.to_dict_relationship
     
     result = board.to_dict_relationship()
     
     return jsonify(result), 200
+
+#Get route for ONE CARD
+#Should endpoint be named differently. Line 45 vs Line 74
+@card_bp.route("", methods=["GET"])
+def get_all_cards():
+    cards = Card.query.all()
+    result = []
+    for card in cards:
+        result.append(card.to_dict())
+        # need to create to_dict method in Board Model
+    return jsonify(result), 200
+
+@card_bp.route("/<card_id>",methods=["GET"])
+def get_one_card(card_id):
+    chosen_card = Card.query.get(card_id)
+    if chosen_card is None:
+        return abort(make_response({"msg": f"Could not find card with id: {card_id}"}, 404))
+    return jsonify({"card":chosen_card.to_dict()}), 200
+   
