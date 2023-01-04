@@ -56,10 +56,17 @@ def create_board():
     return make_response(f"{new_board.title} created", 201)
 
 #GET - /boards/<board_id>/cards
+@boards_bp.route("/<board_id>/cards", methods=["GET"])
+def get_all_cards_with_board_id(board_id):
+    board = get_one_object_or_abort(Board, board_id)
 
+    board_response = [card.to_dict() for card in board.cards]
 
-
+    return jsonify(board_response), 200
 
 #POST - /boards/<board_id>/cards
+
+
+
 #DELETE - /cards/<card_id>
 #PUT - /cards/<card_id>/like
