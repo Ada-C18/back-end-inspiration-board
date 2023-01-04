@@ -7,7 +7,7 @@ from app.models.card import Card
 cards_bp = Blueprint("cards",__name__, url_prefix="/cards")
 
 @cards_bp.route("", methods=["POST", "GET"])
-def handle_cards():
+def get_or_post_cards():
     if request.method=="GET":
         cards=Card.query.all()
         cards_response=[]
