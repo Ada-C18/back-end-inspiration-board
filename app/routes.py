@@ -45,3 +45,11 @@ def get_one_card(card_id):
     return {
         "message": card.message
     }
+
+@cards_bp.route("/<id>",methods=["DELETE"])
+def delete_card(id):
+    card=validate_id(Card,id)
+    db.session.delete(card)
+    db.session.commit()
+    return make_response({"details":f'Card {id} " {card.message} "  successfully deleted'})
+    
