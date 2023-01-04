@@ -10,7 +10,7 @@ boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 def create_board():
     request_body = request.get_json()
     if "title" not in request_body or \
-    "description" not in request_body:
+    "owner" not in request_body:
         return make_response("Invalid Request", 400)
     
     new_board = Board.from_dict(request_body)
