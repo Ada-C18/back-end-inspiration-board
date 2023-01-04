@@ -48,3 +48,11 @@ def one_board_three_cards(one_board):
         Card(board_id=board.board_id, message="Goodbye", likes_count=2),
     ])
     db.session.commit()
+
+@pytest.fixture
+def add_like(app):
+    new_card = Card(
+       message="Updated Card Message", likes_count= 5) 
+    db.session.add(new_card)
+    db.session.commit()
+
