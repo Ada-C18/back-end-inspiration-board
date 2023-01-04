@@ -12,6 +12,8 @@ class Board(db.Model):
         result_dict["name"] = self.name
         result_dict["owner"] = self.owner
 
+        return result_dict
+
 
     def from_dict(cls, data_dict):
         return cls(

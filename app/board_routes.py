@@ -25,6 +25,7 @@ def get_validate_model(cls, model_id):
 
 @board_bp.route("", strict_slashes=False, methods=["GET"])
 def read_all_boards():
+    
     boards = Board.query.all()
     print(boards)
     boards_list = [board.to_dict() for board in boards]
@@ -53,7 +54,9 @@ def delete_board(board_id):
 def create_board():
     try:
         request_body = request.get_json()
+        print(request_body)
         new_board = Board.from_dict(request_body)
+        print(new_board)
 
     except:
         return make_response({"message": "Invalid data"}, 400)
