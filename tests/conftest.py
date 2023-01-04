@@ -36,10 +36,10 @@ def one_board(app):
     db.session.add(
         Board(name="Test Board", owner="Test Owner")
     )
-    return app.test_client()
+    db.session.commit()
 
 @pytest.fixture
-def add_three_cards(one_board):
+def one_board_three_cards(one_board):
     """Creates an app with one board and three cards."""
     board = Board.query.first()
     db.session.add_all([
@@ -47,4 +47,4 @@ def add_three_cards(one_board):
         Card(board_id=board.id, message="Test", likes=1),
         Card(board_id=board.id, message="Goodbye", likes=2),
     ])
-
+    db.session.commit()
