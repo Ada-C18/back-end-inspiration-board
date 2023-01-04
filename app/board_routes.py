@@ -51,8 +51,8 @@ def create_card_associated_with_board(board_id):
     db.session.add(new_card)
     db.session.commit()
 
-    # return {"card": new_card.to_dict()}, 201
-    return make_response(jsonify(f"Card {new_card.message} on {new_card.board.title} successfully created"), new_card.to_dict(), 201)
+    return {"card": new_card.to_dict()}, 201
+    # return make_response(jsonify(f"Card {new_card.message} on {new_card.board.title} successfully created"), new_card.to_dict(), 201)
 
 #send a request to read all cards on a particular board in the database.
 @board_bp.route("/<board_id>/cards", methods=["GET"])
@@ -78,7 +78,8 @@ def update_card(board_id, card_id):
 
     db.session.commit()
 
-    return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully updated"), 200)
+    return {"card": card.to_dict()}, 200
+    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully updated"), 200)
 
 # send a request to delete a card from a particular board in the database
 @board_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
