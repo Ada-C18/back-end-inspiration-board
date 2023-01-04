@@ -17,4 +17,17 @@ def create_board():
         owner=request_body["owner"])
     db.session.add(new_board)
     db.session.commit()
-    return jsonify({new_board.to_dict_board()}), 201
+    return jsonify(new_board.to_dict()), 201
+
+#Get all board
+@boards_bp.route("", methods =["GET"])
+def read_all_board():
+    board_param = request.args
+    boards = Board.query.all()
+    boards_response = []
+    for board in boards:
+        boards_response.append({
+            "id": board.board_id,
+            "title": board.title
+        })
+    return jsonify(boards_response)
