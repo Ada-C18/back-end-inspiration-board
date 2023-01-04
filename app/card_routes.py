@@ -27,7 +27,15 @@ def create_card():
 
     return make_response(jsonify({"card": new_card.to_dict()}), 201)
 
+@cards_bp.route("/<id>", methods=["DELETE"])
+def delete_card(id):
 
+    card = validate_model(Card, id)
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return make_response(jsonify({"details": f"Card {id} '{card.message}' successfully deleted"}),200)
 
 
 
