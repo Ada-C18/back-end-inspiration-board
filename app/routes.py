@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response,abort
 from app import db
 from app.models.board import Board
 
@@ -19,3 +19,20 @@ def get_all_boards():
             }
         )
     return jsonify(board_response)
+
+@ boards_bp.route('', methods=['POST'])
+def create_a_board():
+    request_body= request.get_json()
+    try:
+        new_board = Board(title=request_body["title"],
+            owner=request_body["owner"])
+    except:
+        abort(make_response({'details': f'Title and owner are required'}, 400))
+
+    db.session.add(new_board)
+    db.session.commit()
+
+    return make_response(f"Board {new_board.title} was successfully created", 201)
+
+
+
