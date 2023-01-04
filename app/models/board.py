@@ -14,9 +14,9 @@ class Board(db.Model):
 
         return result_dict
 
-
+    @classmethod
     def from_dict(cls, data_dict):
         return cls(
-            name = data_dict["name"],
-            owner = data_dict["owner"]
+            name=data_dict["name"],
+            owner=data_dict["owner"]
         )
