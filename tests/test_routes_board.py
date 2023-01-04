@@ -14,7 +14,7 @@ def test_get_boards_no_saved_boards(client):
     assert response_body == []
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_boards_one_saved_board(client, one_board):
     # Act
     response = client.get("/boards")
@@ -32,7 +32,7 @@ def test_get_boards_one_saved_board(client, one_board):
     ]
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_board(client, one_board):
     # Act
     response = client.get("/boards/1")
@@ -41,13 +41,12 @@ def test_get_board(client, one_board):
     # Assert
     assert response.status_code == 200
     assert response_body == {
-            "id": 1,
+            "board_id": 1,
             "title": "Testing board 1",
             "owner": "VTV"
-    }
+        }
 
-
-@pytest.mark.skip(reason="test to be completed by student")
+# @pytest.mark.skip(reason="test to be completed by student")
 def test_get_board_not_found(client):
     # Act
     response = client.get("/boards/1")
@@ -59,7 +58,7 @@ def test_get_board_not_found(client):
    
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_board(client):
     # Act
     response = client.post("/boards", json={
@@ -70,15 +69,14 @@ def test_create_board(client):
 
     # Assert
     assert response.status_code == 201
-    assert response_body == {
+    assert response_body == {   
             "board_id": 1,
             "title": "My New Board",
-            "owner": "Chetahs"
-        }
-    
+            "owner": "Chetahs"   
+    }
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_board_must_contain_title(client):
     # Act
     response = client.post("/boards", json={
@@ -95,7 +93,7 @@ def test_create_board_must_contain_title(client):
     assert Board.query.all() == []
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_board_must_contain_owner(client):
     # Act
     response = client.post("/boards", json={
