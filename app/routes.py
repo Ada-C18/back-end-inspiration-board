@@ -29,7 +29,7 @@ def get_all_boards():
                 "id": board.id,
                 "title": board.title,
                 "owner": board.owner,
-                # "cards": board.cards,
+                "cards": board.cards,
             }
         )
     return jsonify(board_response)

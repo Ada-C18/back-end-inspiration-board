@@ -26,6 +26,7 @@ def test_get_goals_one_saved_board(client, one_board):
         {
             "id": 1,
             "title": "Our inspo board",
-            "owner": "JJ"
+            "owner": "JJ",
+            "cards": []
         }
     ]
