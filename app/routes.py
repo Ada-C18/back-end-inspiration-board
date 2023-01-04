@@ -39,4 +39,17 @@ def create_one_board():
     db.session.add(new_board)
     db.session.commit()
     return jsonify({"board":new_board.to_dict()}),201
-    
+
+#POST route for ONE card
+@card_bp.route("", methods=["POST"])
+def create_one_card():
+    request_body = request.get_json()
+    try:
+        new_card = Card(
+            message=request_body["message"]
+        )
+    except:
+        return abort(make_response({"details": "Invalid data"}, 400))
+    db.session.add(new_card)
+    db.session.commit()
+    return jsonify({"board":new_card.to_dict()}),201
