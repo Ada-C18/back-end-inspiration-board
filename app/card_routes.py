@@ -4,8 +4,6 @@ from app.models.board import Board
 from app.models.card import Card
 from app.validate_data import validate_model
 
-# may need to validate board id first
-
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
 # ===================================
