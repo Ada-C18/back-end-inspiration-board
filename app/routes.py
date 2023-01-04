@@ -27,6 +27,8 @@ def get_or_post_cards():
 
         return make_response(f"Card {new_card.message} successfully created", 201)
 
+        
+
 
 def validate_id(cls, id):
     try: 
@@ -35,6 +37,9 @@ def validate_id(cls, id):
         abort(make_response ({"message":f"{cls.__name__}{id} invalid"}, 400))
 
     obj = cls.query.get(id)
+
+    if not obj:
+        abort(make_response({"message":f"{cls.__name__} {id} not found"}, 404))
 
     return obj
 
