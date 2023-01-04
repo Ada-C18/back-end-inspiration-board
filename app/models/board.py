@@ -1,10 +1,12 @@
 from app import db
 from flask import abort, make_response, jsonify
 
+# One board can have multiple cards
 class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String, nullable=False)
     owner = db.Column(db.String)
+    #  cards = db.relationship("Card", back_populates="board", lazy=True)
 
     # Create new board
     @classmethod

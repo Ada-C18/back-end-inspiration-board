@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.routes.routes_helper import validate_model, validate_input_data, error_message
 from app.models.board import Board
+from app.models.card import Card
 
 boards_bp = Blueprint('boards_bp', __name__, url_prefix = '/boards')
 
@@ -22,6 +23,26 @@ def read_all_boards():
     boards_response = [board.to_dict() for board in boards]
     return jsonify(boards_response)
 
+
+# read all cards by board id
+# @boards_bp.route("/<id>/cards", methods=["GET"])
+# def get_cards_by_board_id(id):
+    # pass
+
+
+# create one card under board id
+@boards_bp.route("/<id>/cards", methods=["POST"])
+def create_card(id):
+    request_body = request.get_json()
+    if "message" not in request_body:
+        error_message("Message not found", 400) # we need a helper function here
+
+    request_body["board_id"] = id
+    card = Card.from_dict(request_body) # we need a helper function here
+    
+    db.session.add(card)
+    db.session.commit()
+    
 
 # create a board (POST) 
 @boards_bp.route("", methods=["POST"])
