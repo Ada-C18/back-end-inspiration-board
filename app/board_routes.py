@@ -57,8 +57,9 @@ def read_all_cards_from_board(board_id):
 @board_bp.route("", methods=["GET"])
 def get_all_boards():
     response = []
+    boards = Board.query.all()
 
-    for board in board:
+    for board in boards:
         response.append(board.to_dict())
     return jsonify(response)
     # return response.to_dict()
