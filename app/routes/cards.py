@@ -11,7 +11,10 @@ cards_bp = Blueprint("cards",  __name__ , url_prefix="/cards")
 @cards_bp.route('', methods=['POST'])
 def create_one_card():
     request_body = request.get_json()
-    new_card = Card(message=request_body['message'])
+    try:
+        new_card = Card(message=request_body['message'])
+    except KeyError:
+        return jsonify({"details": "Invalid data"}), 400
     db.session.add(new_card)
     db.session.commit()
     return jsonify(new_card.to_dict()), 201
@@ -20,11 +23,7 @@ def create_one_card():
 @cards_bp.route('', methods=['GET'])
 def get_all_cards():
     card_response = []
-    
-    card_query = request.args.get("message")
-    if card_query is not None:
-        cards = Card.query.filter_by(message=card_query)
-    
+    cards = Card.query.all()  
     for card in cards:
         card_response.append(card.to_dict()) 
     return jsonify(card_response), 200
