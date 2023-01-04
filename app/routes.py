@@ -31,9 +31,13 @@ from app.models.card import Card
 
 # Need to perform error handling (with validate function for board and card id)
 
+hello_bp = Blueprint("homepage", __name__,url_prefix="/")
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
+@hello_bp.route("", methods=["GET"])
+def readme_page():
+    return ("Welcome to our Inspiration Board API")
 
 # CREATE A NEW CARD
 @cards_bp.route("", methods=["POST"])
@@ -87,17 +91,17 @@ def update_card(card_id):
 
     db.session.commit()
 
-    make_response(f"card '{card.title}' updated")
+    return make_response(f"card '{card.card_id}' updated")
 
 # DELETE CARD
 @cards_bp.route("/<card_id>", methods=["DELETE"])
 def delete_card(card_id):
-    card = Card.Query.get(card_id)
+    card = Card.query.get(card_id)
 
     db.session.delete(card)
     db.session.commit()
 
-    return make_response(f"card '{card.title}' deleted")
+    return make_response(f"card '{card.card_id}' deleted")
 
 # -----------------------------------------------------------------
 
@@ -151,7 +155,7 @@ def get_board(board_id):
 
     return board_dict
 
-# UPDATE BOARD INFO - only title so far
+# UPDATE BOARD INFO
 @boards_bp.route("/<board_id>", methods=["PATCH"])
 def update_board(board_id):
     board = Board.query.get(board_id)
