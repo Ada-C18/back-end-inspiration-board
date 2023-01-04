@@ -26,4 +26,25 @@ def app():
 
 @pytest.fixture
 def client(app):
+    """Creates an app with an empty database."""
     return app.test_client()
+
+
+@pytest.fixture
+def one_board(app):
+    """Creates an app with one board and no cards."""
+    db.session.add(
+        Board(name="Test Board", owner="Test Owner")
+    )
+    return app.test_client()
+
+@pytest.fixture
+def add_three_cards(one_board):
+    """Creates an app with one board and three cards."""
+    board = Board.query.first()
+    db.session.add_all([
+        Card(board_id=board.id, message="Hello", likes=0),
+        Card(board_id=board.id, message="Test", likes=1),
+        Card(board_id=board.id, message="Goodbye", likes=2),
+    ])
+
