@@ -5,7 +5,7 @@ from app.models.board import Board
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 #======================================
 #        CREATE ONE BOARD        
-#====================================== use from_dict class method 
+#====================================== 
 @boards_bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
