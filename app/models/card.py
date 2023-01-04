@@ -3,7 +3,7 @@ from app import db
 class Card(db.Model):
     card_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     message = db.Column(db.String)
-    likes = db.Column(db.Integer)
+    likes = db.Column(db.Integer, default=None, nullable=True)
     board_id = db.Column(db.Integer, db.ForeignKey("board.board_id"), nullable=True)
     board = db.relationship("Board", back_populates="cards", lazy=True)
 
@@ -17,7 +17,12 @@ class Card(db.Model):
 
     @classmethod
     def from_dict_to_instance(cls, card_dict):
+        try: 
+            likes_count = card_dict["likes"]
+        except KeyError:
+            likes_count = 0
+
         return cls(
             message=card_dict["message"], 
-            likes=card_dict["likes"]
+            likes= likes_count
             )

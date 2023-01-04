@@ -29,7 +29,7 @@ def create_app():
     app.register_blueprint(boards_bp)
 
     from .card_routes import cards_bp
-    boards_bp.register_blueprint(cards_bp)
+    app.register_blueprint(cards_bp)
 
 
     CORS(app)
