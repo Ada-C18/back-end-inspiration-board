@@ -25,7 +25,7 @@ def test_get_boards_one_saved_board(client, one_board):
     assert len(response_body) == 1
     assert response_body == [
         {
-            "id": 1,
+            "board_id": 1,
             "title": "Testing board 1",
             "owner": "VTV"
         }
@@ -40,13 +40,10 @@ def test_get_board(client, one_board):
 
     # Assert
     assert response.status_code == 200
-    assert "board" in response_body
     assert response_body == {
-        "board": {
             "id": 1,
             "title": "Testing board 1",
             "owner": "VTV"
-        }
     }
 
 
@@ -73,14 +70,12 @@ def test_create_board(client):
 
     # Assert
     assert response.status_code == 201
-    assert "board" in response_body
     assert response_body == {
-        "board": {
-            "id": 1,
+            "board_id": 1,
             "title": "My New Board",
             "owner": "Chetahs"
         }
-    }
+    
 
 
 @pytest.mark.skip(reason="No way to test this feature yet")

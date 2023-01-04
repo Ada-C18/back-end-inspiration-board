@@ -3,7 +3,7 @@ import pytest
 
 
 #@pytest.mark.skip(reason="No way to test this feature yet")
-def test_get_cards_no_saved_tasks(client):
+def test_get_cards_no_saved_cards(client):
     # Act
     response = client.get("/cards")
     response_body = response.get_json()
