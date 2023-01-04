@@ -1,8 +1,8 @@
-"""adds Board and Card models
+"""recreates migrations
 
-Revision ID: 39f223ad9946
+Revision ID: 53f0911399ed
 Revises: 
-Create Date: 2023-01-03 10:09:10.727195
+Create Date: 2023-01-04 12:26:55.205881
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '39f223ad9946'
+revision = '53f0911399ed'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,8 +26,10 @@ def upgrade():
     )
     op.create_table('card',
     sa.Column('card_id', sa.Integer(), nullable=False),
-    sa.Column('message', sa.String(), nullable=True),
-    sa.Column('likes_count', sa.String(), nullable=True),
+    sa.Column('message', sa.String(length=40), nullable=True),
+    sa.Column('likes_count', sa.Integer(), nullable=True),
+    sa.Column('board_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['board_id'], ['board.board_id'], ),
     sa.PrimaryKeyConstraint('card_id')
     )
     # ### end Alembic commands ###

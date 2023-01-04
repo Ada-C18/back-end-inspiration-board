@@ -6,7 +6,6 @@ import os
 from flask_cors import CORS
 
 db = SQLAlchemy()
-migrate = Migrate()
 load_dotenv()
 
 
@@ -21,6 +20,7 @@ def create_app():
     from app.models.card import Card
 
     db.init_app(app)
+    migrate = Migrate(app, db, compare_type=True)
     migrate.init_app(app, db)
 
     # Register Blueprints here
