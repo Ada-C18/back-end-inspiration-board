@@ -57,7 +57,7 @@ def create_board():
 
 #GET - /boards/<board_id>/cards
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
-def get_all_cards_with_board_id(board_id):
+def get_all_cards_belonging_to_board_id(board_id):
     board = get_one_object_or_abort(Board, board_id)
 
     board_response = [card.to_dict() for card in board.cards]
@@ -65,8 +65,40 @@ def get_all_cards_with_board_id(board_id):
     return jsonify(board_response), 200
 
 #POST - /boards/<board_id>/cards
+@boards_bp.route("/<board_id>/cards", methods=["POST"])
+def post_card_belonging_to_board(board_id):
+    parent_board = get_one_object_or_abort(Board, board_id)
 
+    request_body = request.get_json()
+    new_card = Card.from_dict(request_body)
+    new_card.board = parent_board
 
+    db.session.add(new_card)
+    db.session.commit(new_card)
+
+    return jsonify({"Message": f"{new_card.message} successfully added."}), 201
 
 #DELETE - /cards/<card_id>
+@cards_bp.route("/<card_id>", methods=["DELETE"])
+def delete_one_card(card_id):
+    chosen_card = get_one_object_or_abort(Card, card_id)
+
+    db.session.delete(chosen_card)
+    db.session.commit()
+
+    return jsonify({"Message": f"{card_id} successfully deleted."}), 200
+
 #PUT - /cards/<card_id>/like
+@cards_bp.route("/<card_id>/like", methods=["PATCH"])
+def update_one_card_likes_count(card_id, new_likes_count):
+    chosen_card = get_one_object_or_abort(Card, card_id)
+    try:
+        new_likes_count = int(new_likes_count)
+    except ValueError:
+        response_str = f"Invalid likes count: {new_likes_count} must be an integer."
+        return jsonify({"Message": response_str}), 400
+    
+    chosen_card.likes_count = new_likes_count
+
+    db.session.commit()
+    return jsonify({"Message": f"succesfully updated card id {card_id} likes count to {new_likes_count}"}), 200
