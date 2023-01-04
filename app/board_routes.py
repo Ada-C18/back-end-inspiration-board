@@ -48,4 +48,15 @@ def create_board():
 
     return {"board": new_board.to_dict()}, 201
 
+@board_bp.route("<board_id>", methods=["DELETE"])
+
+def delete_board(board_id):
+    board = validate_model(Board, board_id)
+
+    db.session.delete(board)
+    db.session.commit()
+
+    return make_response(jsonify({"details": f'Board {board.board_id} "{board.title}" successfully deleted'}),200)
+
+
 

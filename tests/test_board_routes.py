@@ -68,3 +68,45 @@ def test_create_board(client):
     assert new_board
     assert new_board.title == "Atomic Habits"
     assert new_board.owner == "Presley"
+
+
+def test_create_board_must_contain_title(client):
+    # Act
+    response = client.post("/boards", json={
+        "owner": "Test"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid data"
+    }
+    assert Board.query.all() == []
+
+def test_create_board_must_contain_owner(client):
+    # Act
+    response = client.post("/boards", json={
+        "title": "A Brand New Board"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid data"
+    }
+    assert Board.query.all() == []
+
+def test_delete_board(client, one_board):
+    response = client.delete("/boards/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert "details" in response_body
+    assert response_body == {
+        "details": 'Board 1 "Get Healthy" successfully deleted'
+    }
+    assert Board.query.get(1) == None
