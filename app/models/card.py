@@ -19,8 +19,8 @@ class Card(db.Model):
     
     @classmethod
     def from_dict(cls, data_dict):
-        if "message" in data_dict and "likes_count" in data_dict:
+        if "message" in data_dict:
             new_object = cls(message=data_dict["message"],
-            likes_count=data_dict["likes_count"])
-            
+            likes_count=0)
+
             return new_object

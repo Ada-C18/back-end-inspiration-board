@@ -74,7 +74,7 @@ def post_card_belonging_to_board(board_id):
     new_card.board = parent_board
 
     db.session.add(new_card)
-    db.session.commit(new_card)
+    db.session.commit()
 
     return jsonify({"Message": f"{new_card.message} successfully added."}), 201
 
@@ -88,8 +88,8 @@ def delete_one_card(card_id):
 
     return jsonify({"Message": f"{card_id} successfully deleted."}), 200
 
-#PUT - /cards/<card_id>/like
-@cards_bp.route("/<card_id>/like", methods=["PATCH"])
+#PATCH - /cards/<card_id>/like
+@cards_bp.route("/<card_id>/<new_likes_count>", methods=["PATCH"])
 def update_one_card_likes_count(card_id, new_likes_count):
     chosen_card = get_one_object_or_abort(Card, card_id)
     try:
