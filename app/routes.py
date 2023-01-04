@@ -36,14 +36,27 @@ def create_board():
 
     return make_response(new_board.to_dict_boards(), 201)
 
-#create a get route 
-@boards_bp.route("", methods = ["GET"])
+# create a get route 
+@boards_bp.route("/<board_id>", methods = ["GET"])
 def get_one_board(board_id):
     board = validate_model(Board, board_id)
 
-    return jsonify(board.to_dict_board()), 200
+    return jsonify(board.to_dict_boards(), 200)
 
+# create get all route
+@boards_bp.route("", methods = ["GET"])
+def get_all_boards():
+    boards_response = []
+    boards = Board.query.all()
+    # boards_response = [boards.to_dict_boards() for board in boards]
+    for board in boards:
+        boards_response.append({
+            "id": board.board_id,
+            "title": board.title,
+            "owner": board.owner
+        })
 
+    return jsonify(boards_response)
 
 
 
