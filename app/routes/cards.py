@@ -11,6 +11,7 @@ cards_bp = Blueprint("cards",  __name__ , url_prefix="/cards")
 @cards_bp.route('', methods=['POST'])
 def create_one_card():
     request_body = request.get_json()
+    
     new_card = Card(message=request_body['message'])
     db.session.add(new_card)
     db.session.commit()
