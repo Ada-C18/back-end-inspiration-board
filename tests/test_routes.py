@@ -68,9 +68,7 @@ def test_get_all_cards_one_board_three_cards(client, one_board_three_cards):
     # Assert
     assert response.status_code == 200
     assert response_body == [
-        {
-            {board_id: board.board_id, message: "Hello", likes_count: 0},
-            {board_id: board.board_id, message: "Test", likes_count: 1},
-            {board_id: board.board_id, message: "Goodbye", likes_count: 2},
-        }
+        {"id": 1, "message": "Hello", "likes": 0},
+        {"id": 2, "message": "Test", "likes": 1},
+        {"id": 3, "message": "Goodbye", "likes": 2},
     ]
