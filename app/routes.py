@@ -41,7 +41,7 @@ def create_card():
     request_body = request.get_json()
     new_card = Card(
         body=request_body["body"],
-        likes= request_body["likes"],
+        likes=request_body["likes"],
         board_id=request_body["board_id"])
 
     db.session.add(new_card)
