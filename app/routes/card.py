@@ -16,3 +16,6 @@ def create_card():
     card_dict = new_card.to_dict()
 
     return make_response(jsonify({"card": card_dict}), 201)
+
+# @bp.route("", methods=["GET"])
+# def read_cards():

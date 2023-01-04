@@ -18,6 +18,8 @@ def create_board():
     return make_response(jsonify({"board": board_dict}), 201)
 
     # add a try/except later for missing data
+    # check if title is already in table, if it is, raise 400 error 
+    # and in front end let user know
 
 
 @bp.route("", methods=["GET"])
@@ -29,7 +31,7 @@ def read_all_boards():
     return jsonify(boards_response), 200
 
 
-@bp.route("/<board_title>", methods=["GET"])
+@bp.route("<board_title>", methods=["GET"])
 def read_one_board(board_title):
     try:
         test_board = Board.query.filter(Board.title == board_title).first()
