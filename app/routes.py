@@ -62,6 +62,65 @@ def delete_one_board(board_id):
 
     return jsonify({"details": f'Board {board_to_delete.board_id} {board_to_delete.title} successfully deleted'}), 200 
 
+
+# card
+card_bp = Blueprint("cards", __name__, url_prefix="/cards")
+
+@card_bp.route('', methods=['GET'])
+def get_all_cards():
+    cards = Card.query.all()
+
+    result = []
+    for item in cards:
+        result.append(item.to_dict())
+
+    return jsonify(result), 200
+    
+@card_bp.route('/<card_id>', methods=['GET'])
+def get_one_card(card_id):
+    chosen_card = get_model_from_id(Card, card_id) 
+    return jsonify({"card": chosen_card.to_dict()}), 200
+
+@card_bp.route('', methods=['POST'])
+def create_one_card():
+    request_body = request.get_json()
+
+    try:
+        new_card = Card(message = request_body["message"], like_count = request_body["like_count"])
+    except KeyError:
+        return jsonify({"details": "Invalid data"}), 400
+
+    db.session.add(new_card)
+    db.session.commit()
+
+    return jsonify({"card": new_card.to_dict()}), 201
+
+@card_bp.route('/<card_id>', methods=['PUT'])
+def update_one_card(card_id):
+    update_card = get_model_from_id(Card, card_id)
+
+    request_body = request.get_json()
+
+    try:
+        update_card.message = request_body["message"]
+        update_card.like_count = request_body["like_count"]
+    except KeyError:
+        return jsonify({"msg": "Missing needed data"}), 400
+
+    db.session.commit()
+    return jsonify({"card": update_card.to_dict()}), 200
+
+@card_bp.route('/<card_id>', methods=['DELETE'])
+def delete_one_card(card_id):
+    card_to_delete = get_model_from_id(Card, card_id)
+
+    db.session.delete(card_to_delete)
+    db.session.commit()
+
+    return jsonify({"details": f'Card {card_to_delete.card_id} successfully deleted'}), 200 
+
+
+# helper function
 def get_model_from_id(cls, model_id):
     try:
         model_id = int(model_id)
