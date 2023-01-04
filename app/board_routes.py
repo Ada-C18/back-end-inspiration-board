@@ -42,7 +42,7 @@ def delete_board(board_id):
     db.session.commit()
 
     response_body = {
-        "message": f'Board "{board.name}": #{board_id} was deleted.'}
+        "message": f'Board #{board_id} was deleted.'}
     return make_response(jsonify(response_body), 200)
 
 # Update Board
