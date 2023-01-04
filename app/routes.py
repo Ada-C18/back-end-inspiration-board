@@ -2,6 +2,7 @@ from os import abort
 from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 # example_bp = Blueprint('example_bp', __name__)
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
@@ -59,6 +60,21 @@ def get_all_boards():
     return jsonify(boards_response)
 
 
+
+# create a post route for card
+@cards_bp.route("", methods = ["POST"])
+def create_card():
+    request_body = request.get_json()
+
+    try:
+        new_card = Card.from_json(request_body)
+    except KeyError:
+        return make_response({"details": "Invalid data"}, 400)
+
+    db.session.add(new_card)
+    db.session.commit()
+
+    return make_response(new_card.to_dict_cards(), 201)
 
 
 #create a route to delete a card

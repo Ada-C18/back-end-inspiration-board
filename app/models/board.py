@@ -6,8 +6,9 @@ class Board(db.Model):
     title = db.Column(db.String)
     owner = db.Column(db.String) 
     card = db.relationship("Card", back_populates = "boards")
+    card_id = db.Column(db.Integer, db.ForeignKey('card.card_id'),nullable = True)
 
-    
+
     @classmethod
     def from_json(cls, req_body):
         return cls(
