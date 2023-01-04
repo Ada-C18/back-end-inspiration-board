@@ -8,6 +8,8 @@ bp = Blueprint("board_bp", __name__, url_prefix="/board")
 @bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
+    check_duplicates(request_body["title"])
+
     new_board = Board.from_dict(request_body)
 
     db.session.add(new_board)
@@ -17,9 +19,21 @@ def create_board():
 
     return make_response(jsonify({"board": board_dict}), 201)
 
-    # add a try/except later for missing data
-    # check if title is already in table, if it is, raise 400 error
-    # and in front end let user know
+
+def check_duplicates(board_title):
+    """
+    check whether or not a board with a particular title already exists
+    """
+    test_board = Board.query.filter(Board.title == board_title).first()
+    if test_board is not None:
+        abort(
+            make_response(
+                {
+                    "details": f"Board {board_title} already exists, please enter a unique title"
+                },
+                400,
+            )
+        )
 
 
 @bp.route("", methods=["GET"])
