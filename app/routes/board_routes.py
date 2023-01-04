@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 from app.routes.routes_helper import get_one_obj_or_abort
 
 board_bp = Blueprint("board", __name__, url_prefix = "/board")
@@ -32,5 +33,20 @@ def get_one_board(board_id):
     board_dict = chosen_board.to_dict()
 
     return jsonify(board_dict), 200
+
+
+@board_bp.route("/<board_id>/card", methods=["POST"])
+def post_card_belonging_to_a_board(board_id):
+    parent_board = get_one_obj_or_abort(Board, board_id)
+
+    request_body = request.get_json()
+
+    new_card = Card.from_dict(request_body)
+    new_card.board = parent_board
+
+    db.session.add(new_card)
+    db.session.commit()
+
+    return jsonify({"message":f"Card {new_card.message} belonging to {new_card.board.title} successfully added"}), 201
 
 
