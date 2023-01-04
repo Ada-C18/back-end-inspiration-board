@@ -4,9 +4,10 @@ from app.models.board import Board
 from app.validate_data import validate_model
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
-# ======================================
+
+# #################################
 #        CREATE ONE BOARD
-# ======================================
+# ####################################
 
 
 @boards_bp.route("", methods=["POST"])
@@ -23,9 +24,9 @@ def create_board():
 
     return jsonify({"board": new_board.to_dict()}), 201
 
-# ======================================
+# #####################################
 #        GET ALL BOARDS
-# ======================================
+# #####################################
 
 
 @boards_bp.route("", methods=["GET"])
