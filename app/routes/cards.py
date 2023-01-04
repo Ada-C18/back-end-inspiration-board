@@ -39,3 +39,5 @@ def delete_one_card(card_id):
         "details": f"Card {card.card_id} \"{card.message}\" successfully deleted"
     })
 
+
+
