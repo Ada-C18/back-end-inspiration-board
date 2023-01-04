@@ -39,8 +39,8 @@ def read_all_boards():
         boards_response.append(
             {
                 "title": board.title,
-                "owner_name": board.owner_name
-
+                "owner_name": board.owner_name,
+                "id": board.id
             }
         )
     return jsonify(boards_response)
@@ -52,7 +52,7 @@ def create_card(board_id):
     request_body = request.get_json()
     new_card = Card(
         message=request_body["message"],
-        likes=request_body["likes"],
+        likes=0,
         board=board
     )
     db.session.add(new_card)
@@ -80,28 +80,13 @@ def retrieve_cards(board_id):
 
 @boards_bp.route("/<board_id>", methods=["DELETE"])
 def delete_board(board_id):
-    board = validate_board(board_id)
+    board = validate_model(Board,board_id)
 
     db.session.delete(board)
     db.session.commit()
 
-    return make_response(jsonify(f"Board {board.title} with id #{board.board_id} successfully deleted"))
+    return make_response(jsonify(f"Board {board.title} with id #{board.id} successfully deleted"))
 
-# helper function quality control
-
-def validate_board(board_id):
-    try:
-        board_id = int(board_id)
-    except:
-        abort(make_response({"message": f"board id {board_id} invalid"}, 400))
-
-    board = Board.query.get(board_id)
-
-    if not board:
-        abort(make_response(
-            {"message": f"board with {board_id} not found"}, 404))
-
-    return board
 
 @boards_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
 def delete_card(board_id, card_id):
