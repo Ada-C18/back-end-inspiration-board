@@ -1,13 +1,12 @@
 from app import db
 
+
 class Board(db.Model):
     board_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String)
     owner = db.Column(db.String)
 
-    
-    
-    
+
     @classmethod
     def from_dict(cls, req_body):
         return cls(
@@ -23,6 +22,5 @@ class Board(db.Model):
             "title": self.title,
             "owner": self.owner 
         }
-
 
 
