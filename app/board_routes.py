@@ -64,6 +64,7 @@ def update_board(board_id):
 # Create Board
 @board_bp.route("/", strict_slashes=False, methods=["POST"])
 def create_board():
+    
     try:
         request_body = request.get_json()
         print(request_body)

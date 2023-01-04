@@ -13,7 +13,7 @@ def test_get_boards_no_saved_boards(client):
     assert response_body == []
 
 
-# @pytest.mark.skip
+@pytest.mark.skip
 def test_get_boards_one_saved_board(client):
     # Act
     response = client.get("/boards")
@@ -29,3 +29,14 @@ def test_get_boards_one_saved_board(client):
             "owner": "Ada"
         }
     ]
+# @pytest.mark.skip
+
+
+def test_get_board_not_found(client):
+    # Act
+    response = client.get("/boards/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {"Board 1 not found in response_body"}
