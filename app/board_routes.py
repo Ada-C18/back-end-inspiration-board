@@ -5,6 +5,7 @@ from app.models.board import Board
 from .card_routes import validate_model
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
+cards_bp = Blueprint("cards", __name__, url_prefix="/cards") 
 
 @boards_bp.route("", methods=["GET"])
 def get_all_boards():
