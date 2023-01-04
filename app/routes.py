@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, abort, make_response
 from app import db
 from app.models.card import Card
 
@@ -28,3 +28,20 @@ def get_or_post_cards():
         return make_response(f"Card {new_card.message} successfully created", 201)
 
 
+def validate_id(cls, id):
+    try: 
+        id = int(id)
+    except:
+        abort(make_response ({"message":f"{cls.__name__}{id} invalid"}, 400))
+
+    obj = cls.query.get(id)
+
+    return obj
+
+@cards_bp.route("/<card_id>", methods=["GET"])
+def get_one_card(card_id):
+    card = validate_id(Card, card_id)
+
+    return {
+        "message": card.message
+    }
