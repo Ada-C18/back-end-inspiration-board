@@ -24,10 +24,24 @@ cards_bp = Blueprint("cards_bp", __name__, url_prefix="/cards")
 # DELETE /cards/<card_id>
 @cards_bp.route("/<card_id>", methods=["DELETE"])
 def delete_card(card_id):
-    pass
+    card = validate_model(Card, card_id)
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return jsonify({"details": f'Card {card.card_id} "{card.title}" successfully deleted'}), 200
 
 # PATCH /cards/<card_id>/like
-@cards_bp.route("/<card_id>/like", methods=["PATCH"])
+@cards_bp.route("/<card_id>/like", methods=["PUT"])
 def add_like_card(card_id):
-    pass
+    card = validate_model(Card, card_id)
+
+    card.likes_count += 1
+    db.session.commit()
+
+    return jsonify(card.to_dict()), 200
+
+
+
+
 
