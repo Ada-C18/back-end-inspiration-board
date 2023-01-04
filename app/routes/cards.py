@@ -6,7 +6,7 @@ import requests
 import os
 
 # example_bp = Blueprint('example_bp', __name__)
-cards_bp = Blueprint("cards",  __name__ , url_prefix="/cards") 
+cards_bp = Blueprint('cards',  __name__ , url_prefix='/cards') 
 
 @cards_bp.route('', methods=['POST'])
 def create_one_card():
@@ -29,7 +29,7 @@ def get_all_cards():
     return jsonify(card_response), 200
 
 
-@cards_bp.route("/<card_id>", methods=["DELETE"])
+@cards_bp.route('/<card_id>', methods=['DELETE'])
 def delete_one_card(card_id):
     card = get_card_from_id(card_id)
     db.session.delete(card)

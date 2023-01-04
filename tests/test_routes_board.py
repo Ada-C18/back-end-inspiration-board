@@ -6,7 +6,7 @@ import pytest
 # @pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_boards_no_saved_boards(client):
     # Act
-    response = client.get("/boards")
+    response = client.get('/boards')
     response_body = response.get_json()
 
     # Assert
@@ -14,7 +14,7 @@ def test_get_boards_no_saved_boards(client):
     assert response_body == []
 
 
-# @pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_boards_one_saved_board(client, one_board):
     # Act
     response = client.get("/boards")
@@ -32,7 +32,7 @@ def test_get_boards_one_saved_board(client, one_board):
     ]
 
 
-# @pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_board(client, one_board):
     # Act
     response = client.get("/boards/1")
@@ -50,7 +50,7 @@ def test_get_board(client, one_board):
     }
 
 
-# @pytest.mark.skip(reason="test to be completed by student")
+@pytest.mark.skip(reason="test to be completed by student")
 def test_get_board_not_found(client):
     # Act
     response = client.get("/boards/1")
@@ -62,7 +62,7 @@ def test_get_board_not_found(client):
    
 
 
-# @pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_board(client):
     # Act
     response = client.post("/boards", json={
@@ -83,7 +83,7 @@ def test_create_board(client):
     }
 
 
-# @pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_board_must_contain_title(client):
     # Act
     response = client.post("/boards", json={
@@ -100,8 +100,7 @@ def test_create_board_must_contain_title(client):
     assert Board.query.all() == []
 
 
-# @pytest.mark.skip(reason="No way to test this feature yet")
-
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_board_must_contain_owner(client):
     # Act
     response = client.post("/boards", json={
