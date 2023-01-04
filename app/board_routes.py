@@ -43,3 +43,14 @@ def read_all_boards():
         })
 
     return jsonify(boards_response), 200
+
+
+# ===================================
+#        READ ONE BOARD BY ID
+# ===================================
+
+@boards_bp.route("/<board_id>", methods=["GET"])
+def read_one_board(board_id):
+    board = validate_model(Board, board_id)
+    response_one_board = {"board": Board.to_dict(board)}
+    return jsonify(response_one_board), 200

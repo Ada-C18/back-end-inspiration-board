@@ -6,16 +6,16 @@ class Board(db.Model):
     title = db.Column(db.String)
     owner = db.Column(db.String)
 
-    def to_dict(self):
-        return {
-            "id": self.board_id,
-            "title": self.title,
-            "owner": self.owner
-        }
-
     @classmethod
     def from_dict(cls, req_body):
         return cls(
             title=req_body["title"],
             owner=req_body["owner"]
         )
+
+    def to_dict(self):
+        return {
+            "id": self.board_id,
+            "title": self.title,
+            "owner": self.owner
+        }
