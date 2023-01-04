@@ -22,3 +22,23 @@ def create_board():
     db.session.commit()
 
     return jsonify({"board": new_board.to_dict()}), 201
+
+# ======================================
+#        GET ALL BOARDS
+# ======================================
+
+
+@boards_bp.route("", methods=["GET"])
+def read_all_boards():
+
+    boards = Board.query.all()
+
+    boards_response = []  # returns empty list if no goals
+
+    for board in boards:
+        boards_response.append({
+            "board_id": board.board_id,
+            "title": board.title,
+        })
+
+    return jsonify(boards_response), 200
