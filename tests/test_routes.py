@@ -70,6 +70,19 @@ def test_post_new_board_no_name(client):
     assert response_body == {"details": "Invalid data"}
 
 
+def test_post_new_board_no_owner(client):
+    # Arrange
+    new_board = { "name": "Test Name" }
+
+    # Act
+    response = client.post("/boards", json=new_board)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {"details": "Invalid data"}
+
+
 def test_get_all_cards_one_board_no_cards(client, one_board):
     # Arrange
     board_id = Board.query.first().board_id
