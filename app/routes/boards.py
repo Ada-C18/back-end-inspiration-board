@@ -4,7 +4,7 @@ from app.models.board import Board
 from .validation import get_board_from_id
 import requests
 import os
-
+from app.models.card import Card
 
 boards_bp = Blueprint('boards', __name__, url_prefix='/boards')
 
@@ -34,3 +34,26 @@ def get_one_board(board_id):
     chosen_board = get_board_from_id(board_id)
     return jsonify(chosen_board.to_dict()), 200
     
+
+
+@boards_bp.route('<board_id>/cards', methods=['POST'])
+def add_cards(board_id):
+    chosen_board = get_board_from_id(board_id)
+    request_body = request.get_json()
+
+    new_card = Card.from_dict(request_body)
+    new_card.board = chosen_board
+    
+    db.session.add(new_card)
+    db.session.commit()
+    return jsonify(new_card.to_dict()), 201
+
+@boards_bp.route('<board_id>/cards', methods=['GET'])
+def get_all_cards_belongs_to_a_board(board_id):
+    
+    chosen_board = get_board_from_id(board_id)
+    cards_list = []
+    for card in chosen_board.cards:
+        cards_list.append(card.to_dict()) 
+    return jsonify(cards_list), 200
+

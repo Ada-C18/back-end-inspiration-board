@@ -14,4 +14,9 @@ class Card(db.Model):
             "message":self.message,
             "likes_count":self.likes_count
         }
+
+    @classmethod
+    def from_dict(cls,card_data):
+        new_card = Card(message=card_data["message"])
+        return new_card
         
