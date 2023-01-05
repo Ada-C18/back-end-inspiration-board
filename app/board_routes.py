@@ -66,7 +66,7 @@ def read_all_cards_from_board(board_id):
     return jsonify(cards_response)
 
 #send a request to read all cards on a particular board in the database.
-@board_bp.route("/<board_id>/cards/<card_id>", methods=["PUT"])
+@board_bp.route("/<board_id>/cards/<card_id>/like", methods=["PUT"])
 def update_card(board_id, card_id):
     board = validate_model(Board, board_id)
     card = validate_model(Card, card_id)
@@ -90,8 +90,8 @@ def delete_card(board_id, card_id):
     db.session.delete(card)
     db.session.commit()
 
-    # return {"details": f'Card {card.id} "{card.message}" successfully deleted'}
-    return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully deleted"), 200)
+    return {"details": f'Card {card.card_id} on {board.title} successfully deleted")'}
+    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully deleted"), 200)
 
 
 # READ ALL BOARDS/ GET
