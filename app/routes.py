@@ -44,6 +44,7 @@ def read_all_boards():
             }
         )
     return jsonify(boards_response)
+
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def create_card(board_id):
 
@@ -85,7 +86,7 @@ def delete_board(board_id):
     db.session.delete(board)
     db.session.commit()
 
-    return make_response(jsonify(f"Board {board.title} with id #{board.board_id} successfully deleted"))
+    return make_response(jsonify(f"Board {board.title} with id #{board.id} successfully deleted"))
 
 # helper function quality control
 
