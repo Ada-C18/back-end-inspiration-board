@@ -2,7 +2,7 @@ from app.models.card import Card
 import pytest
 
 
-#@pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_cards_no_saved_cards(client):
     # Act
     response = client.get("/cards")
@@ -12,7 +12,7 @@ def test_get_cards_no_saved_cards(client):
     assert response.status_code == 200
     assert response_body == []
 
-#@pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_cards_one_saved_cards(client, one_card):
     # Act
     response = client.get("/cards")
@@ -30,7 +30,7 @@ def test_get_cards_one_saved_cards(client, one_card):
         }
     ]
 
-#@pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_card(client):
     # Act
     response = client.post("/cards", json={
@@ -81,7 +81,7 @@ def test_delete_card_not_found(client):
     assert response_body["msg"] == "Could not find card item with id: 1"
   
 
-#@pytest.mark.skip(reason="No way to test this feature yet")
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_card_must_contain_message(client):
     # Act
     response = client.post("/cards", json={

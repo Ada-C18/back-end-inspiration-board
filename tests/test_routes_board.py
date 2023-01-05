@@ -108,3 +108,4 @@ def test_create_board_must_contain_owner(client):
         "details": "Invalid data"
     }
     assert Board.query.all() == []
+
