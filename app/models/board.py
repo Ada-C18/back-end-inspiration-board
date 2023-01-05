@@ -14,11 +14,16 @@ class Board(db.Model):
             owner=req_body["owner"]
         )
 
-    def to_dict(self):
-        return {
+    def to_dict(self, cards=False):
+        board = {
             "id": self.board_id,
             "title": self.title,
             "owner": self.owner 
         }
+
+        if cards:
+            board["cards"] = [card.to_dict() for card in self.cards]
+
+        return board
 
 
