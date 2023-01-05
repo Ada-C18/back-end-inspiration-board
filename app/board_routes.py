@@ -5,14 +5,14 @@ from flask import Blueprint, request, jsonify, make_response
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
 
-@boards_bp.route("",  method=["GET"])
+@boards_bp.route("",  methods=["GET"])
 def get_all_boards():
     all_boards = Board.query.all()
     board_titles = [[board.title, board.board_id] for board in all_boards]
     return jsonify(board_titles), 200
 
 
-@boards_bp.route("",  method=["POST"])
+@boards_bp.route("",  methods=["POST"])
 def create_one_board():
     if not request.is_json:
         return {"msg": "Missing JSON request body"}, 400
@@ -34,7 +34,7 @@ def create_one_board():
     # return jsonify(request_body["title"]), 201
     
     
-@boards_bp.route("/<id>", method=["GET"])
+@boards_bp.route("/<id>", methods=["GET"])
 def get_cards_from_board(id):
     board = Board.query.get(id)
     if board is None:

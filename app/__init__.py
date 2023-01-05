@@ -16,7 +16,7 @@ def create_app(test_config=None):
 
     if test_config is None:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-            "SQLALCHEMY_DATABASE_URI")  
+            "SQLALCHEMY_DATABASE_URI")
     else:
         app.config["TESTING"] = True
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
@@ -33,6 +33,9 @@ def create_app(test_config=None):
     # Register Blueprints here
     from .board_routes import boards_bp
     app.register_blueprint(boards_bp)
+
+    from .card_routes import card_bp
+    app.register_blueprint(card_bp)
 
     CORS(app)
     return app
