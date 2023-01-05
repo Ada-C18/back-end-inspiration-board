@@ -31,10 +31,10 @@ def get_all_boards():
                 "id": board.id,
                 "title": board.title,
                 "owner": board.owner,
-                "cards": board.cards,
+                "cards": [card.to_dict() for card in board.cards]
             }
         )
-    return jsonify(board_response)
+    return jsonify({"boards": board_response}), 200
 
 
 @boards_bp.route("", methods=['POST'])
@@ -65,11 +65,14 @@ def delete_board(id):
 # <-----------------------Cards--------------------->
 
 
-@cards_bp.route("", methods=["POST"])
-def create_a_card():
+@boards_bp.route("/<board_id>/cards", methods=["POST"])
+def create_a_card(board_id):
+    board = validate_id(Board, board_id)
     request_body = request.get_json()
+
     try:
-        new_card = Card(message=request_body["message"], likes_count=0)
+        new_card = Card(message=request_body["message"], likes_count=0,
+                    board_id=board_id)
 
     except:
         abort(make_response({'details': f'Title and owner are required'}, 400))
@@ -77,14 +80,22 @@ def create_a_card():
     db.session.add(new_card)
     db.session.commit()
 
-    return make_response(f"Card {new_card.id} was successfully created", 201)
+    return make_response(f"Card {new_card.id} for Board {new_card.board_id} was successfully created", 201)
 
-@cards_bp.route("/<id>/like", methods=["PATCH"])
-def like_card(id):
-    card = validate_id(Card, id)
-    card.likes_count += 1
+#TODO: figure out route for liking card
+@boards_bp.route("/<board_id>/cards/<card_id>/like", methods=["PATCH"])
+def like_card(board_id, card_id):
+    board = validate_id(Board, board_id)
+
+    # for card in board.cards:
+    #     if card.id == card_id:
+    #         card.likes_count += 1
+    
+    response = [card.to_dict() for card in board.cards if card.id == card_id]
+
     db.session.commit()
-    return make_response(jsonify(card.to_dict()), 200)
+
+    return make_response(jsonify(response), 200)
 
 #TODO: create update card message
 
@@ -98,20 +109,9 @@ def delete_Card(id):
     return make_response(f"Card #{id} was successfully deleted"),200
 
 
-#TODO: create route to get all cards from one board
-@boards_bp.route("/<id>/cards", method=["GET"])
+@boards_bp.route("/<board_id>/cards", methods=["GET"])
 def get_all_cards_in_one_board(board_id):
-    board = validate_id(Board, id)
-    cards = Card.query.all()
-    response = []
-
-    for card in cards:
-        if card.board_id == id:
-            response.append(
-            {
-                "id": card.id,
-                "message": card.message,
-                "likes_count": card.likes_count
-            })
+    board = validate_id(Board, board_id)
+    board_cards = [card.to_dict() for card in board.cards]
     
-    return make_response(jsonify(response)), 200
+    return make_response(jsonify({"cards":board_cards})), 200
