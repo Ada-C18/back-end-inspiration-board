@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response, abort, os
+from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.card import Card
 
