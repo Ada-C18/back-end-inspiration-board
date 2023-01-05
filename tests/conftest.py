@@ -1,6 +1,7 @@
 import pytest
 from app import create_app
 from app.models.card import Card
+from app.models.board import Board
 from app import db
 from flask.signals import request_finished
 
@@ -36,4 +37,21 @@ def one_card(app):
     new_card= Card(
         message="Go on my daily walk 🏞")
     db.session.add(new_card)
+    db.session.commit()
+
+
+@pytest.fixture
+def one_board(app):
+    new_board= Board(
+        title="workout",
+        owner="bianca"
+    )
+    db.session.add(new_board)
+    db.session.commit()
+
+@pytest.fixture
+def add_card_to_board(app, one_card, one_board):
+    card = Card.query.first()
+    board = Board.query.first()
+    board.cards.append(card)
     db.session.commit()
