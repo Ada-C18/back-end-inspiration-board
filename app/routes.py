@@ -6,7 +6,7 @@ boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
 # Board validation helper function
-def validate_board(board_id):
+def validate_board(cls,board_id):
     try:
         board_id = int(board_id)
     except ValueError:
@@ -49,12 +49,12 @@ def create_a_board():
     return make_response(f"Board {new_board.title} was successfully created", 201)
 
 @boards_bp.route("/<id>", methods=["DELETE"])
-def delete_board(board_id):
-    board = validate_board(board_id)
+def delete_board(id):
+    board = validate_board(Board,id)
 
     db.session.delete(board)
     db.session.commit()
 
-    return make_response(f"Board #{board_id} {board.title} was successfully deleted"),200
+    return make_response(f"Board #{id} {board.title} was successfully deleted"),200
 
 
