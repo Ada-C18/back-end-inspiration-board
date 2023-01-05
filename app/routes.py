@@ -90,8 +90,8 @@ def create_board():
 
 
 @boards_bp.route("<board_id>/cards", methods=["POST"])
-def create_card(id):
-    board_query = Board.query.get(id)
+def create_card(board_id):
+    board_query = Board.query.get(board_id)
 
     request_body = request.get_json()
     new_card = Card(
@@ -106,7 +106,7 @@ def create_card(id):
 
 
 @boards_bp.route("", methods=["GET"])
-def get_all_board():
+def get_all_boards():
     board_list = []
 
     boards= Board.query.all()
@@ -115,3 +115,11 @@ def get_all_board():
         board_list.append(board.board_dict())
     
     return jsonify(board_list)
+
+@boards_bp.route("/<board_id>", methods=["GET"])
+def get_one_board(board_id):
+    board = validate_id(Board, board_id)
+
+    return {
+        "title": board.title
+    }
