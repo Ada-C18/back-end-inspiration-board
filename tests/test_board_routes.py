@@ -39,7 +39,34 @@ def test_create_one_board(client): # Thao check nesting of response
     assert new_board.owner == "Test Owner"
     
 def test_create_one_board_no_title(client):     # THAO
-    pass
+    # Act
+    response = client.post("/boards", json={
+        "owner": "Test Owner"
+    })
+    response_body = response.get_json()
 
-def test_create_one_board_no_owner(client):
-    pass
+    # Assert
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid Data"
+    }
+    assert Board.query.all() == []
+
+
+def test_create_one_board_no_owner(client):   # THAO
+    # Act
+    response = client.post("/boards", json={
+        "title": "A Brand New Board"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid Data"
+    }
+    assert Board.query.all() == []
+
+    
