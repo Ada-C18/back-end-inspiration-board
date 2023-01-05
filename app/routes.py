@@ -52,6 +52,7 @@ def get_one_card(card_id):
         "message": card.message
     }
 
+#have a call to update board
 @cards_bp.route("/<id>",methods=["DELETE"])
 def delete_card(id):
     card=validate_id(Card,id)
@@ -60,3 +61,57 @@ def delete_card(id):
     return make_response({"details":f'Card {id} " {card.message} "  successfully deleted'})
 
 boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
+
+
+@boards_bp.route("/<board_id>/cards", methods=["GET"])
+def get_boards(board_id):
+    board = validate_id(Board, board_id)
+
+    response_body = []
+    for card in board.cards:
+        response_body.append(card.card_dict())
+
+    return {
+        "id": board.id,
+        "title": board.title,
+        "author": board.author,
+        "cards": response_body
+    }
+
+@boards_bp.route("", methods=["POST"])
+def create_board():
+    request_body=request.get_json()
+    new_board = Board(title= request_body["title"],author=request_body["author"])
+
+    db.session.add(new_board)
+    db.session.commit()
+
+    return make_response(f"Board {new_board.title} successfully created", 201)
+
+
+@boards_bp.route("<board_id>/cards", methods=["POST"])
+def create_card(id):
+    board_query = Board.query.get(id)
+
+    request_body = request.get_json()
+    new_card = Card(
+        message=request_body["message"],
+        board = board_query
+    ) 
+
+    db.session.add(new_card)
+    db.session.commit()
+
+    return make_response(f"Card {new_card.message} has been created", 201)
+
+
+@boards_bp.route("", methods=["GET"])
+def get_all_board():
+    board_list = []
+
+    boards= Board.query.all()
+
+    for board in boards:
+        board_list.append(board.board_dict())
+    
+    return jsonify(board_list)

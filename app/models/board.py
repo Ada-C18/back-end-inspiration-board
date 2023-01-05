@@ -5,3 +5,10 @@ class Board(db.Model):
     author = db.Column(db.String)
     title= db.Column(db.String)
     cards = db.relationship("Card", back_populates="board") 
+
+
+    def board_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title
+        }
