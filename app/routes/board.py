@@ -1,8 +1,18 @@
 from flask import Blueprint, request, jsonify, make_response,abort
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
-board_bp = Blueprint("board_bp", __name__, url_prefix="/board")
+
+board_bp = Blueprint("board_bp", __name__, url_prefix="/boards")
+
+def return_cards_from_board(id):
+    matching_board = Board.query.get(id)
+    cards = Card.query.filter_by(board_id = id)
+    response = {"title":matching_board.title , "owner":matching_board.owner, "cards":[card.to_dict() for card in cards] }
+
+    return response
+
 
 def validate_board_id(board_id):
     try:
@@ -22,10 +32,11 @@ def validate_board_id(board_id):
 @board_bp.route("", methods = ["POST"])
 def add_board():
     request_body = request.get_json()
-    if "title" not in request_body:
+    if "title" not in request_body or "owner" not in request_body:
         return jsonify({"details": "Invalid data"}),400
 
-    new_board = Board(title=request_body["title"])
+    new_board = Board(title=request_body["title"],owner=request_body["owner"])
+
 
     db.session.add(new_board)
     db.session.commit()
@@ -58,8 +69,10 @@ def get_one_board(board_id):
     board = validate_board_id(board_id)
 
     board_dict = board.to_dict()
-    
-    return jsonify({"board":board_dict})
+
+    return jsonify(return_cards_from_board(board_id))
+
+    # return jsonify({"board":board_dict})
 
 @board_bp.route("/<board_id>", methods=["PUT"])
 def update_board(board_id):
@@ -88,44 +101,13 @@ def delete_board(board_id):
 
     return jsonify({"details":f"Board {board.board_id} \"{board.title}\" successfully deleted"}),200
 
-@board_bp.route("/<board_id>/tasks", methods=["POST"])
-def add_all_tasks_for_one_board(board_id):
+#delete a card from a board, go into board, then for each card linked to board, 
+#search for that card id and delete it from card database/model
+@board_bp.route("/<board_id>/<card_id>",methods = ['DELETE'])
+def delete_card(board_id,card_id):
     board = validate_board_id(board_id)
 
-    request_body = request.get_json()
+    cards = Card.query.filter_by(board_id = id)
 
-    if "task_ids" not in request_body:
-        return jsonify({"details": "Invalid data"}),400
+    card_list = []
 
-    board.tasks = []
-
-    for id in request_body["task_ids"]:
-        task = validate_task_id(id)
-        board.tasks.append(task)
-
-    db.session.commit()
-
-    return jsonify({"id": board.board_id, "task_ids": request_body["task_ids"]}), 200
-
-@board_bp.route("/<board_id>/tasks", methods=["GET"])
-def get_all_tasks_for_one_board(board_id):
-    board = validate_board_id(board_id)
-
-    all_board_tasks = []
-
-    tasks = board.tasks
-    
-    for task in tasks:
-        all_board_tasks.append({
-            "id": task.task_id, 
-            "board_id": task.board_id,
-            "title": task.title, 
-            "description": task.description, 
-            "is_complete": task.is_complete
-        })
-
-    return {
-        "id": board.board_id,
-        "title": board.title,
-        "tasks": all_board_tasks
-    }, 200
