@@ -26,8 +26,8 @@ def create_app():
     migrate.init_app(app, db)
 
     # Register Blueprints here
-    from .routes import card_bp
-    app.register_blueprint(card_bp)
+    from .routes import boards_bp
+    app.register_blueprint(boards_bp)
 
     CORS(app)
     return app
