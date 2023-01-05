@@ -7,4 +7,3 @@ class Card(db.Model):
     board_id = db.Column(db.Integer, db.ForeignKey('board.id'), nullable=False)
     board = db.relationship("Board", back_populates='cards')
 
-

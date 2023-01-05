@@ -4,7 +4,6 @@ from app.models.card import Card
 
 
 cards_bp = Blueprint('cards_bp', __name__, url_prefix = '/cards')
-# example_bp = Blueprint('example_bp', __name__)
 def validate_card(card_id):
     try:
         card_id = int(card_id)
@@ -30,6 +29,7 @@ def create_cards():
     return make_response(f"Card {new_card.message} successfully created", 201)
 
 
+# Current GET route for showing cards associated with a board is url/boards/id, do we still need this route?
 @cards_bp.route("", methods=["GET"])
 def get_cards():
     cards_response = []
@@ -43,6 +43,8 @@ def get_cards():
     
     return jsonify(cards_response)
 
+
+# do we need this route? 
 @cards_bp.route("/<card_id>", methods=["GET"])
 def get_one_card(card_id):
     card = validate_card(card_id)
@@ -51,6 +53,7 @@ def get_one_card(card_id):
             'message': card.message,
             'likes_count': card.likes_count
     }
+
 
 @cards_bp.route("/<card_id>", methods=["DELETE"])
 def delete_card(card_id):

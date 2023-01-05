@@ -8,7 +8,7 @@ class Board(db.Model):
     owner = db.Column(db.String)
     cards = db.relationship("Card", back_populates="board", lazy=True)
 
-    # Create new board
+    # Create new board (we create a new class instance using the data that user provides)
     @classmethod
     def from_dict(cls, request_body):
         return cls(title=request_body["title"], owner=request_body["owner"])
