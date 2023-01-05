@@ -29,7 +29,7 @@ def create_board():
     if request_body["owner"] is None:
         abort(make_response({"message":"Please include an owner"}, 400))
     
-    new_board = Board.from_dict(date_created=datetime.now(), title=request_body["title"], visible=False)
+    new_board = Board.from_dict(date_created=datetime.now(), title=request_body["title"], visible=True)
 
     db.session.add(new_board)
     db.session.commit()
