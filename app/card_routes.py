@@ -44,3 +44,19 @@ def create_card():
     db.session.commit()
 
     return {"card": new_card.to_dict()}, 201
+
+@card_bp.route("/<card_id>", methods=["PATCH"])
+def update_card_likes(card_id):
+
+    card = validate_model(Card, card_id)
+    request_body = request.get_json()
+    card.likes_count = request_body["likes_count"]
+    db.session.commit()
+    return {"card": card.to_dict()}, 200
+
+@card_bp.route("/<card_id>", methods=["DELETE"])
+def delete_card(card_id):
+    card = validate_model(Card, card_id)
+    db.session.delete(card)
+    db.session.commit()
+    return make_response(jsonify({"details": f'Card {card.card_id} successfully deleted'}),200)

@@ -64,3 +64,49 @@ def test_create_card(client):
 
     assert new_card
     assert new_card.message == "You're a great friend :)"
+
+def test_update_card_likes_count(client, one_card):
+    # Act
+    response = client.patch("/cards/1", json={
+        "likes_count": 2
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert "card" in response_body
+    assert response_body == {
+        "card": {
+            "id": 1,
+            "message": "You've got this!",
+            "likes_count":2
+        }
+    }
+    card = Card.query.get(1)
+    assert card.message == "You've got this!"
+    assert card.likes_count == 2
+
+#@pytest.mark.skip(reason="No way to test this feature yet")
+def test_update_card_not_found(client):
+
+    response = client.patch("/cards/1", json={
+        "likes_count": 2
+    })
+    response_body = response.get_json()
+
+
+    assert response.status_code == 404
+
+    assert response_body == {"message": "Card 1 was not found"}
+
+def test_delete_card(client, one_card):
+    response = client.delete("/cards/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert "details" in response_body
+    assert response_body == {
+        "details": 'Card 1 successfully deleted'
+    }
+    assert Card.query.get(1) == None
+

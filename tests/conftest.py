@@ -38,3 +38,14 @@ def one_card(app):
     )
     db.session.add(new_card)
     db.session.commit()
+@pytest.fixture
+def three_cards(app):
+    db.session.add_all([
+        Card(
+            message="Play Nintendo"),
+        Card(
+            message="Pet Cat"),
+        Card(
+            message="Clean House")
+    ])
+    db.session.commit()

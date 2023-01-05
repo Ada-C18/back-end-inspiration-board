@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, abort
 # import requests
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 # example_bp = Blueprint('example_bp', __name__)
 
@@ -59,5 +60,15 @@ def delete_board(board_id):
 
     return make_response(jsonify({"details": f'Board {board.board_id} "{board.title}" successfully deleted'}),200)
 
+# /Board/id/cards routes
+
+@board_bp.route("/<board_id>/cards", methods=["POST"])
+def assign_cards_for_specific_board(board_id):
+    board = validate_model(Board, board_id)
+    request_body = request.get_json()
+
+    for card_id in request_body["cards_ids"]:
+        task = validate_model(Card, card_id)
+        #task.goal_id = goal_id
 
 
