@@ -23,7 +23,7 @@ def read_all_boards():
     return jsonify(boards_response)
 
 
-# read all cards by board id - "/boards/id/cards"
+# read all cards by board id - "/boards/id/cards" (GET)
 @boards_bp.route("/<id>/cards", methods=["GET"])
 def get_cards_by_board_id(id):
     board = validate_model(Board, id)
@@ -34,12 +34,8 @@ def get_cards_by_board_id(id):
 
     return make_response({"id": Board.id, "title": board.title, "cards": cards})
 
-<<<<<<< HEAD
 
-# create one card under board id - "/boards/id/cards"
-=======
-# create one card under board id
->>>>>>> 8b0f3debfb7bb259fe3356e7d97d02ada94afff4
+# create one card under board id - "/boards/id/cards" (POST)
 @boards_bp.route("/<id>/cards", methods=["POST"])
 def create_card(id):
     request_body = request.get_json()
