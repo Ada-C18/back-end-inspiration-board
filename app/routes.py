@@ -68,3 +68,12 @@ def like_card(id):
     card.likes_count += 1
     db.session.commit()
     return make_response(jsonify(card.to_dict()), 200)
+
+@boards_bp.route("/<id>", methods=["DELETE"])
+def delete_Card(id):
+    card = validate_id(Card,id)
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return make_response(f"Card #{id} was successfully deleted"),200
