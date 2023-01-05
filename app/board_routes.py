@@ -17,6 +17,19 @@ def validate_model(cls, model_id):
     if not model:
         abort(make_response({"message":f"{cls.__name__} {model_id} was not found"}, 404))
     return model
+def add_cards_to_board(board):
+    cards = board.cards
+    all_cards = []
+    for card in cards:
+        all_cards.append({
+            "message": card.message,
+            "likes_count": card.likes_count,
+            "card_id": card.card_id,
+            "board_id": card.board_id,
+        })
+    board_dict = board.to_dict()
+    board_dict["cards"] = all_cards
+    return board_dict
 
 #Get Routes
 @board_bp.route("", methods = ['GET'])
@@ -24,7 +37,7 @@ def get_all_boards():
 
     boards = Board.query.all()
 
-    all_boards = [board.to_dict() for board in boards]
+    all_boards = [add_cards_to_board(board) for board in boards]
 
     return jsonify(all_boards)
 
@@ -79,6 +92,14 @@ def create_cards_for_specific_board(board_id):
     card_dict = new_card.to_dict()
     card_dict["board_id"] = new_card.board_id
     return {"message": new_card.message, "board_id": new_card.board_id}, 201
+
+@board_bp.route("/<board_id>/cards", methods=["GET"])
+def get_all_cards_for_specific_board(board_id):
+
+    board = validate_model(Board, board_id)
+    return add_cards_to_board(board)
+
+
 
 
 

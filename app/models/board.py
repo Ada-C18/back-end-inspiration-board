@@ -9,9 +9,10 @@ class Board(db.Model):
 
     def to_dict(self):
         return dict(
-            id = self.board_id,
+            board_id = self.board_id,
             title = self.title,
             owner = self.owner
+            
         )
 
     @classmethod

@@ -11,7 +11,7 @@ def test_get_routes_returns_empty_list(client):
     assert response.status_code == 200
     assert response_body == []
 
-def test_get_boards_one_saved_board(client, one_board):
+def test_get_boards_one_saved_board(client, one_card_belongs_to_one_board):
     
     response = client.get("/boards")
     response_body = response.get_json()
@@ -19,9 +19,14 @@ def test_get_boards_one_saved_board(client, one_board):
     assert response.status_code == 200
     assert len(response_body) == 1
     assert response_body == [{
-        'id': 1,
+        'board_id': 1,
         'title': 'Get Healthy',
-        'owner': 'Isabella'
+        'owner': 'Isabella',
+        'cards': [{
+                'board_id': 1, 
+                'card_id': 1, 
+                'likes_count': 0, 
+                'message': "You've got this!"}]
     }]
 
 def test_get_specific_board(client, one_board):
@@ -33,7 +38,7 @@ def test_get_specific_board(client, one_board):
     assert "board" in response_body
     assert response_body == {
         "board" : {
-            "id": 1,
+            "board_id": 1,
             "title": "Get Healthy",
             "owner": "Isabella"
         }
@@ -57,7 +62,7 @@ def test_create_board(client):
     assert "board" in response_body
     assert response_body == {
         "board": {
-            "id": 1,
+            "board_id": 1,
             "title": "Atomic Habits",
             "owner": "Presley"
         }
