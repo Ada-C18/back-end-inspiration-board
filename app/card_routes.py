@@ -41,6 +41,23 @@ def create_card():
     
     return make_response({"card":new_card.to_dict()}, 201)
 
+@cards_bp.route('',methods=['GET'])
+def get_cards():
+    card_query = Card.query
+
+    cards = card_query.all()
+
+    cards_response = []
+    for card in cards:
+        cards_response.append({
+            "card_id" : card.card_id,
+            "message" : card.message,
+            "likes_count" : card.likes_count,
+            "board_id" : card.board_id
+        })
+
+    return jsonify(cards_response)
+
 @cards_bp.route("/<card_id>",methods=['DELETE'])
 def delete_card(card_id):
     card = validate_card(card_id)
@@ -59,5 +76,5 @@ def update_card_like_count(card_id):
     card.likes_count += 1
 
     db.session.commit()
-    return make_response({"task":task.to_dict()}, 200)
+    return make_response({"card":card.to_dict()}, 200)
 
