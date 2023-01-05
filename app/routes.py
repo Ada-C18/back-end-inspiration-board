@@ -7,18 +7,18 @@ boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
 # Board validation helper function
-def validate_id(cls,board_id):
+def validate_id(cls, id):
     try:
-        board_id = int(board_id)
+        id = int(id)
     except ValueError:
-        abort(make_response({"message":f"Board {board_id} is invalid"}, 400))
+        abort(make_response({"message":f"{cls.__name__} {id} is invalid"}, 400))
 
-    board = Board.query.get(board_id)
+    model = cls.query.get(id)
 
-    if not board:
-        abort(make_response({"message":f"Board #{board_id} not found"}, 404))
+    if not model:
+        abort(make_response({"message":f"{cls.__name__} #{id} not found"}, 404))
 
-    return board
+    return model
 
 @boards_bp.route('', methods=['GET'])
 def get_all_boards():
@@ -62,16 +62,17 @@ def delete_board(id):
 # <-----------------------Cards--------------------->
 
 
-@cards_bp.route("/<id>/cards/<id>", methods=["PATCH"])
+@cards_bp.route("/<id>", methods=["PATCH"])
 def like_card(id):
     card = validate_id(Card, id)
     card.likes_count += 1
     db.session.commit()
     return make_response(jsonify(card.to_dict()), 200)
 
-@boards_bp.route("/<id>", methods=["DELETE"])
+
+@cards_bp.route("/<id>", methods=["DELETE"])
 def delete_Card(id):
-    card = validate_id(Card,id)
+    card = validate_id(Card, id)
 
     db.session.delete(card)
     db.session.commit()
