@@ -1,4 +1,6 @@
 from app import db
+from flask import Blueprint, request, jsonify, make_response, abort
+
 
 class Board(db.Model):
     board_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -17,4 +19,9 @@ class Board(db.Model):
 
     @classmethod
     def from_dict(cls, cls_dict):
-        return cls(title = cls_dict["title"], owner = cls_dict["owner"])
+        if "title" in cls_dict and "owner" in cls_dict:
+            return cls(title = cls_dict["title"], owner = cls_dict["owner"])
+        else:
+            abort(make_response(jsonify({"message":"missing info"}), 404))
+
+        
