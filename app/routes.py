@@ -20,6 +20,7 @@ def validate_id(cls, id):
 
     return model
 
+
 @boards_bp.route('', methods=['GET'])
 def get_all_boards():
     boards = Board.query.all()
@@ -35,19 +36,21 @@ def get_all_boards():
         )
     return jsonify(board_response)
 
-@ boards_bp.route('', methods=['POST'])
+
+@boards_bp.route("", methods=['POST'])
 def create_a_board():
     request_body= request.get_json()
     try:
         new_board = Board(title=request_body["title"],
-            owner=request_body["owner"])
+            owner=request_body["owner"], cards=[])
     except:
         abort(make_response({'details': f'Title and owner are required'}, 400))
 
     db.session.add(new_board)
     db.session.commit()
 
-    return make_response(f"Board {new_board.title} was successfully created", 201)
+    return make_response(jsonify(new_board.to_dict())), 201
+
 
 @boards_bp.route("/<id>", methods=["DELETE"])
 def delete_board(id):
@@ -62,13 +65,28 @@ def delete_board(id):
 # <-----------------------Cards--------------------->
 
 
-@cards_bp.route("/<id>", methods=["PATCH"])
+@cards_bp.route("", methods=["POST"])
+def create_a_card():
+    request_body = request.get_json()
+    try:
+        new_card = Card(message=request_body["message"], likes_count=0)
+
+    except:
+        abort(make_response({'details': f'Title and owner are required'}, 400))
+
+    db.session.add(new_card)
+    db.session.commit()
+
+    return make_response(f"Card {new_card.id} was successfully created", 201)
+
+@cards_bp.route("/<id>/like", methods=["PATCH"])
 def like_card(id):
     card = validate_id(Card, id)
     card.likes_count += 1
     db.session.commit()
     return make_response(jsonify(card.to_dict()), 200)
 
+#TODO: create update card message
 
 @cards_bp.route("/<id>", methods=["DELETE"])
 def delete_Card(id):
@@ -78,3 +96,22 @@ def delete_Card(id):
     db.session.commit()
 
     return make_response(f"Card #{id} was successfully deleted"),200
+
+
+#TODO: create route to get all cards from one board
+@boards_bp.route("/<id>/cards", method=["GET"])
+def get_all_cards_in_one_board(board_id):
+    board = validate_id(Board, id)
+    cards = Card.query.all()
+    response = []
+
+    for card in cards:
+        if card.board_id == id:
+            response.append(
+            {
+                "id": card.id,
+                "message": card.message,
+                "likes_count": card.likes_count
+            })
+    
+    return make_response(jsonify(response)), 200
