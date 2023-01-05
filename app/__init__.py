@@ -15,7 +15,7 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "postgresql+psycopg2://postgres:postgres@localhost:5432/inspiration_board")
+        "SQLALCHEMY_DATABASE_URI")
 
     # Import models here for Alembic setup
     # from app.models.ExampleModel import ExampleModel
