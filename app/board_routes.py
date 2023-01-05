@@ -63,12 +63,22 @@ def delete_board(board_id):
 # /Board/id/cards routes
 
 @board_bp.route("/<board_id>/cards", methods=["POST"])
-def assign_cards_for_specific_board(board_id):
-    board = validate_model(Board, board_id)
-    request_body = request.get_json()
+def create_cards_for_specific_board(board_id):
+    try:
+        board = validate_model(Board, board_id)
+        request_body = request.get_json()
 
-    for card_id in request_body["cards_ids"]:
-        task = validate_model(Card, card_id)
-        #task.goal_id = goal_id
+        new_card = Card.from_dict(request_body)
+        new_card.board_id = board_id
+
+    except:
+        abort(make_response({"details": "Invalid data"}, 400 ))
+
+    db.session.add(new_card)
+    db.session.commit()
+    card_dict = new_card.to_dict()
+    card_dict["board_id"] = new_card.board_id
+    return {"message": new_card.message, "board_id": new_card.board_id}, 201
+
 
 
