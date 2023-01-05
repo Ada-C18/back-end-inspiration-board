@@ -1,9 +1,17 @@
 from app import db
 
 class Board(db.Model):
-    board_id = db.Column(db.Integer, primary_key=True)
+    board_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title=db.Column(db.String)
     owner=db.Column(db.String)
+    cards=db.relationship("Card", back_populates="message")
+    
+
+# class Author(db.Model):
+#   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#   name = db.Column(db.String)
+#   books = db.relationship("Book", back_populates="author")
+
 
     def to_dict(self):
         board_dict = {

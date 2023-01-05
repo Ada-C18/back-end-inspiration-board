@@ -37,7 +37,7 @@ def delete_one_bike(card_id):
 
     db.session.commit()
 
-    return jsonify({"message": f"Successfully deleted bike with id `{card_id}`"}), 200
+    return jsonify({"message": f"Successfully deleted card with id `{card_id}`"}), 200
 
  ####################
 @board_bp.route("", methods=["POST"])
@@ -61,6 +61,13 @@ def get_all_boards():
     return jsonify(response), 200
 
 
+@board_bp.route("/<board_id>/card", methods=["GET"])
+def get_all_cards_belong_to_a_board(board_id):
+    board = get_one_obj_or_abort(Board, board_id)
+
+    card_response = [card.to_dict() for card in board.cards]
+
+    return jsonify(card_response), 200
 
 
 # @board_bp.route("/boards", methods=["DELETE"])
@@ -72,3 +79,17 @@ def get_all_boards():
 #     db.session.commit()
 
 #     return jsonify({"message": f"Successfully deleted board with id `{board_id}`"}), 200
+
+@board_bp.route("/<board_id>/card", methods=["POST"])
+def post_card_belonging_to_a_board(board_id):
+    parent_board = get_one_obj_or_abort(Board, board_id)
+
+    request_body = request.get_json()
+
+    new_card = Card.from_dict(request_body)
+    new_card.board = parent_board
+
+    db.session.add(new_card)
+    db.session.commit()
+
+    return jsonify({"message":f"Card {new_card.message} belonging to {new_card.board.title} successfully added"}), 201
