@@ -7,28 +7,28 @@ from app.models.board import Board
 
 cards_bp = Blueprint("cards",__name__, url_prefix="/cards")
 
-@cards_bp.route("", methods=["POST", "GET"])
-def get_or_post_cards():
-    if request.method=="GET":
-        cards=Card.query.all()
-        cards_response=[]
-        for card in cards:
-            cards_response.append({
-                "id":card.id,
-                "message":card.message
-            })
-        return jsonify(cards_response)
+# @cards_bp.route("", methods=["POST", "GET"])
+# def get_or_post_cards():
+#     if request.method=="GET":
+#         cards=Card.query.all()
+#         cards_response=[]
+#         for card in cards:
+#             cards_response.append({
+#                 "id":card.id,
+#                 "message":card.message
+#             })
+#         return jsonify(cards_response)
     
-    elif request.method =="POST" :
-        request_body=request.get_json()
-        new_card = Card(message= request_body["message"])
+#     elif request.method =="POST" :
+#         request_body=request.get_json()
+#         new_card = Card(message= request_body["message"])
 
-        db.session.add(new_card)
-        db.session.commit()
+#         db.session.add(new_card)
+#         db.session.commit()
 
-        return make_response(f"Card {new_card.message} successfully created", 201)
+#         return make_response(f"Card {new_card.message} successfully created", 201)
 
-        
+
 
 
 def validate_id(cls, id):
@@ -53,12 +53,12 @@ def get_one_card(card_id):
     }
 
 #have a call to update board
-@cards_bp.route("/<id>",methods=["DELETE"])
-def delete_card(id):
-    card=validate_id(Card,id)
+@cards_bp.route("/<card_id>",methods=["DELETE"])
+def delete_card(card_id):
+    card=validate_id(Card,card_id)
     db.session.delete(card)
     db.session.commit()
-    return make_response({"details":f'Card {id} " {card.message} "  successfully deleted'})
+    return make_response({"details":f'Card{card_id} "{card.message} "  successfully deleted'})
 
 boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
 
