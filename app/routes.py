@@ -125,5 +125,5 @@ def update_one_card_like_count(card_id,updated_likes_count):
     
     db.session.commit()
     
-    return jsonify({"message": f"Successfully updated Bike ID `{card_id}`'s price to be {updated_likes_count}"}), 200
+    return jsonify({"message": f"Successfully updated Card ID `{card_id}`'s price to be {updated_likes_count}"}), 200
         
