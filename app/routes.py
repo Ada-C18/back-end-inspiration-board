@@ -110,4 +110,20 @@ def delete_card(card_id):
     db.session.commit()
     return jsonify({"Details": f'card {card_id} successfully deleted.'}), 200
 
-
+#PATCH route to increase likes_count
+@card_bp.route("/<card_id>/<updated_likes_count>", methods=["PATCH"])
+def update_one_card_like_count(card_id,updated_likes_count):
+    card = get_card_from_id(card_id)
+    
+    try:
+        updated_likes_count = int(updated_likes_count)
+    except:
+        response_str = f"Invalid like counts: `{updated_likes_count}`. New price must be an integer"
+        return jsonify({"message":response_str}), 400
+    
+    card.likes_count = updated_likes_count
+    
+    db.session.commit()
+    
+    return jsonify({"message": f"Successfully updated Bike ID `{card_id}`'s price to be {updated_likes_count}"}), 200
+        

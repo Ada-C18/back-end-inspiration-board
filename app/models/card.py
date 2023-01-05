@@ -11,7 +11,7 @@ class Card(db.Model):
         dict = {
             "id": self.card_id,
             "message": self.message,
-            "likes_count": 0,
+            "likes_count": self.likes_count,
             
         }
         return dict
