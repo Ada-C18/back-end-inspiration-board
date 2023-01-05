@@ -13,8 +13,8 @@ def test_get_boards_no_saved_boards(client):
     assert response_body == []
 
 
-# @pytest.mark.skip
-def test_get_boards_one_saved_board(client):
+@pytest.mark.skip
+def test_get_boards_one_saved_board(client, one_board):
     # Act
     response = client.get("/boards/1")
     response_body = response.get_json()
@@ -43,7 +43,7 @@ def test_get_board_not_found(client):
 
 
 @pytest.mark.skip
-def test_delete_board(client, one_task):
+def test_delete_board(client, one_board):
     # Act
     response = client.delete("/boards/1")
     response_body = response.get_json()
