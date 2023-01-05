@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 
 boards_bp = Blueprint('boards_bp', __name__, url_prefix="/boards")
@@ -54,3 +55,14 @@ def delete_one_board(board_id):
     db.session.delete(board_to_delete)
     db.session.commit()
     return jsonify({"msg": f"board {board_id} '{title_board_to_delete}' deleted"}), 200
+
+@boards_bp.route("<board_id>/card", methods=["PATCH"])
+def update_board_with_card(board_id):
+    board = get_model_from_id(Board, board_id)
+    response_body = request.get_json()
+    card_to_add = get_model_from_id(Card, response_body["card_id"])
+    card_to_add.board = board
+
+    db.session.commit()
+
+    return jsonify({"board": board.to_dict()}), 200

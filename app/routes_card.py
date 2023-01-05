@@ -50,3 +50,5 @@ def add_like_to_card(card_id):
 
   db.session.commit()
   return jsonify({"msg": f"card updated to {card_likes} likes"})
+
+
