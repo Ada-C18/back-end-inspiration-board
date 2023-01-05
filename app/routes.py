@@ -94,8 +94,19 @@ def delete_board(board_id):
 
     db.session.delete(board)
     db.session.commit()
+    boards = Board.query.all()
 
-    return make_response(jsonify(f"Board {board.title} with id #{board.id} successfully deleted"))
+    boards_response = []
+    for board in boards:
+        boards_response.append(
+            {
+                "title": board.title,
+                "owner_name": board.owner_name,
+                "id": board.id
+            }
+        )
+
+    return make_response(jsonify(boards_response))
 
 
 @boards_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
