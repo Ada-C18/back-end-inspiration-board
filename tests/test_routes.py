@@ -14,9 +14,9 @@ def test_get_boards_no_saved_boards(client):
 
 
 @pytest.mark.skip
-def test_get_boards_one_saved_board(client):
+def test_get_boards_one_saved_board(client, one_board):
     # Act
-    response = client.get("/boards")
+    response = client.get("/boards/1")
     response_body = response.get_json()
 
     # Assert
@@ -29,16 +29,45 @@ def test_get_boards_one_saved_board(client):
             "owner": "Ada"
         }
     ]
+
+
 # @pytest.mark.skip
-
-
 def test_get_board_not_found(client):
     # Act
-    response = client.get("/boards/1")
+    response = client.get("/boards/345")
     response_body = response.get_json()
 
     # Assert
     assert response.status_code == 404
-    assert response_body == {"Board 1 not found in response_body"}
+    assert response_body == {"message": "Board 345 not found"}
+
+
+@pytest.mark.skip
+def test_delete_board(client, one_board):
+    # Act
+    response = client.delete("/boards/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert "message" in response_body
+    assert response_body == {
+        "message": "Board #1 was deleted"
+    }
+    assert Board.query.get(1) == None
+
+
+# @pytest.mark.skip
+def test_delete_board_not_found(client):
+    # Act
+    response = client.delete("/boards/123")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {
+                                "message" : "Board 123 not found"
+                            }
+    assert Board.query.all() == []
 
 
