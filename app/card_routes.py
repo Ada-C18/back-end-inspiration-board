@@ -22,3 +22,15 @@ def delete_card(card_id):
     # return delete message to user
     delete_message = f'Card {card_id} successfully deleted'
     return delete_message, 200
+
+# ===================================
+#        LIKE (UPDATE) ONE CARD 
+# ===================================
+@cards_bp.route("/<card_id>/like", methods=["PUT"])
+def like_card(card_id):
+    card = validate_model(Card, card_id)
+    card.likes_count += 1
+    
+    db.session.commit()
+    
+    return make_response("card liked", 200)
