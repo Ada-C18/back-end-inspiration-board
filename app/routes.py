@@ -7,6 +7,19 @@ from app.models.card import Card
 board_bp = Blueprint("board", __name__,url_prefix="/boards")
 card_bp = Blueprint("card", __name__,url_prefix="/cards")
 
+# Helper Functions
+def get_board_from_id(board_id):
+    chosen_board = Board.query.get(board_id)
+    if chosen_board is None:
+        return abort(make_response({"msg": f"Could not find board with id: {board_id}"}, 404))
+    return chosen_board
+
+def get_card_from_id(card_id):
+    chosen_card = Card.query.get(card_id)
+    if chosen_card is None:
+        return abort(make_response({"msg": f"Could not find board with id: {card_id}"}, 404))
+    return chosen_card
+
 #GET route for ALL boards
 @board_bp.route("", methods=["GET"])
 def get_all_boards():
@@ -16,14 +29,6 @@ def get_all_boards():
         result.append(board.to_dict())
         # need to create to_dict method in Board Model
     return jsonify(result), 200
-
-#GET route for ONE board
-def get_board_from_id(board_id):
-    chosen_board = Board.query.get(board_id)
-    if chosen_board is None:
-        return abort(make_response({"msg": f"Could not find board with id: {board_id}"}, 404))
-    return chosen_board
-
 
 #POST route for ONE board
 @board_bp.route("",methods=["POST"])
@@ -87,3 +92,22 @@ def get_one_card(card_id):
         return abort(make_response({"msg": f"Could not find card with id: {card_id}"}, 404))
     return jsonify({"card":chosen_card.to_dict()}), 200
    
+#DELETE route for one board
+@board_bp.route("/<board_id>",methods=["DELETE"])
+def delete_board(board_id):
+    board = get_board_from_id(board_id)
+    board_title = board.title
+    
+    db.session.delete(board)
+    db.session.commit()
+    return jsonify({"Details": f'board {board_id} "{board_title}" successfully deleted.'}), 200
+
+#DELETE route for one card
+@card_bp.route("/<card_id>",methods=["DELETE"])
+def delete_card(card_id):
+    chosen_card = get_card_from_id(card_id)
+    db.session.delete(chosen_card)
+    db.session.commit()
+    return jsonify({"Details": f'card {card_id} successfully deleted.'}), 200
+
+
