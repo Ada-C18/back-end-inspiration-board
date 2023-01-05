@@ -1,12 +1,13 @@
 from flask import Blueprint, request, jsonify, make_response,abort
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
 # Board validation helper function
-def validate_board(cls,board_id):
+def validate_id(cls,board_id):
     try:
         board_id = int(board_id)
     except ValueError:
@@ -50,7 +51,7 @@ def create_a_board():
 
 @boards_bp.route("/<id>", methods=["DELETE"])
 def delete_board(id):
-    board = validate_board(Board,id)
+    board = validate_id(Board,id)
 
     db.session.delete(board)
     db.session.commit()
@@ -58,3 +59,12 @@ def delete_board(id):
     return make_response(f"Board #{id} {board.title} was successfully deleted"),200
 
 
+# <-----------------------Cards--------------------->
+
+
+@cards_bp.route("/<id>/cards/<id>", methods=["PATCH"])
+def like_card(id):
+    card = validate_id(Card, id)
+    card.likes_count += 1
+    db.session.commit()
+    return make_response(jsonify(card.to_dict()), 200)
