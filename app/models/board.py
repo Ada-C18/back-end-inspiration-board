@@ -5,8 +5,8 @@ class Board(db.Model):
     board_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
     owner = db.Column(db.String) 
-    card = db.relationship("Card", back_populates = "boards")
-    card_id = db.Column(db.Integer, db.ForeignKey('card.card_id'),nullable = True)
+    cards = db.relationship("Card", back_populates = "board", lazy=True)
+    
 
 
     @classmethod
