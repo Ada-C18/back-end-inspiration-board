@@ -10,7 +10,8 @@ class Card(db.Model):
     def dictionfy(self):
         return {
             'id':self.card_id,
-            'message':self.message
+            'message':self.message,
+            'likes':self.likes_count
         }
 
     @classmethod
