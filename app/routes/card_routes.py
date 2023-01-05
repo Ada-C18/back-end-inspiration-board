@@ -29,5 +29,16 @@ def delete_one_card(card_id):
         "message": f"Successfully deleted card with id: {card_id}"
     }), 200
 
+@card_bp.route("/<card_id>/<inc_or_dec>", methods=["PATCH"])
+def update_likes_for_one_card(card_id, inc_or_dec):
+    chosen_card = get_one_obj_or_abort(Card, card_id)
+    if chosen_card.likes_count is None:
+        chosen_card.likes_count = 0
+    if inc_or_dec == "inc":   
+        chosen_card.likes_count+=1
+    if inc_or_dec == "dec" and chosen_card.likes_count > 0:
+        chosen_card.likes_count-=1
 
+    db.session.commit()
+    return jsonify({"message": f"Successfully updated the likes count for Card ID {card_id}"}), 200
 
