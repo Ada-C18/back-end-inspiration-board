@@ -1,6 +1,4 @@
 from app import db
-# from app.routes_board import get_model_from_id
-# from app.models.board import Board 
 
 class Card(db.Model):
     card_id=db.Column(db.Integer, primary_key=True, autoincrement=True )
@@ -23,17 +21,4 @@ class Card(db.Model):
 
         return card
 
-    # def from_dict(card_data):
-    #     if "board_id" not in card_data: 
-    #         board = None
-        
-    #     else:
-    #         board = get_model_from_id(Board, card_data["board_id"])
-            
-
-    #     return Card (
-    #         message=card_data["message"],
-    #         likes_count=0,
-    #         board= board
-    #     )
         
