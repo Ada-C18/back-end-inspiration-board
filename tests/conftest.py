@@ -2,6 +2,7 @@ import pytest
 from app import create_app
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 @pytest.fixture
 def app():
@@ -28,4 +29,12 @@ def one_board(app):
         owner = "Isabella"
     )
     db.session.add(new_board)
+    db.session.commit()
+
+@pytest.fixture
+def one_card(app):
+    new_card = Card(
+        message = "You've got this!"
+    )
+    db.session.add(new_card)
     db.session.commit()
