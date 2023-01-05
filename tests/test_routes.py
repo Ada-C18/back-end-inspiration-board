@@ -137,3 +137,28 @@ def test_add_like_card_not_found(client):
         "Message": "Card 1 not found"
     }
     assert Card.query.all() == []
+
+def test_add_card_to_board(client, one_board):
+    # Arrange
+    new_card = {"message": "Test message"}
+
+    # Act
+    response = client.post("/boards/1/cards", json=new_card)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body ==  {'message': 'New card successfully created'}
+
+
+def test_add_card_no_message(client, one_board):
+     # Arrange
+    new_card = {"test": 25}
+    
+    # Act
+    response = client.post("/boards/1/cards", json=new_card)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body ==  {"details": "Invalid data"}

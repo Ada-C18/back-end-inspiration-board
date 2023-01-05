@@ -75,7 +75,7 @@ def get_cards_from_board(board_id):
     return jsonify(cards), 200
 
 
-@board_bp.route("<board_id>", methods=["POST"])
+@board_bp.route("<board_id>/cards", methods=["POST"])
 def add_card_to_board(board_id):
     board = validate_model(Board, board_id)
     request_body = request.get_json()
