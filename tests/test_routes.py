@@ -138,3 +138,29 @@ def test_add_like_card_not_found(client):
         "Message": "Card 1 not found"
     }
     assert Card.query.all() == []
+
+
+def test_delete_card(client, one_board_three_cards):
+    # Arrange
+    card_id = Card.query.first().card_id
+
+    # Act
+    response = client.delete(f"/cards/{card_id}")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == {
+        f"details": f'Card {card_id} successfully deleted'
+    }
+
+
+def test_delete_no_cards_card_not_found(client):
+    # Act
+    response = client.delete("/cards/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {"Message": f"Card 1 not found"}
+    assert Card.query.all() == []

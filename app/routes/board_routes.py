@@ -95,5 +95,5 @@ def add_card_to_board(board_id):
     db.session.commit()
 
     return {
-        "New card successfully created"
+        "message": "New card successfully created"
     }, 200
