@@ -34,8 +34,12 @@ def get_cards_by_board_id(id):
 
     return make_response({"id": Board.id, "title": board.title, "cards": cards})
 
+<<<<<<< HEAD
 
 # create one card under board id - "/boards/id/cards"
+=======
+# create one card under board id
+>>>>>>> 8b0f3debfb7bb259fe3356e7d97d02ada94afff4
 @boards_bp.route("/<id>/cards", methods=["POST"])
 def create_card(id):
     request_body = request.get_json()
