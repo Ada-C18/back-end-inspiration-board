@@ -117,7 +117,34 @@ def delete_one_card(card_id):
     db.session.delete(card_to_delete)
     db.session.commit()
 
-    return jsonify({"details": f'Card {card_to_delete.card_id} successfully deleted'}), 200 
+    return jsonify({"details": f'Card {card_to_delete.card_id} successfully deleted'}), 200
+
+# card + board
+@board_bp.route('/<board_id>/cards', methods=['GET'])
+def get_cards_for_board(board_id):
+    chosen_board = get_model_from_id(Board, board_id)
+
+    return jsonify(chosen_board.to_dict_card())
+
+@board_bp.route('/<board_id>/cards', methods=['POST'])
+def create_cards_for_board(board_id):
+    matching_board = Board.query.get(board_id)
+
+    request_body = request.get_json()
+    cards_ids = request_body["cards_ids"]
+
+    cards = matching_board.get_card_list()
+
+    boards_cards_id = [x["id"] for x in cards]
+
+    for cid in cards_ids:
+        if cid not in boards_cards_id:
+            new_card = Card(message="", like_count=0, board_id=matching_board.board_id)
+
+            db.session.add(new_card)
+            db.session.commit()
+
+    return jsonify({"id":matching_board.board_id, "cards_ids":cards_ids}), 200
 
 
 # helper function
