@@ -54,13 +54,14 @@ def get_all_cards():
     return jsonify(response), 200
 
 
-# WHERE DO WE STORE LIKE DATA? LOCAL STATE? API CALL EVERY TIME?
 @card_bp.route("/<card_id>", methods=["PUT"])
 def add_like_to_card(card_id):
     card = validate_card_id(card_id)
 
     card.likes_count += 1
     card_dict = card.to_dict()
+
+    db.session.commit()
     
     return jsonify({"card":card_dict})
 
