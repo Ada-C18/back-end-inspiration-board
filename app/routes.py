@@ -54,6 +54,7 @@ def read_all_boards():
             }
         )
     return jsonify(boards_response)
+
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def create_card(board_id):
 
@@ -65,9 +66,21 @@ def create_card(board_id):
         likes=0,
         board=board
     )
+    
     db.session.add(new_card)
     db.session.commit()
-    return make_response(jsonify(f"Card {new_card.id} in {new_card.board.title} successfully created"), 201)
+    board = Board.query.get(board_id)
+    card_response = []
+    
+    for card in board.cards:
+        card_dict = {
+            "id": card.id,
+            "message": card.message,
+            "likes": card.likes
+            }
+        card_response.append(card_dict)
+
+    return make_response(jsonify(card_response), 201)
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def retrieve_cards(board_id):
