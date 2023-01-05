@@ -20,9 +20,8 @@ def get_validate_model(cls, model_id):
 
     return model
 
+
 # Read ALL boards
-
-
 @board_bp.route("", strict_slashes=False, methods=["GET"])
 def read_all_boards():
     
@@ -31,9 +30,15 @@ def read_all_boards():
     boards_list = [board.to_dict() for board in boards]
     return make_response(jsonify(boards_list), 200)
 
+# Read ONE board
+@board_bp.route("/<board_id>", strict_slashes=False, methods=["GET"])
+def read_one_board(board_id):
+    board = get_validate_model(Board, board_id)
+
+    return make_response(jsonify({"board": board.to_dict()}), 200)
+
+
 # Delete Board
-
-
 @board_bp.route("/<board_id>", strict_slashes=False, methods=["DELETE"])
 def delete_board(board_id):
     board = get_validate_model(Board, board_id)
@@ -45,9 +50,8 @@ def delete_board(board_id):
         "message": f'Board #{board_id} was deleted.'}
     return make_response(jsonify(response_body), 200)
 
+
 # Update Board
-
-
 @board_bp.route("/<board_id>", strict_slashes=False, methods=["PUT"])
 def update_board(board_id):
     board = get_validate_model(Board, board_id)
@@ -60,6 +64,7 @@ def update_board(board_id):
 
     current_board_response = board.to_dict()
     return make_response(jsonify(current_board_response), 200)
+
 
 # Create Board
 @board_bp.route("/", strict_slashes=False, methods=["POST"])
@@ -79,7 +84,6 @@ def create_board():
 
     return make_response(jsonify(new_board.to_dict()), 201)
 
+
 # Read ALL cards
-
-
 # @board_bp.route("/<board_id>/cards", strict_slashes=False, methods=["GET"])
