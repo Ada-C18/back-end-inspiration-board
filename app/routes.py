@@ -45,7 +45,9 @@ def add_one_card(board_id):
     db.session.add(new_card)
     db.session.commit()
 
-    return make_response(jsonify({'msg':f'Card created with id {new_card.card_id}'}),201)
+    return make_response(jsonify({
+        'id':new_card.card_id,
+        'msg':f'Card created with id {new_card.card_id}'}),201)
 
 @board_bp.route('/<board_id>/<card_id>', methods=['DELETE'])
 def delete_one_card(board_id, card_id):
