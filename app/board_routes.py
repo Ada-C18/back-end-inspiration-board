@@ -2,6 +2,7 @@ from app import db
 from app.models.board import Board
 from app.models.card import Card
 from flask import Blueprint, request, jsonify, make_response, abort
+import os, requests
 
 boards_bp = Blueprint("boards_bp", __name__, url_prefix="/boards")
 
@@ -75,6 +76,11 @@ def create_card(board_id):
     
     db.session.add(new_card)
     db.session.commit()
+    
+    payload = {"channel": "llammmmas", "text": f"Card '{new_card.message}' successfully created!"}
+    authorization = {"Authorization": f"Bearer {os.environ.get('SLACKBOT_AUTH_TOKEN')}"}
+    requests.post('https://slack.com/api/chat.postMessage', params=payload, headers=authorization)
+    
     return make_response(jsonify(new_card.to_dict()), 201)
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
