@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.card import Card
 from app.routes_board import get_model_from_id
+from app.models.board import Board
 
 cards_bp = Blueprint('cards_bp', __name__, url_prefix="/cards")
 
@@ -12,7 +13,17 @@ def create_one_card():
   if len(request_body["message"]) > 40 or len(request_body["message"]) < 1:
     return abort(make_response({"msg": f"invalid message input"}, 404))
 
-  new_card = Card.from_dict(request_body)
+  if "board_id" not in request_body:
+    board = None      
+  else:
+      board = get_model_from_id(Board, request_body["board_id"])
+            
+  new_card =  Card (
+      message= request_body["message"],
+      likes_count=0,
+      board= board
+  )
+
   db.session.add(new_card)
   db.session.commit()
 
