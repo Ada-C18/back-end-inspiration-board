@@ -56,9 +56,17 @@ def create_card(board_id):
         likes=0,
         board=board
     )
+    
     db.session.add(new_card)
     db.session.commit()
-    return make_response(jsonify(f"Card {new_card.id} in {new_card.board.title} successfully created"), 201)
+
+    new_card_response = {
+            "id": new_card.id,
+            "message": new_card.message,
+            "likes": new_card.likes
+            }
+
+    return make_response(jsonify(new_card_response), 201)
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def retrieve_cards(board_id):
