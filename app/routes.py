@@ -48,7 +48,7 @@ def create_one_board():
     return jsonify({"board":new_board.to_dict()}),201
 
 #POST route for ONE card for specific board
-@card_bp.route("/<board_id>", methods=["POST"])
+@board_bp.route("/<board_id>/cards", methods=["POST"])
 def create_one_card(board_id):
     board = get_board_from_id(board_id)
     request_body = request.get_json()
@@ -66,7 +66,7 @@ def create_one_card(board_id):
     return jsonify({"card":new_card.to_dict()}),201
 
 #Get route for ONE Board and ALL its cards
-@board_bp.route("/<board_id>", methods=["GET"])
+@board_bp.route("/<board_id>/cards", methods=["GET"])
 def get_all_cards(board_id):
     board = get_board_from_id(board_id)
     
