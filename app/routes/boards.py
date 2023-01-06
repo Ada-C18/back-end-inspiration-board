@@ -38,7 +38,7 @@ def get_one_board(board_id):
 
 
 @boards_bp.route('<board_id>/cards', methods=['POST'])
-def add_cards(board_id):
+def add_cards_to_a_board(board_id):
     chosen_board = get_one_obj_or_abort(Board, board_id)
     request_body = request.get_json()
 
