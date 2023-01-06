@@ -20,13 +20,13 @@ cards_bp = Blueprint('cards',  __name__ , url_prefix='/cards')
 #     return jsonify(new_card.to_dict()), 201
     
 
-# @cards_bp.route('', methods=['GET'])
-# def get_all_cards():
-#     card_response = []
-#     cards = Card.query.all()  
-#     for card in cards:
-#         card_response.append(card.to_dict()) 
-#     return jsonify(card_response), 200
+@cards_bp.route('', methods=['GET'])
+def get_all_cards():
+    card_response = []
+    cards = Card.query.all()  
+    for card in cards:
+        card_response.append(card.to_dict()) 
+    return jsonify(card_response), 200
 
 
 @cards_bp.route('/<card_id>', methods=['DELETE'])
