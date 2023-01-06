@@ -7,6 +7,18 @@ import os, requests
 # creating blueprint
 board_bp = Blueprint("Board", __name__, url_prefix="/boards")
 
+#VALIDATE MODEL
+def validate_model(class_obj,id):
+    try:
+        id = int(id)
+    except:
+        abort(make_response({"message":f"{id} is an invalid id"}, 400))
+    query_result = class_obj.query.get(id)
+    if not query_result:
+        abort(make_response({"message":f"{id} not found"}, 404))
+
+    return query_result
+
 # CREATE BOARD/POST
 @board_bp.route("", methods=["POST"])
 def create_board():
@@ -37,10 +49,10 @@ def create_card_associated_with_board(board_id):
     )
 
     db.session.add(new_card)
-    db.session.commit
+    db.session.commit()
 
-    # return {"card": new_card.to_dict()}, 201
-    return make_response(jsonify(f"Card {new_card.message} on {new_card.board.title} successfully created"), 201)
+    return {"card": new_card.to_dict()}, 201
+    # return make_response(jsonify(f"Card {new_card.message} on {new_card.board.title} successfully created"), new_card.to_dict(), 201)
 
 #send a request to read all cards on a particular board in the database.
 @board_bp.route("/<board_id>/cards", methods=["GET"])
@@ -52,6 +64,36 @@ def read_all_cards_from_board(board_id):
     for card in board.cards:
         cards_response.append(card.to_dict())
     return jsonify(cards_response)
+
+#send a request to read all cards on a particular board in the database.
+@board_bp.route("/<board_id>/cards/<card_id>/like", methods=["PUT"])
+def update_card(board_id, card_id):
+    board = validate_model(Board, board_id)
+    card = validate_model(Card, card_id)
+
+    request_body = request.get_json()
+
+    card.message = request_body["message"]
+    card.likes_count = request_body["likes_count"] + 1
+
+    db.session.commit()
+
+    return {"card": card.to_dict()}, 200
+    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully updated"), 200)
+
+# send a request to delete a card from a particular board in the database
+@board_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
+def delete_card(board_id, card_id):
+    board = validate_model(Board, board_id)
+    card = validate_model(Card, card_id)
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return {"details": f'Card {card.card_id} on {board.title} successfully deleted")'}
+    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully deleted"), 200)
+
+
 # READ ALL BOARDS/ GET
 
 @board_bp.route("", methods=["GET"])
@@ -74,18 +116,27 @@ def get_one_board(board_id):
     return {"board": board.to_dict()}
 
 # UPDATE BOARD/ PUT
-# UPDATE BOARD/ PATCH
+@board_bp.route("/<board_id>", methods=["PUT"])
+def update_board(board_id):
+    board = validate_model(Board, board_id)
+    request_body = request.get_json() 
+    board.title = request_body["title"]
+    board.owner = request_body["owner"]
+
+    db.session.commit()
+    response_body =  {
+        "board": board.to_dict()
+        }
+    return make_response(response_body, 200)
+
 # DELETE BOARD/ DELETE
+@board_bp.route("/<board_id>", methods=["DELETE"])
+def delete_one_board(board_id):
 
-#VALIDATE MODEL
-def validate_model(class_obj,id):
-    try:
-        id = int(id)
-    except:
-        abort(make_response({"message":f"{id} is an invalid id"}, 400))
-    query_result = class_obj.query.get(id)
-    if not query_result:
-        abort(make_response({"message":f"{id} not found"}, 404))
+    board = validate_model(Board, board_id)
 
-    return query_result
+    db.session.delete(board)
+    db.session.commit()
 
+    return {
+        "details": f'Board {board_id} successfully deleted'}

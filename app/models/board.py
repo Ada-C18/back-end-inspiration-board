@@ -23,7 +23,3 @@ class Board(db.Model):
             title=request_body["title"],
             owner=request_body["owner"], 
         )
-
-
-
-
