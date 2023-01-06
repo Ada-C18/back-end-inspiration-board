@@ -38,3 +38,11 @@ def one_board(app):
         title="We are all winners", owner="Team SWAM")
     db.session.add(new_board)
     db.session.commit()
+    
+@pytest.fixture
+def one_card(app):
+    new_card = Card(
+        message="You are doing great", board_id=1) #QUESTION TO INSTRUCTOR ON MONDAY
+    
+    db.session.add(new_card)
+    db.session.commit()
