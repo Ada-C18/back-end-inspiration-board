@@ -64,6 +64,21 @@ def get_all_boards():
 
     return jsonify(boards_response)
 
+# create a route to delete all boards and cards 
+
+#"/boards/cards"
+
+@boards_bp.route("/boards", methods=["DELETE"])
+def delete_board(board_id):
+    board = validate_model(Board,board_id)
+
+    db.session.delete(board)
+    db.session.commit()
+    # deleted_board_dict = {"details":f"Boards {board.board_id} \"{board.message}\" successfully deleted"}
+    deleted_board_dict = {"details":f"Boards {board.board_id} successfully deleted"}
+
+    return make_response(jsonify(deleted_board_dict), 200)
+
 
 # create a post route to assign card to board
 
@@ -95,17 +110,18 @@ def gets_cards_of_one_board(board_id):
             {
                 "id": card.card_id,
                 "board_id": card.board_id,
-                "title": card.title,
-                "description": card.description,
-                "is_complete": bool(card.completed_at)
+                "message": card.message,
+                "likes": card.likes,
             }
             ) 
     return make_response(jsonify({"id":board.board_id,"title":board.title,"cards":cards_of_board})),200 
 
+
+
 ################################################################
 ####################### CARD ROUTES ############################
 
-# create a post route for card
+#create a post route for card # works 
 @cards_bp.route("", methods = ["POST"])
 def create_card():
     request_body = request.get_json()
@@ -122,8 +138,7 @@ def create_card():
 
 
 
-# create a get all cards route 
-
+#create a get all cards route # works
 @cards_bp.route("", methods = ["GET"])
 def get_all_cards():
     cards_response = []
@@ -131,31 +146,31 @@ def get_all_cards():
     for card in cards:
         cards_response.append({
             "id": card.card_id,
-            "title": card.title,
-            "owner": card.owner
+            "message": card.message,
+            "likes": card.likes
         })
 
     return jsonify(cards_response)
 
 
 
-# create a route to delete a single  card
+# create a route to delete a single card #works
 @cards_bp.route("/<card_id>", methods=["DELETE"])
 def delete_card(card_id):
     card = validate_model(Card,card_id)
 
     db.session.delete(card)
     db.session.commit()
-    deleted_card_dict = {"details":f"Card {card.card_id} \"{card.title}\" successfully deleted"}
+    deleted_card_dict = {"details":f"Card {card.card_id} \"{card.message}\" successfully deleted"}
 
     return make_response(jsonify(deleted_card_dict), 200)
 
 
 
+# make a patch route to increase likes count
 
 
 
 
-# create a route to delete all boards and cards 
 
 

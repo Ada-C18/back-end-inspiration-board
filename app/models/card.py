@@ -5,7 +5,7 @@ from flask import abort, make_response
 class Card(db.Model):
     card_id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     message = db.Column(db.String)
-    likes = db.Column(db.Integer, nullable = True) 
+    likes = db.Column(db.Integer, default=0) 
     #delete_status = db.Column(db.String, nullable = True)
     board = db.relationship("Board", back_populates ="cards")
     board_id = db.Column(db.Integer, db.ForeignKey('board.board_id'), nullable=True)
