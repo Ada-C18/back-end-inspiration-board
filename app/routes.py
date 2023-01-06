@@ -78,25 +78,50 @@ def delete_board():
 
     return make_response(jsonify(deleted_board_dict), 200)
 
+#create a post route for card # works 
+# @cards_bp.route("", methods = ["POST"])
+# def create_card():
+#     request_body = request.get_json()
+#     try:
+#         new_card = Card.from_json(request_body)
+#     except KeyError:
+#         return make_response({"details": "Invalid data"}, 400)
+#     db.session.add(new_card)
+#     db.session.commit()
+#     return make_response(new_card.to_dict_cards(), 201)
 
 # create a post route to assign card to board
 
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def assign_card_to_board(board_id):
 
+
     board = validate_model(Board, board_id) 
     request_body = request.get_json()
 
+    try:
+        new_card = Card.from_json(request_body)
+    except KeyError:
+        return make_response({"details": "Invalid data"}, 400)
+
+
     board.cards = [] 
 
-    for card_id in request_body['card_ids']:
-        card = validate_model(Card, card_id)
-        board.cards.append(card)
-        
+    # needs to accept a dictionary of card data,
+    # may need to combine single card post route with this route
+
+
+    # for card in request_body['cards']:
+    #     card = validate_model(Card, card)
+
+    #board.append(new_car)
+
+    board.cards.append(new_card)
+
     db.session.add(board)
     db.session.commit() 
     
-    return make_response(jsonify({"id":board.board_id,"card_ids":request_body["card_ids"]})),200 
+    return make_response(jsonify({"id":board.board_id,"cards":request_body["cards"]})),200 
 
 # create a get route to see all card of a board
 
@@ -122,20 +147,7 @@ def gets_cards_of_one_board(board_id):
 ################################################################
 ####################### CARD ROUTES ############################
 
-#create a post route for card # works 
-@cards_bp.route("", methods = ["POST"])
-def create_card():
-    request_body = request.get_json()
 
-    try:
-        new_card = Card.from_json(request_body)
-    except KeyError:
-        return make_response({"details": "Invalid data"}, 400)
-
-    db.session.add(new_card)
-    db.session.commit()
-
-    return make_response(new_card.to_dict_cards(), 201)
 
 
 
