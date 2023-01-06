@@ -23,10 +23,14 @@ def client(app):
     return app.test_client()
 
 
-# This fixture creates a board and saves it in the test database
+# This fixture creates two boards and saves it in the test database
 @pytest.fixture
-def one_board(app):
-    new_board = Board(
+def two_boards(app):
+    first_board = Board(
         title="Our inspo board", owner="JJ", cards=[])
-    db.session.add(new_board)
+    second_board = Board(
+        title="Aspirations", owner="Team Serval", cards=[])
+    
+    db.session.add(first_board)
+    db.session.add(second_board)
     db.session.commit()
