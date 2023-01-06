@@ -44,7 +44,7 @@ def handle_boards():
 # Get a board by ID
 # Delete a board by ID
 # Patch a board by ID
-@board_bp.route("/<board_id>", method=["GET", "PUT", "DELETE"])
+@board_bp.route("/<board_id>", methods=["GET", "PUT", "DELETE"])
 def handle_board(board_id):
     board = Board.query.get(board_id)
     if board is None:
