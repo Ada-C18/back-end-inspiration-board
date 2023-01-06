@@ -36,7 +36,7 @@ def create_card():
 
     card_dict = new_card.to_dict()
 
-    return jsonify({"card":card_dict}),201
+    return jsonify(card_dict),201
 
 @card_bp.route("", methods=["GET"])
 def get_all_cards():
