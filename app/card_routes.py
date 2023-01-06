@@ -57,15 +57,3 @@ def like_card(card_id):
     
     return make_response("card liked", 200)
 
-###########################
-
-# @cards_bp.route("/<card_id>/like", methods=["PUT"])
-# def update_card(card_id):
-#     card = validate_model(Card, card_id)
-    
-#     request_body = request.get_json()
-    
-#     card.message = request_body["message"]
-#     card.likes_count = request_body["likes_count"]
-    
-    
