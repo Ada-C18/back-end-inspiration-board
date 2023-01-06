@@ -78,7 +78,7 @@ def test_delete_card_not_found(client):
 
     assert Card.query.all() == []
     assert "msg" in response_body
-    assert response_body["msg"] == "Could not find card item with id: 1"
+    assert response_body["msg"] == "Could not find Card item with id: 1"
   
 
 @pytest.mark.skip(reason="No way to test this feature yet")

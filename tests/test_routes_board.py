@@ -54,7 +54,7 @@ def test_get_board_not_found(client):
 
     # Assert
     assert response.status_code == 404
-    assert response_body["msg"] == "Could not find board item with id: 1"
+    assert response_body["msg"] == "Could not find Board item with id: 1"
    
 
 

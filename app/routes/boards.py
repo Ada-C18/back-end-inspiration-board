@@ -1,10 +1,11 @@
 from flask import Blueprint, json, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
-from .validation import get_board_from_id
+from app.models.card import Card
+from .validation import get_one_obj_or_abort
 import requests
 import os
-from app.models.card import Card
+
 
 boards_bp = Blueprint('boards', __name__, url_prefix='/boards')
 
@@ -31,14 +32,14 @@ def get_all_boards():
 
 @boards_bp.route('/<board_id>', methods=['GET'])
 def get_one_board(board_id):
-    chosen_board = get_board_from_id(board_id)
+    chosen_board = get_one_obj_or_abort(Board, board_id)
     return jsonify(chosen_board.to_dict()), 200
     
 
 
 @boards_bp.route('<board_id>/cards', methods=['POST'])
 def add_cards(board_id):
-    chosen_board = get_board_from_id(board_id)
+    chosen_board = get_one_obj_or_abort(Board, board_id)
     request_body = request.get_json()
 
     new_card = Card.from_dict(request_body)
@@ -51,7 +52,7 @@ def add_cards(board_id):
 @boards_bp.route('<board_id>/cards', methods=['GET'])
 def get_all_cards_belongs_to_a_board(board_id):
     
-    chosen_board = get_board_from_id(board_id)
+    chosen_board = get_one_obj_or_abort(Board, board_id)
     cards_list = []
     for card in chosen_board.cards:
         cards_list.append(card.to_dict()) 

@@ -1,7 +1,7 @@
 from flask import Blueprint, json, request, jsonify, make_response, abort
 from app import db
 from app.models.card import Card
-from .validation import get_card_from_id
+from .validation import get_one_obj_or_abort
 import requests
 import os
 
@@ -31,11 +31,11 @@ cards_bp = Blueprint('cards',  __name__ , url_prefix='/cards')
 
 @cards_bp.route('/<card_id>', methods=['DELETE'])
 def delete_one_card(card_id):
-    card = get_card_from_id(card_id)
-    db.session.delete(card)
+    chosen_card = get_one_obj_or_abort(Card, card_id)
+    db.session.delete(chosen_card)
     db.session.commit()
     return jsonify({
-        "details": f"Card {card.card_id} \"{card.message}\" successfully deleted"
+        "details": f"Card {chosen_card.card_id} \"{chosen_card.message}\" successfully deleted"
     })
 
 
