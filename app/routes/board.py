@@ -6,7 +6,7 @@ from app.models.card import Card
 
 boards_bp = Blueprint('boards_bp', __name__, url_prefix = '/boards')
 
-# read one board - "/boards/id" (GET)
+# read one board - /boards/id (GET)
 @boards_bp.route("/<id>", methods=["GET"])
 def read_one_board(id):
     board = validate_model(Board, id)
@@ -14,7 +14,7 @@ def read_one_board(id):
     return jsonify({"board": board.to_dict()}), 200
      
     
-# read all boards - "/boards" (GET)
+# read all boards - /boards (GET)
 @boards_bp.route("", methods=["GET"])
 def read_all_boards():
     boards = Board.query.all()
@@ -23,7 +23,7 @@ def read_all_boards():
     return jsonify(boards_response)
 
 
-# read all cards by board id - "/boards/id/cards" (GET)
+# read all cards by board id - /boards/id/cards (GET)
 @boards_bp.route("/<id>/cards", methods=["GET"])
 def get_cards_by_board_id(id):
     board = validate_model(Board, id)
@@ -35,21 +35,21 @@ def get_cards_by_board_id(id):
     return make_response({"id": Board.id, "title": board.title, "cards": cards})
 
 
-# create one card under board id - "/boards/id/cards" (POST)
+# create one card under board id - /boards/id/cards (POST)
 @boards_bp.route("/<id>/cards", methods=["POST"])
 def create_card(id):
     request_body = request.get_json()
     if "message" not in request_body:
-        error_message("Message not found", 400) # we need a helper function here
+        error_message("Message not found", 400) 
 
     request_body["board_id"] = id 
-    card = Card.from_dict(request_body) # we need a helper function here
+    card = Card.from_dict(request_body) 
     
     db.session.add(card)
     db.session.commit()
     
 
-# create a board (POST) - "/boards"
+# create a board - /boards (POST) 
 @boards_bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
@@ -62,7 +62,7 @@ def create_board():
     return jsonify({"board": new_board.to_dict()}), 201
 
 
-# update a board (PUT) - "/boards/id"
+# update a board - /boards/id (PUT)
 @boards_bp.route("/<id>", methods=["PUT"])
 def update_board(id):
     board = validate_model(board, id)
@@ -75,7 +75,7 @@ def update_board(id):
     return response
 
 
-# delete a board - "/boards/id"
+# delete a board - /boards/id (DELETE)
 @boards_bp.route("/<id>", methods=["DELETE"])
 def delete_board(id):
     board = validate_model(board, id)
