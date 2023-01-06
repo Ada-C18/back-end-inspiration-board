@@ -3,12 +3,15 @@ from app.models.card import Card
 from app.models.board import Board
 
 
-def test_create_board(client): 
-    #Act
-    response = client.post("/board", json={
-        "title": "Inpirational Quotes",
-        "owner": "Cristal",
-    })
+def test_create_board(client):
+    # Act
+    response = client.post(
+        "/board",
+        json={
+            "title": "Inspirational Quotes",
+            "owner": "Cristal",
+        },
+    )
 
     response_body = response.get_json()
 
@@ -20,7 +23,7 @@ def test_create_board(client):
             "id": 1,
             "title": "Inspirational Quotes",
             "owner": "Cristal",
-                    }
+        }
     }
     # new_board = Board.query.get(1)
     # assert new_board
