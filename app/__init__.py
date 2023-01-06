@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 
 db = SQLAlchemy()
-migrate = Migrate()
+migrate = Migrate(compare_type=True)
 load_dotenv()
 
 
@@ -25,6 +25,7 @@ def create_app(test_config=None):
 
     # Import models here for Alembic setup
     from app.models.board import Board
+    from app.models.card import Card
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -32,6 +33,9 @@ def create_app(test_config=None):
     # Register Blueprints here
     from .board_routes import board_bp
     app.register_blueprint(board_bp)
+
+    from .card_routes import card_bp
+    app.register_blueprint(card_bp)
 
     CORS(app)
     return app

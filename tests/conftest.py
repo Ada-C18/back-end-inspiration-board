@@ -33,7 +33,7 @@ def client(app):
 # references "one_board"
 # This fixture creates a task and saves it in the database
 @pytest.fixture
-def one_task(app):
+def one_board(app):
     new_board = Board(
         name="Create the future", owner="Ada")
     db.session.add(new_board)
