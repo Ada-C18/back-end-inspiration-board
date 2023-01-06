@@ -35,7 +35,7 @@ def get_all_boards():
     return jsonify({"boards": board_response}), 200
 
 
-@boards_bp.route("", methods=['POST'])
+@boards_bp.route('', methods=['POST'])
 def create_a_board():
     request_body= request.get_json()
     try:
@@ -50,7 +50,7 @@ def create_a_board():
     return jsonify(new_board.to_dict()), 201
 
 
-@boards_bp.route("/<id>", methods=["DELETE"])
+@boards_bp.route('/<id>', methods=['DELETE'])
 def delete_board(id):
     board = validate_id(Board,id)
 
@@ -62,7 +62,7 @@ def delete_board(id):
 
 # <-----------------------Cards--------------------->
 
-@boards_bp.route("/<board_id>/cards", methods=["POST"])
+@boards_bp.route('/<board_id>/cards', methods=['POST'])
 def create_a_card(board_id):
     validate_id(Board, board_id)
     request_body = request.get_json()
@@ -72,7 +72,7 @@ def create_a_card(board_id):
                     board_id=board_id)
 
     except:
-        abort(make_response({'details': f'Title and owner are required'}, 400))
+        abort(make_response({'details': f'Message is required'}, 400))
 
     db.session.add(new_card)
     db.session.commit()
@@ -95,19 +95,20 @@ def like_card(board_id, card_id):
     return make_response(jsonify(response), 200)
 
 
-@boards_bp.route("<board_id>/cards/<id>", methods=["DELETE"])
-def delete_card(id):
-    card = validate_id(Card, id)
+@boards_bp.route('/<board_id>/cards/<card_id>', methods=['DELETE'])
+def delete_card(board_id, card_id):
+    validate_id(Board, board_id)
+    card = validate_id(Card, card_id)
 
     db.session.delete(card)
     db.session.commit()
 
-    return make_response(f"Card #{id} was successfully deleted"),200
+    return make_response(f"Card #{card.id} was successfully deleted"),200
 
 
-@boards_bp.route("/<board_id>/cards", methods=["GET"])
+@boards_bp.route('/<board_id>/cards', methods=['GET'])
 def get_all_cards_from_one_board(board_id):
     board = validate_id(Board, board_id)
     board_cards = [card.to_dict() for card in board.cards]
     
-    return jsonify({"cards":board_cards}), 200
+    return jsonify({"cards": board_cards}), 200

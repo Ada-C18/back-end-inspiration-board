@@ -27,10 +27,20 @@ def client(app):
 @pytest.fixture
 def two_boards(app):
     first_board = Board(
-        title="Our inspo board", owner="JJ", cards=[])
+        title="Our inspo board", owner="JJ")
     second_board = Board(
-        title="Aspirations", owner="Team Serval", cards=[])
+        title="Aspirations", owner="Team Serval")
     
     db.session.add(first_board)
     db.session.add(second_board)
+    db.session.commit()
+
+@pytest.fixture
+def board_with_cards(app):
+    board = Board(
+        title="Our inspo board", owner="JJ")
+    
+
+    
+    db.session.add(board)
     db.session.commit()

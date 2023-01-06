@@ -34,6 +34,7 @@ def test_create_a_board_missing_attributes(client):
     assert response.status_code == 400
     assert response_body == {'details':'Title and owner are required'}
 
+
 # <---- read ---->
 
 #@pytest.mark.skip
@@ -102,10 +103,51 @@ def test_create_a_card(client, two_boards):
         "likes_count": 0,
         "board_id": 1
     }
-# read all cards from a board
 
-# post a card to a board
+#@pytest.mark.skip
+def test_create_a_card_missing_attribute(client, two_boards):
+    # Act
+    response = client.post("/boards/1/cards")
+    response_body = response.get_json()
 
-# post a card missing attributes
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {'details': 'Message is required'}
 
-# delete a card from a board
+# <---- read ---->
+
+#@pytest.mark.skip
+def test_get_all_cards_from_a_board(client, boards_with_cards):
+    # Act
+    response = client.get("boards/1/cards")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body["cards"]) == 2
+    assert response_body["cards"] == [
+        {
+            "id": 1,
+            "title": "Our inspo board",
+            "owner": "JJ",
+            "cards": []
+        },
+        {
+            "id": 2,
+            "title": "Aspirations",
+            "owner": "Team Serval",
+            "cards": []
+        }
+    ]
+
+
+# <---- delete ---->
+#pytest.mark.skip
+def test_delete_a_board(client, board_with_cards):
+    # Act
+    response = client.delete("/boards/1/cards/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == {"details":'Board #1 "Our inspo board" was successfully deleted'}
