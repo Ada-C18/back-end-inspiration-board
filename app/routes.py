@@ -64,18 +64,17 @@ def get_all_boards():
 
     return jsonify(boards_response)
 
-# create a route to delete all boards and cards 
+# create a route to delete all boards # works
 
-#"/boards/cards"
+@boards_bp.route("", methods=["DELETE"])
+def delete_board():
+    boards = Board.query.all()
+    for board in boards:
+        db.session.delete(board)
+        db.session.commit()
 
-@boards_bp.route("/boards", methods=["DELETE"])
-def delete_board(board_id):
-    board = validate_model(Board,board_id)
 
-    db.session.delete(board)
-    db.session.commit()
-    # deleted_board_dict = {"details":f"Boards {board.board_id} \"{board.message}\" successfully deleted"}
-    deleted_board_dict = {"details":f"Boards {board.board_id} successfully deleted"}
+    deleted_board_dict = {"details":f"Boards successfully deleted"}
 
     return make_response(jsonify(deleted_board_dict), 200)
 
@@ -93,7 +92,9 @@ def assign_card_to_board(board_id):
     for card_id in request_body['card_ids']:
         card = validate_model(Card, card_id)
         board.cards.append(card)
-        db.session.commit() 
+        
+    db.session.add(board)
+    db.session.commit() 
     
     return make_response(jsonify({"id":board.board_id,"card_ids":request_body["card_ids"]})),200 
 
