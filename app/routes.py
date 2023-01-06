@@ -87,15 +87,14 @@ def assign_card_to_board(board_id):
     board = validate_model(Board, board_id) 
     request_body = request.get_json()
 
-    print(request_body)
-
     board.cards = [] 
 
     for card_id in request_body['card_ids']:
         card = validate_model(Card, card_id)
         board.cards.append(card)
-        db.session.add(board)
-        db.session.commit() 
+        
+    db.session.add(board)
+    db.session.commit() 
     
     return make_response(jsonify({"id":board.board_id,"card_ids":request_body["card_ids"]})),200 
 
