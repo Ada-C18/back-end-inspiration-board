@@ -6,14 +6,6 @@ from app.models.card import Card
 
 board_bp = Blueprint("board_bp", __name__, url_prefix="/boards")
 
-def return_cards_from_board(id):
-    matching_board = Board.query.get(id)
-    cards = Card.query.filter_by(board_id = id)
-    response = {"title":matching_board.title , "owner":matching_board.owner, "cards":[card.to_dict() for card in cards] }
-
-    return response
-
-
 def validate_board_id(board_id):
     try:
         board_id = int(board_id)
@@ -43,22 +35,12 @@ def add_board():
 
     board_dict = new_board.to_dict()
 
-    return jsonify({"board":board_dict}),201
+    return jsonify(board_dict),201
 
 @board_bp.route("", methods=["GET"])
 def get_all_boards():
 
-    title_query = request.args.get("title")
-    sort_at_query = request.args.get("sort")
-
-    if title_query:
-        boards = Board.query.filter_by(title = title_query)
-    elif sort_at_query == "asc":
-        boards = Board.query.order_by(Board.title)
-    elif sort_at_query == "desc":
-        boards = Board.query.order_by(Board.title.desc())
-    else:
-        boards = Board.query.all()
+    boards = Board.query.all()
     
     response = [board.to_dict() for board in boards]
 
@@ -70,44 +52,7 @@ def get_one_board(board_id):
 
     board_dict = board.to_dict()
 
-    return jsonify(return_cards_from_board(board_id))
+    return jsonify(board_dict), 200
 
-    # return jsonify({"board":board_dict})
 
-@board_bp.route("/<board_id>", methods=["PUT"])
-def update_board(board_id):
-    board = validate_board_id(board_id)
-
-    request_body = request.get_json()
-
-    if "title" not in request_body:
-                return jsonify({"message":"Request must include title"}),400
-
-    board.title = request_body["title"]
-
-    board_dict = board.to_dict()
-
-    db.session.commit()
-
-    return jsonify({"board":board_dict}),200
-
-@board_bp.route("/<board_id>",methods = ['DELETE'])
-def delete_board(board_id):
-    board = validate_board_id(board_id)
-
-    db.session.delete(board)
-
-    db.session.commit()
-
-    return jsonify({"details":f"Board {board.board_id} \"{board.title}\" successfully deleted"}),200
-
-#delete a card from a board, go into board, then for each card linked to board, 
-#search for that card id and delete it from card database/model
-@board_bp.route("/<board_id>/<card_id>",methods = ['DELETE'])
-def delete_card(board_id,card_id):
-    board = validate_board_id(board_id)
-
-    cards = Card.query.filter_by(board_id = id)
-
-    card_list = []
 
