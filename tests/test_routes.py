@@ -73,7 +73,8 @@ def test_get_all_boards_two_saved_board(client, two_boards):
 
 # <---- delete ---->
 
-#pytest.mark.skip
+#TODO: fix error
+#@pytest.mark.skip
 def test_delete_a_board(client, two_boards):
     # Act
     response = client.delete("/boards/1")
@@ -81,7 +82,7 @@ def test_delete_a_board(client, two_boards):
 
     # Assert
     assert response.status_code == 200
-    assert response_body == {"details":'Board #1 "Our inspo board" was successfully deleted'}
+    assert response_body == 'Board #1 "Our inspo board" was successfully deleted'
 
 
 # <---- cards ---->
@@ -116,6 +117,7 @@ def test_create_a_card_missing_attribute(client, two_boards):
 
 # <---- read ---->
 
+#TODO: finish test
 #@pytest.mark.skip
 def test_get_all_cards_from_a_board(client, boards_with_cards):
     # Act
@@ -142,8 +144,10 @@ def test_get_all_cards_from_a_board(client, boards_with_cards):
 
 
 # <---- delete ---->
+
+#TODO: finish test
 #pytest.mark.skip
-def test_delete_a_board(client, board_with_cards):
+def test_delete_a_card(client, board_with_cards):
     # Act
     response = client.delete("/boards/1/cards/1")
     response_body = response.get_json()

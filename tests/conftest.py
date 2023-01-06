@@ -35,12 +35,12 @@ def two_boards(app):
     db.session.add(second_board)
     db.session.commit()
 
-@pytest.fixture
-def board_with_cards(app):
-    board = Board(
-        title="Our inspo board", owner="JJ")
+# @pytest.fixture
+# def board_with_cards(app):
+#     board = Board(
+#         title="Our inspo board", owner="JJ")
     
 
     
-    db.session.add(board)
-    db.session.commit()
+#     db.session.add(board)
+#     db.session.commit()
