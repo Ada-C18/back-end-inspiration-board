@@ -17,6 +17,9 @@ class Card(db.Model):
 
         return card
 
+    def update(self, card_data):
+        self.likes_count = card_data["likes_count"]
+
     @classmethod
     def from_dict(cls, card_data, board):
         return cls(message=card_data["message"], likes_count=card_data["likes_count"], board_id=board.board_id)
