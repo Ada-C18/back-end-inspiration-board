@@ -18,7 +18,7 @@ def test_get_cards_one_saved_card(client, one_card):
     assert response.status_code == 200
     assert len(response_body) == 1
     assert response_body == [{
-        "id": 1,
+        "card_id": 1,
         "message": "You've got this!",
         "likes_count": 0
     }]
@@ -31,7 +31,7 @@ def test_get_specific_card(client, one_card):
     assert "card" in response_body
     assert response_body == {
         "card": {
-            "id": 1,
+            "card_id": 1,
             "message": "You've got this!",
             "likes_count": 0
         }
@@ -54,7 +54,7 @@ def test_create_card(client):
     assert "card" in response_body
     assert response_body == {
         "card": {
-            "id": 1,
+            "card_id": 1,
             "message": "You're a great friend :)",
             "likes_count": 0
         }
@@ -77,7 +77,7 @@ def test_update_card_likes_count(client, one_card):
     assert "card" in response_body
     assert response_body == {
         "card": {
-            "id": 1,
+            "card_id": 1,
             "message": "You've got this!",
             "likes_count":2
         }
