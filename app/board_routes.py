@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 board_bp = Blueprint("board", __name__, url_prefix="/boards")
 
@@ -24,11 +25,11 @@ def get_validate_model(cls, model_id):
 # Read ALL boards
 @board_bp.route("", strict_slashes=False, methods=["GET"])
 def read_all_boards():
-    
+
     boards = Board.query.all()
-    print(boards)
     boards_list = [board.to_dict() for board in boards]
     return make_response(jsonify(boards_list), 200)
+
 
 # Read ONE board
 @board_bp.route("/<board_id>", strict_slashes=False, methods=["GET"])
@@ -86,4 +87,30 @@ def create_board():
 
 
 # Read ALL cards
-# @board_bp.route("/<board_id>/cards", strict_slashes=False, methods=["GET"])
+@board_bp.route("/<board_id>/cards", strict_slashes=False, methods=["GET"])
+def read_all_cards():
+
+    cards = Card.query.all()
+    cards_list = [card.to_dict() for card in cards]
+    return make_response(jsonify(cards_list), 200)
+
+
+# Read one card
+@board_bp.route("/<board_id>/cards/<card_id>", strict_slashes=False, methods=["GET"])
+def read_one_board(card_id):
+    card = get_validate_model(Card, card_id)
+
+    return make_response(jsonify({"board": card.to_dict()}), 200)
+
+
+# Create card
+@board_bp.route("/<board_id>/cards/", strict_slashes=False, methods=["POST"])
+def create_card(card_id):
+    card = get_validate_model(Card, card_id)
+    request_body = request.get_json()
+    card.tasks = [Card.query.get(card_id)
+                  for card_id in request_body["card_ids"]]
+
+    db.session.commit()
+
+    return make_response(jsonify(dict(id=card.id, card_ids=[card.id for card in card.tasks])), 200)
