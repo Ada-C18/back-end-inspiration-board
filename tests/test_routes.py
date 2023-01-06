@@ -99,7 +99,8 @@ def test_create_a_card(client, two_boards):
     assert response_body == {
         "id": 1,
         "message": "This is a card",
-        "likes_count": 0
+        "likes_count": 0,
+        "board_id": 1
     }
 # read all cards from a board
 

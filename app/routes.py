@@ -97,7 +97,7 @@ def like_card(board_id, card_id):
     return make_response(jsonify(response), 200)
 
 
-@cards_bp.route("/<id>", methods=["DELETE"])
+@boards_bp.route("<board_id>/cards/<id>", methods=["DELETE"])
 def delete_card(id):
     card = validate_id(Card, id)
 
