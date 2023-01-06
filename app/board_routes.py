@@ -4,7 +4,7 @@ from app.models.board import Board
 from datetime import datetime
 
 
-boards_bp = Blueprint("boards_bp", __name__, url_prefix="/boards")
+bp = Blueprint("boards_bp", __name__, url_prefix="/boards")
 
 def validate_model(cls, model_id):
     try:
@@ -19,7 +19,7 @@ def validate_model(cls, model_id):
 
     return model
 
-@boards_bp.route("", methods=["POST"])
+@bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
     
@@ -29,14 +29,14 @@ def create_board():
     if request_body["owner"] is None:
         abort(make_response({"message":"Please include an owner"}, 400))
     
-    new_board = Board.from_dict(date_created=datetime.now(), title=request_body["title"], visible=True)
+    new_board = Board.from_dict(date_created=datetime.utcnow(), title=request_body["title"], visible=True)
 
     db.session.add(new_board)
     db.session.commit()
 
     return make_response(jsonify(f"Board {new_board.title} successfully created"), 201)
 
-@boards_bp.route("", methods=["GET"])
+@bp.route("", methods=["GET"])
 def read_all_boards():
 
     title_query = request.args.get("title")
@@ -50,12 +50,12 @@ def read_all_boards():
         boards_response.append(board.to_dict())
     return jsonify(boards_response)
 
-@boards_bp.route("<board_id>", methods=["GET"])
+@bp.route("<board_id>", methods=["GET"])
 def read_one_board(board_id):
     board = validate_model(Board, board_id)
     return board.to_dict()
 
-@boards_bp.route("<board_id>", methods=["DELETE"])
+@bp.route("<board_id>", methods=["DELETE"])
 def delete_board(board_id):
     board = validate_model(Board, board_id)
 
