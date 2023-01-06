@@ -33,7 +33,7 @@ def handle_boards():
 
         new_board = Board(
             title=request_body["title"], 
-            wner=request_body["owner"]
+            owner=request_body["owner"]
         )
 
         db.session.add(new_board)

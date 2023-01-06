@@ -13,6 +13,10 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
 
+
+    CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
@@ -35,7 +39,4 @@ def create_app():
     from .card_routes import cards_bp
     app.register_blueprint(cards_bp)
 
-    CORS(app)
-    app.config['CORS_HEADERS'] = 'Content-Type'
-    
     return app
