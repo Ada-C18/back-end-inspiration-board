@@ -12,9 +12,9 @@ load_dotenv()
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     if test_config is None:
-        app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
             "SQLALCHEMY_DATABASE_URI")
     else:

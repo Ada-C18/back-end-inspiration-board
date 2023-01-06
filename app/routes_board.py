@@ -11,7 +11,7 @@ def get_model_from_id(cls, model_id):
     try:
         model_id = int(model_id)
     except ValueError:
-        return abort(make_response({"msg": f"invalid data type: {model_id}"}, 200))
+        return abort(make_response({"msg": f"invalid data type: {model_id}"}, 404))
 
 
     chosen_model = cls.query.get(model_id)

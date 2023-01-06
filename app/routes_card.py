@@ -14,10 +14,10 @@ def create_one_card():
     return abort(make_response({"msg": f"invalid message input"}, 404))
 
   if "board_id" not in request_body:
-    board = None      
+    board = None
   else:
       board = get_model_from_id(Board, request_body["board_id"])
-            
+
   new_card =  Card (
       message= request_body["message"],
       likes_count=0,
@@ -51,7 +51,7 @@ def delete_one_card(card_id):
   db.session.delete(card_to_delete)
   db.session.commit()
 
-  return jsonify({"msg": f"card {message_card_to_delete} deleted"}), 200
+  return jsonify({"msg": f"card '{message_card_to_delete}' deleted"}), 200
 
 @cards_bp.route("<card_id>", methods=["PATCH"])
 def add_like_to_card(card_id):
@@ -60,6 +60,6 @@ def add_like_to_card(card_id):
   card_likes = get_model_from_id(Card, card_id).to_dict()["likes_count"]
 
   db.session.commit()
-  return jsonify({"msg": f"card updated to {card_likes} likes"})
+  return jsonify({"msg": f"card updated to {card_likes} likes"}), 200
 
 

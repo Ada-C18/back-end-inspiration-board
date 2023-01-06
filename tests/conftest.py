@@ -26,13 +26,19 @@ def client(app):
 
 @pytest.fixture
 def one_card(app):
-    new_card = Card(message="It's friday!")
+    new_card = Card(message="It's Friday!")
+    db.session.add(new_card)
+    db.session.commit()
+
+@pytest.fixture
+def another_card(app):
+    new_card = Card(message="It's Saturday!")
     db.session.add(new_card)
     db.session.commit()
 
 @pytest.fixture
 def three_cards(app):
-    db.session.add_all([Card(message="It's wednesday"),Card(message="It's Thursday"),Card(message="It's Saturday!")])
+    db.session.add_all([Card(message="It's Wednesday"),Card(message="It's Thursday"),Card(message="It's Saturday!")])
     db.session.commit()
 
 
