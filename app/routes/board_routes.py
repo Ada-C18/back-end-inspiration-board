@@ -58,4 +58,12 @@ def get_all_cards_belonging_to_a_board(board_id):
 
     return jsonify(cards_response), 200
     
+@board_bp.route("/<board_id>", methods=["DELETE"]) 
+def delete_one_board(board_id):
+    chosen_board = get_one_obj_or_abort(Board, board_id)
+    db.session.delete(chosen_board)
+    db.session.commit()
 
+    return jsonify({
+        "message": f"Successfully deleted board with id: {board_id}"
+    }), 200
