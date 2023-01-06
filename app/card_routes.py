@@ -29,9 +29,9 @@ def delete_card(card_id):
     db.session.delete(card)
     db.session.commit()
 
-    return jsonify({"details": f'Card {card.card_id} "{card.title}" successfully deleted'}), 200
+    return jsonify({"details": f'Card successfully deleted'}), 200 
 
-# PATCH /cards/<card_id>/like
+# PUT /cards/<card_id>/like
 @cards_bp.route("/<card_id>/like", methods=["PUT"])
 def add_like_card(card_id):
     card = validate_model(Card, card_id)

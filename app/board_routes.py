@@ -45,7 +45,7 @@ def create_board():
     db.session.add(new_board)
     db.session.commit()
 
-    return make_response(Board.to_dict()
+    return make_response(new_board.to_dict() #changed this from Board.to_dict()
         , 201)
 # Create a new board, by filling out a form. The form includes "title" and "owner" name of the board.
 # See an error message if I try to make a new board with an empty/blank/invalid/missing "title" or "owner" input.
@@ -84,7 +84,7 @@ def add_one_card_to_board(board_id):
     )
     db.session.add(new_card)
     db.session.commit()
-    return make_response(jsonify(f"Card successfully created"), 201)
+    return jsonify(new_card.to_dict()), 200 #changed this so that it returns the card as the response
 # Create a new card for the selected board, by filling out a form and filling out a "message."
 # See an error message if I try to make the card's "message" more than 40 characters.
 # All error messages can look like a new section on the screen, a red outline around the input field, and/or disabling the input, as long as it's visible
