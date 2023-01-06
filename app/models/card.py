@@ -6,7 +6,7 @@ class Card(db.Model):
     message = db.Column(db.String)
     likes_count = db.Column(db.Integer, default=0)
     board_id = db.Column(db.Integer, db.ForeignKey("board.board_id"), nullable=True)
-    board = db.relationship("Board", back_populates="card")
+    board = db.relationship("Board", back_populates="cards")
 
     def to_dict(self):
         card_dict = {

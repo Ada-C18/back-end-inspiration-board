@@ -1,10 +1,14 @@
 from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.card import Card
+import os
+import requests
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # example_bp = Blueprint('example_bp', __name__)
-card_bp = Blueprint("card", __name__, url_prefix="/card")
+card_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
 
 @card_bp.route("", methods=["POST"])
