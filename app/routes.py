@@ -112,4 +112,4 @@ def get_all_cards_from_one_board(board_id):
     board = validate_id(Board, board_id)
     board_cards = [card.to_dict() for card in board.cards]
     
-    return make_response(jsonify({"cards":board_cards})), 200
+    return jsonify({"cards":board_cards}), 200

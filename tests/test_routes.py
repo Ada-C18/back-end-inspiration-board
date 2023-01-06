@@ -1,6 +1,7 @@
 import pytest
 from app.models.board import Board
 
+# <---- boards ---->
 # <---- create ---->
 
 #@pytest.mark.skip
@@ -79,9 +80,27 @@ def test_delete_a_board(client, two_boards):
 
     # Assert
     assert response.status_code == 200
-    assert response_body == 'Board #1 "Our inspo board" was successfully deleted'
+    assert response_body == {"details":'Board #1 "Our inspo board" was successfully deleted'}
 
 
+# <---- cards ---->
+# <---- create ---->
+
+#@pytest.mark.skip
+def test_create_a_card(client, two_boards):
+    # Act
+    response = client.post("/boards/1/cards", json={
+        "message": "This is a card"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 201
+    assert response_body == {
+        "id": 1,
+        "message": "This is a card",
+        "likes_count": 0
+    }
 # read all cards from a board
 
 # post a card to a board
