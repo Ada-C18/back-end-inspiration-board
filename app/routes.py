@@ -104,8 +104,15 @@ def assign_card_to_board(board_id):
     except KeyError:
         return make_response({"details": "Invalid data"}, 400)
 
+    db.session.add(new_card)
+    db.session.commit()
+    board.cards.append(new_card)
 
-    board.cards = [] 
+    db.session.add(board)
+    db.session.commit() 
+    
+    return make_response(new_card.to_dict_cards(), 201)
+    # board.cards = [] 
 
     # needs to accept a dictionary of card data,
     # may need to combine single card post route with this route
@@ -116,12 +123,9 @@ def assign_card_to_board(board_id):
 
     #board.append(new_car)
 
-    board.cards.append(new_card)
+    # board.cards.append(new_card)
 
-    db.session.add(board)
-    db.session.commit() 
     
-    return make_response(jsonify({"id":board.board_id,"cards":request_body["cards"]})),200 
 
 # create a get route to see all card of a board
 
