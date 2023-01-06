@@ -50,7 +50,7 @@ def get_all_boards():
 def get_one_board(board_id):
     board = validate_board_id(board_id)
 
-    board_dict = board.to_dict()
+    board_dict = board.get_cards()
 
     return jsonify(board_dict), 200
 
