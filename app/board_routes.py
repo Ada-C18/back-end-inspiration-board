@@ -46,18 +46,28 @@ def get_all_board():
 
 #update board by id
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
-def update_board_cards(board_id):
-    board = validate_board(board_id)
+def create_one_card(board_id):
+    # board = validate_cards(card_id)
     request_body = request.get_json()
-    card_list = []
-    for card_id in request_body["card_ids"]:
-        card = validate_cards(card_id)
-        card.board = board
-        card_list.append(card_id)
+    if 'message' not in request_body:
+        return {"message": "Please enter both message and likes"}, 400
+    
+    new_card = Card(message = request_body['message'],
+    board_id = int(board_id)
+    )
+    # for card_id in request_body["card_ids"]:
+    #     card = validate_cards(card_id)
+    #     card.board = board
+    #     card_list.append(card_id)
+    
+    db.session.add(new_card)
     db.session.commit()
+
     return jsonify({
-        "id": board.board_id,
-        "card_ids": card_list
+        "id": new_card.card_id,
+        "message": new_card.message,
+        "likes_count": new_card.likes_count,
+        "board_id": new_board.id
     }), 201
 
 @boards_bp.route('/<board_id>', methods= ["GET"])
