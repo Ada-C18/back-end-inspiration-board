@@ -81,19 +81,19 @@ def get_one_card(card_id):
     chosen_card = get_model_from_id(Card, card_id) 
     return jsonify({"card": chosen_card.to_dict()}), 200
 
-@card_bp.route('', methods=['POST'])
-def create_one_card():
-    request_body = request.get_json()
-
-    try:
-        new_card = Card(message = request_body["message"], like_count = request_body["like_count"])
-    except KeyError:
-        return jsonify({"details": "Invalid data"}), 400
-
-    db.session.add(new_card)
-    db.session.commit()
-
-    return jsonify({"card": new_card.to_dict()}), 201
+# @card_bp.route('', methods=['POST'])
+# def create_one_card():
+#     request_body = request.get_json()
+# 
+#     try:
+#         new_card = Card(message = request_body["message"], like_count = request_body["like_count"])
+#     except KeyError:
+#         return jsonify({"details": "Invalid data"}), 400
+# 
+#     db.session.add(new_card)
+#     db.session.commit()
+# 
+#     return jsonify({"card": new_card.to_dict()}), 201
 
 @card_bp.route('/<card_id>', methods=['PUT'])
 def update_one_card(card_id):
@@ -131,20 +131,17 @@ def create_cards_for_board(board_id):
     matching_board = Board.query.get(board_id)
 
     request_body = request.get_json()
-    cards_ids = request_body["cards_ids"]
+    try:
+        new_card = Card(message = request_body["message"], 
+                        like_count = request_body["like_count"],
+                        board_id = board_id)
+    except KeyError:
+        return jsonify({"details": "Invalid data"}), 400
 
-    cards = matching_board.get_card_list()
+    db.session.add(new_card)
+    db.session.commit()
 
-    boards_cards_id = [x["id"] for x in cards]
-
-    for cid in cards_ids:
-        if cid not in boards_cards_id:
-            new_card = Card(message="", like_count=0, board_id=matching_board.board_id)
-
-            db.session.add(new_card)
-            db.session.commit()
-
-    return jsonify({"id":matching_board.board_id, "cards_ids":cards_ids}), 200
+    return jsonify({"card": new_card.to_dict()}), 201
 
 
 # helper function
