@@ -25,6 +25,25 @@ def test_create_board(client):
             "owner": "Cristal",
         }
     }
-    # new_board = Board.query.get(1)
-    # assert new_board
-    # asser new_board.
+
+
+def test_duplicate_board_returns_400(client):
+    # Act
+    response = client.post(
+        "/board",
+        json={
+            "title": "Inspirational Quotes",
+            "owner": "Cristal",
+        },
+    )
+    duplicate_response = client.post(
+        "/board",
+        json={
+            "title": "Inspirational Quotes",
+            "owner": "Cristal",
+        },
+    )
+    response_body = duplicate_response.get_json()
+
+    # Assert
+    assert duplicate_response.status_code == 400
