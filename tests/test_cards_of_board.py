@@ -46,7 +46,7 @@ def test_get_cards_for_specific_board(client, one_card_belongs_to_one_board):
             "message" : "You've got this!",
             "likes_count": 0,
             "card_id": 1,
-            "board_id":1
+            
         }]
     }
 

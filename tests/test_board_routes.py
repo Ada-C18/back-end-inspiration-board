@@ -23,7 +23,7 @@ def test_get_boards_one_saved_board(client, one_card_belongs_to_one_board):
         'title': 'Get Healthy',
         'owner': 'Isabella',
         'cards': [{
-                'board_id': 1, 
+                
                 'card_id': 1, 
                 'likes_count': 0, 
                 'message': "You've got this!"}]

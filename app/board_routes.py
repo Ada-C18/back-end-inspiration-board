@@ -25,7 +25,7 @@ def add_cards_to_board(board):
             "message": card.message,
             "likes_count": card.likes_count,
             "card_id": card.card_id,
-            "board_id": card.board_id,
+            
         })
     board_dict = board.to_dict()
     board_dict["cards"] = all_cards
