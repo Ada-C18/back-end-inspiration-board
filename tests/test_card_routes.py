@@ -79,19 +79,17 @@ def test_update_card_likes_count(client, one_card):
         "card": {
             "card_id": 1,
             "message": "You've got this!",
-            "likes_count":2
+            "likes_count":1
         }
     }
     card = Card.query.get(1)
     assert card.message == "You've got this!"
-    assert card.likes_count == 2
+    assert card.likes_count == 1
 
 #@pytest.mark.skip(reason="No way to test this feature yet")
 def test_update_card_not_found(client):
 
-    response = client.patch("/cards/1", json={
-        "likes_count": 2
-    })
+    response = client.patch("/cards/1")
     response_body = response.get_json()
 
 
