@@ -3,6 +3,8 @@ class Board(db.Model):
     board_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
     owner = db.Column(db.String)
+    cards = db.relationship("Card", back_populates= "cards")
+    # not sure if we need cards here
     # owner = db.relationship("Task", back_populates="goal")
 
     def to_dict(self):
