@@ -6,17 +6,17 @@ from app.models.card import Card
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
-# Board validation helper function
-def validate_id(cls, id):
-    try:
-        id = int(id)
-    except ValueError:
-        abort(make_response({"message":f"{cls.__name__} #{id} is invalid"}, 400))
 
-    model = cls.query.get(id)
+def validate_id(cls, model_id):
+    try:
+        model_id = int(model_id)
+    except ValueError:
+        abort(make_response({"message":f"{cls.__name__} #{model_id} is invalid"}, 400))
+
+    model = cls.query.get(model_id)
 
     if not model:
-        abort(make_response({"message":f"{cls.__name__} #{id} not found"}, 404))
+        abort(make_response({"message":f"{cls.__name__} #{model_id} not found"}, 404))
 
     return model
 
@@ -59,15 +59,14 @@ def delete_board(id):
     db.session.delete(board)
     db.session.commit()
 
-    return make_response(f'Board #{id} "{board.title}" was successfully deleted', 200)
+    return make_response(jsonify({"details": f'Board #{id} "{board.title}" was successfully deleted'}), 200)
 
 
 # <-----------------------Cards--------------------->
 
-
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def create_a_card(board_id):
-    board = validate_id(Board, board_id)
+    validate_id(Board, board_id)
     request_body = request.get_json()
 
     try:
@@ -80,7 +79,7 @@ def create_a_card(board_id):
     db.session.add(new_card)
     db.session.commit()
 
-    return make_response(f"Card {new_card.id} for Board {new_card.board_id} was successfully created", 201)
+    return jsonify(new_card.to_dict()), 201
 
 
 @boards_bp.route("/<board_id>/cards/<card_id>", methods=["PATCH"])
