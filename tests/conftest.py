@@ -31,17 +31,14 @@ def three_boards(app):
             Board(
                 title="Inspirational Quotes",
                 owner="Cristal",
-                # cards=[],
             ),
             Board(
                 title="To-do",
                 owner="Annie",
-                # cards=[],
             ),
             Board(
                 title="Thoughts",
                 owner="Cristal",
-                # cards=[],
             ),
         ]
     )
