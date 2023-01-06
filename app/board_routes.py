@@ -51,18 +51,22 @@ def handle_board(board_id):
         return make_response(f"Board {board_id} not found.", 404)
 
     if request.method == "GET":
-        cards = []
-        for card in board.cards:
-            single_card = {
-                "message": card.message,
-            }
-            cards.append(single_card)
-        return make_response({
-            "id": board.board_id,
-            "title": board.title,
-            "owner": board.owner,
-            "cards": cards
-        })
+        # cards = []
+        # for card in board.cards:
+        #     single_card = {
+        #         "message": card.message,
+        #     }
+        #     cards.append(single_card)
+        # return make_response({
+        #     "id": board.board_id,
+        #     "title": board.title,
+        #     "owner": board.owner,
+        #     "cards": cards
+        # })
+        board = Board.query.get(board_id)
+
+        return {"board": board.to_dict()}
+
     elif request.method == "PUT":
         form_data = request.get_json()
         board.title = form_data["title"]
