@@ -6,6 +6,30 @@ from app.validate_data import validate_model
 
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
+
+
+#======================================
+#        GET ALL CARDS
+#======================================
+
+
+@cards_bp.route("", methods=["GET"])
+def read_all_cards():
+
+    cards = Card.query.all()
+
+    cards_response = []  # returns empty list if no cards
+
+    for card in cards:
+        cards_response.append({
+            "card_id": card.card_id,
+            "message": card.message,
+            "likes_count": card.likes_count,
+            "board_id": card.board_id
+        })
+
+    return jsonify(cards_response), 200
+
 # ===================================
 #        DELETE ONE CARD BY ID
 # ===================================
