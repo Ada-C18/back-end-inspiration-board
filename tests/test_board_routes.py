@@ -9,11 +9,39 @@ def test_get_all_boards_with_no_records(client):
 def test_get_all_boards_with_three_records(client, three_boards):
     pass
 
-def test_get_one_board_with_missing_record(client, three_boards):
-    pass
+def test_get_one_board_with_invalid_id(client, three_boards):
+    # Act
+    response = client.get("/boards/xxx")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {"message": "Board xxx has an invalid id"}
+
+def test_get_one_board_with_wrong_id(client, three_boards):
+    # Act
+    response = client.get("/boards/5")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {"message": "Board 5 not found"}
 
 def test_get_one_board(client, three_boards):
-    pass
+    # Act
+    response = client.get("/boards/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert "board" in response_body
+    assert response_body == {
+        "board": {
+            "id": 1,
+            "title": "Reminders",
+            "owner": "Thao"
+        }
+    }
 
 def test_create_one_board(client): # Thao check nesting of response
     # Act
