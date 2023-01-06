@@ -31,6 +31,8 @@ def create_app():
     # app.register_blueprint(example_bp)
     from .routes.board_routes import boards_bp
     app.register_blueprint(boards_bp)
+    from .routes.card_routes import cards_bp
+    app.register_blueprint(cards_bp)
 
     CORS(app)
     return app
