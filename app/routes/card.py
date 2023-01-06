@@ -40,8 +40,6 @@ def create_card():
 
 @card_bp.route("", methods=["GET"])
 def get_all_cards():
-    #filter based off on parameter, optional
-    # DO WE FILTER HERE OR FRONT END FOR THE ADDITIONAL FEATURE
     sort_at_query = request.args.get("sort")
 
     if sort_at_query == "asc":
@@ -73,19 +71,5 @@ def delete_card (card_id):
     db.session.delete(card)
     db.session.commit()
 
-    return jsonify({"details":f"Card {card.card_id} \"{card.message}\" successfully deleted"}),200
-
-# IF WE WANT TIME POSTED
-# @card_bp.route("/<card_id>/mark_complete",methods = ['PATCH'])
-# def mark_complete_on_incomplete_task(card_id):
-#     card = validate_card_id(card_id)
-
-#     datetime_object = datetime.datetime.now()
-#     card.completed_at = datetime_object
-#     card.is_complete = True
-#     card_dict = card.to_dict()
-#     db.session.commit()
-    
-#     return jsonify({"card":card_dict})
-
+    return jsonify({"details":f"Card {card.card_id} '{card.message}' successfully deleted"}),200
 
