@@ -12,11 +12,12 @@ def test_post_card_to_board(client, one_board, one_card):
 
     # Assert
     assert response.status_code == 201
-    assert "board_id" in response_body
+    
 
     assert response_body == {
-        "board_id":1,
-        "message": "Everybody",
+    "card_id": 2,
+    "likes_count": 0,
+    "message": "Everybody"
 
     }
 

@@ -92,7 +92,7 @@ def create_cards_for_specific_board(board_id):
 
     card_dict = new_card.to_dict()
     card_dict["board_id"] = new_card.board_id
-    return {"message": new_card.message, "board_id": new_card.board_id}, 201
+    return new_card.to_dict(), 201
 
 @board_bp.route("/<board_id>/cards", methods=["GET"])
 def get_all_cards_for_specific_board(board_id):
@@ -101,6 +101,10 @@ def get_all_cards_for_specific_board(board_id):
     return add_cards_to_board(board)
 
 
-
+{
+            "card_id": 1,
+            "likes_count": 0,
+            "message": "Make a Green Smoothie"
+        }
 
 
