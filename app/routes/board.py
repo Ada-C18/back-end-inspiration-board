@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response, abort
+from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.routes.routes_helper import validate_model, validate_input_data, error_message
 from app.models.board import Board
@@ -30,9 +30,10 @@ def get_cards_by_board_id(id):
     if not board:
         return make_response({"details": "Id not found"}, 404)
 
-    cards = [Card.to_dict(card) for card in board.cards]
+    cards = Card.query.filter_by(board=board)
 
-    return make_response({"id": Board.id, "title": board.title, "cards": cards})
+    return jsonify([{"message": card.message, "like_count": card.like_count, "card_id": card.card_id, "board_id": card.board_id} for card in cards]), 200
+
 
 
 # create one card under board id - /boards/id/cards (POST)
