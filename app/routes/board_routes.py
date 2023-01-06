@@ -22,6 +22,18 @@ def get_all_boards():
         )
     return jsonify(boards_response)
 
+#GET endpoint to get one board
+@boards_bp.route("/<board_id>", methods = ["GET"])
+def get_one_board(board_id):
+    board = Board.query.get(board_id)
+    return make_response(jsonify(
+        {
+              "board_id": board.board_id,
+              "title": board.title,
+              "owner": board.owner  
+            }
+    ), 200)
+
 # POST create a new board
 @boards_bp.route("", methods = ["POST"])
 def create_board():
@@ -35,3 +47,12 @@ def create_board():
     db.session.commit()
 
     return make_response(jsonify({"board": new_board.title, "owner": new_board.owner}), 201)
+
+# DELETE route
+@boards_bp.route("/<board_id>", methods = ["DELETE"])
+def delete_board(board_id):
+    board = Board.query.get(board_id)
+    db.session.delete(board)
+    db.session.commit()
+
+    return make_response(jsonify({"msg": "board successfully deleted"}), 200)
