@@ -15,7 +15,6 @@ class Board(db.Model):
         )
 
 
-
     def to_dict(self):
         return {
             "id": self.board_id,

@@ -29,8 +29,22 @@ def delete_card(card_id):
 @cards_bp.route("/<card_id>/like", methods=["PUT"])
 def like_card(card_id):
     card = validate_model(Card, card_id)
+    request_body = request.get_json()
     card.likes_count += 1
     
     db.session.commit()
     
     return make_response("card liked", 200)
+
+###########################
+
+@cards_bp.route("/<card_id>/like", methods=["PUT"])
+def update_card(card_id):
+    card = validate_model(Card, card_id)
+    
+    request_body = request.get_json()
+    
+    card.message = request_body["message"]
+    card.likes_count = request_body["likes_count"]
+    
+    
