@@ -3,7 +3,7 @@ from app.models.card import Card
 from app.models.board import Board
 
 #@pytest.mark.skip(reason="No way to test this feature yet")
-def test_post_card_ids_to_board(client, one_board, one_card):
+def test_post_card_to_board(client, one_board, one_card):
     # Act
     response = client.post("/boards/1/cards", json={
         "message": "Everybody"
@@ -22,6 +22,13 @@ def test_post_card_ids_to_board(client, one_board, one_card):
 
     # Check that Goal was updated in the db
     assert len(Board.query.get(1).cards) == 1
+def test_post_cards_to_board_message_too_long(client, one_board):
+    response = client.post("/boards/1/cards", json={
+        "message": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeverybody"
+    })
+    response_body = response.get_json()
+    assert response.status_code == 400
+    assert response_body ==  {"details": "Invalid data"}
 
 def test_get_cards_for_specific_board(client, one_card_belongs_to_one_board):
 

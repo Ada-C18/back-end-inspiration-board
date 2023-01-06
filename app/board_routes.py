@@ -83,12 +83,13 @@ def create_cards_for_specific_board(board_id):
 
         new_card = Card.from_dict(request_body)
         new_card.board_id = board_id
+        db.session.add(new_card)
+        db.session.commit()
 
     except:
         abort(make_response({"details": "Invalid data"}, 400 ))
 
-    db.session.add(new_card)
-    db.session.commit()
+
     card_dict = new_card.to_dict()
     card_dict["board_id"] = new_card.board_id
     return {"message": new_card.message, "board_id": new_card.board_id}, 201
