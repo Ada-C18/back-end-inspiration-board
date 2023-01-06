@@ -35,7 +35,7 @@ def delete_card(card_id):
     db.session.commit()
     return make_response({"details": f"Card {card_id} successfully deleted"}), 200
 
-@cards_bp.route("/<card_id>/like", methods=["PATCH"])
+@cards_bp.route("/<card_id>/like", methods=["PUT"])
 def like_card(card_id):
     card = validate_cards(card_id)
     card.like_count += 1
@@ -44,3 +44,4 @@ def like_card(card_id):
     response_body= {}
     response_body['card']= card.to_dict()
     return jsonify(response_body), 200
+

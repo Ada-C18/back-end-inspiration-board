@@ -32,7 +32,7 @@ def create_board():
 
 #Get all board
 @boards_bp.route("", methods =["GET"])
-def read_all_board():
+def get_all_board():
     board_param = request.args
     boards = Board.query.all()
     boards_response = []
@@ -42,7 +42,7 @@ def read_all_board():
             "title": board.title,
             "owner": board.owner
         })
-    return jsonify(boards_response)
+    return jsonify(boards_response), 200
 
 #update board by id
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
@@ -58,14 +58,17 @@ def update_board_cards(board_id):
     return jsonify({
         "id": board.board_id,
         "card_ids": card_list
-    }), 200
-    
+    }), 201
 
-# get one board
+@boards_bp.route('/<board_id>', methods= ["GET"])
+def get_one_board(board_id):
+    board = validate_board(board_id)
+    return jsonify(board.to_dict()), 200
+
+
 @boards_bp.route("/<board_id>/cards", methods =["GET"])
 def get_cards_of_board(board_id):
     board = validate_board(board_id)
-
     card_dict = [card.to_dict() for card in board.cards]
     result = board.to_dict()
     result["cards"] = card_dict
