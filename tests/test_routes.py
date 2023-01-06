@@ -27,15 +27,8 @@ def test_create_board(client):
     }
 
 
-def test_duplicate_board_returns_400(client):
+def test_duplicate_board_returns_400(client, three_boards):
     # Act
-    response = client.post(
-        "/board",
-        json={
-            "title": "Inspirational Quotes",
-            "owner": "Cristal",
-        },
-    )
     duplicate_response = client.post(
         "/board",
         json={
@@ -47,6 +40,9 @@ def test_duplicate_board_returns_400(client):
 
     # Assert
     assert duplicate_response.status_code == 400
+    assert response_body == {
+        "details": "Board Inspirational Quotes already exists, please enter a unique title"
+    }
 
 
 def test_read_all_boards(client, three_boards):
@@ -123,5 +119,11 @@ def test_read_one_board(client, one_board):
     }
 
 
-# def test_read_one_board_invalid_title_returns_400(client):
-#     pass
+def test_read_one_board_invalid_title_returns_400(client, three_boards):
+    # Act
+    response = client.get("/board/Inspiration")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {"details": "Board Inspiration invalid"}
