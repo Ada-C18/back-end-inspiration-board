@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, abort, make_response
 from app import db
 from app.models.card import Card
 
-card_bp = Blueprint('card_bp', __name__, url_prefix='/card')
+cards_bp = Blueprint('cards_bp', __name__, url_prefix='/board/<board_id>/cards')
 
 def validate_card(card_id):
     # used to determine correct type for card search
@@ -19,7 +19,7 @@ def validate_card(card_id):
     
     return card
 
-@card_bp.route("", methods=["POST"])
+@cards_bp.route("", methods=["POST"])
 def create_card():
     request_body = request.get_json()
 
@@ -41,7 +41,7 @@ def create_card():
     
     return make_response({"card":new_card.to_dict()}, 201)
 
-@card_bp.route('',methods=['GET'])
+@cards_bp.route('',methods=['GET'])
 def get_cards():
     card_query = Card.query
 
@@ -58,7 +58,7 @@ def get_cards():
 
     return jsonify(cards_response)
 
-@card_bp.route("/<card_id>",methods=['DELETE'])
+@cards_bp.route("/<card_id>",methods=['DELETE'])
 def delete_card(card_id):
     card = validate_card(card_id)
     card = Card.query.get(card_id)
@@ -68,7 +68,7 @@ def delete_card(card_id):
 
     return make_response({"details": f'Card {card_id} successfully deleted'}, 200)
 
-@card_bp.route("/<card_id>", methods=['PATCH'])
+@cards_bp.route("/<card_id>", methods=['PATCH'])
 def update_card_like_count(card_id):
     card = validate_card(card_id)
     card = Card.query.get(card_id)
