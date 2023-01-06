@@ -88,29 +88,37 @@ def create_board():
 
 # Read ALL cards
 @board_bp.route("/<board_id>/cards", strict_slashes=False, methods=["GET"])
-def read_all_cards():
+def read_all_cards(board_id):
+    board = get_validate_model(Board, board_id)
+    # cards = Card.query.all()
+    cards_list = [card.to_dict() for card in board.cards]
+    # return make_response(jsonify(cards_list), 200)
 
-    cards = Card.query.all()
-    cards_list = [card.to_dict() for card in cards]
-    return make_response(jsonify(cards_list), 200)
+    return make_response(jsonify({
+            "board_id": board.board_id,
+            "name": board.name,
+            "owner": board.owner,
+            "cards": cards_list
+        }), 200)
 
 
 # Read one card
 @board_bp.route("/<board_id>/cards/<card_id>", strict_slashes=False, methods=["GET"])
-def read_one_board(card_id):
+def read_one_card(board_id, card_id):
     card = get_validate_model(Card, card_id)
+    board = get_validate_model(Board, board_id)
 
-    return make_response(jsonify({"board": card.to_dict()}), 200)
+    return make_response(jsonify({"card_id": card.to_dict()}), 200)     # board_id
 
 
 # Create card
 @board_bp.route("/<board_id>/cards/", strict_slashes=False, methods=["POST"])
-def create_card(card_id):
-    card = get_validate_model(Card, card_id)
+def create_card(board_id):
+    board = get_validate_model(Board, board_id)
     request_body = request.get_json()
-    card.tasks = [Card.query.get(card_id)
-                  for card_id in request_body["card_ids"]]
+
+    board.cards = [Card.query.get(card_id) for card_id in request_body["card_ids"]]
 
     db.session.commit()
 
-    return make_response(jsonify(dict(id=card.id, card_ids=[card.id for card in card.tasks])), 200)
+    return make_response(jsonify(dict(board_id=board.board_id, card_ids=[card.id for card in board.cards])), 200)   # 201

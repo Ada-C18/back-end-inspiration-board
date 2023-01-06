@@ -26,7 +26,7 @@ def get_validate_model(cls, model_id):
 
 #Delete Card
 
-@card_bp.route("/<board_id>", strict_slashes=False, methods=["DELETE"])
+@card_bp.route("/<card_id>", strict_slashes=False, methods=["DELETE"])
 def delete_card(card_id):
     card = get_validate_model(Card, card_id)
 
@@ -38,12 +38,13 @@ def delete_card(card_id):
     return make_response(jsonify(response_body), 200)
 
 # Update Card
-@card_bp.route("/<board_id>", strict_slashes=False, methods=["PUT"])
+@card_bp.route("/<card_id>", strict_slashes=False, methods=["PUT"])
 def update_card(card_id):
     card = get_validate_model(Card, card_id)
 
     request_body = request.get_json()
     card.message = request_body["message"]
+    card.likes = request_body["likes"]
 
     db.session.commit()
 
@@ -52,5 +53,5 @@ def update_card(card_id):
 
 
 #increase likes
-def increase_likes():
+# def increase_likes():
 

@@ -72,17 +72,17 @@ def test_delete_board_not_found(client):
 
 
 #Card TESTS
-@pytest.mark.skip
-def test_create_card():
+# @pytest.mark.skip
+# def test_create_card():
 
-@pytest.mark.skip
-def test_get_all_card():
+# @pytest.mark.skip
+# def test_get_all_card():
 
-@pytest.mark.skip
-def test_get_one_card():
+# @pytest.mark.skip
+# def test_get_one_card():
 
-@pytest.mark.skip
-def test_get_card_no_saved_card(client):
+# @pytest.mark.skip
+# def test_get_card_no_saved_card(client):
     
-@pytest.mark.skip
-def test_delete_card():
+# @pytest.mark.skip
+# def test_delete_card():
