@@ -10,17 +10,16 @@ class Card(db.Model):
         card_dict =  {
             'id': self.card_id,
             'message': self.message,
-            'is_like': True if self.likes_count else False,
-            'board_id': self.board_id
+            'is_like': True if self.likes_count else False
         }
         if self.board_id:
             card_dict["board_id"] = self.board_id
         return card_dict
     
-    def one_card_in_dict(self):
-        result = {}
-        result["card"] = self.to_dict()
-        return result
+    # def one_card_in_dict(self):
+    #     result = {}
+    #     result["card"] = self.to_dict()
+    #     return result
 
    
 
