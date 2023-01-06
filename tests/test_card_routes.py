@@ -2,10 +2,11 @@ from werkzeug.exceptions import HTTPException
 from app.models.card import Card
 import pytest
 
-
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_delete_one_card(client):
     pass
 
+@pytest.mark.skip(reason="No way to test this feature yet")
 def test_update_one_card_likes(client, one_card): # Thao
     # Act
     response = client.put("/cards/1/like", json={
