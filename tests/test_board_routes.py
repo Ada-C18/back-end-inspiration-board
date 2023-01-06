@@ -40,7 +40,8 @@ def test_get_specific_board(client, one_board):
         "board" : {
             "board_id": 1,
             "title": "Get Healthy",
-            "owner": "Isabella"
+            "owner": "Isabella",
+            "cards": []
         }
     }
 def test_get_board_not_found(client):

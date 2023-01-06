@@ -44,7 +44,7 @@ def get_all_boards():
 @board_bp.route("/<board_id>", methods=["GET"])
 def get_one_board(board_id):
     board = validate_model(Board, board_id)
-    return {"board": board.to_dict()}, 200
+    return {"board": add_cards_to_board(board)}, 200
 
 
 @board_bp.route("", methods=["POST"])
