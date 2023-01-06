@@ -39,11 +39,9 @@ def read_all_cards():
 def delete_card(card_id):
     card = validate_model(Card, card_id)
 
-    # update database?
-    # db.session.delete(card)
-    # db.session.commit()
+    db.session.delete(card)
+    db.session.commit()
 
-    # return delete message to user
     delete_message = f'Card {card_id} successfully deleted'
     return delete_message, 200
 
