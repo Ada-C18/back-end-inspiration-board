@@ -94,6 +94,11 @@ def create_card(board_id):
     board_query = Board.query.get(board_id)
 
     request_body = request.get_json()
+
+    if "message" not in request_body: 
+        return make_response({"details": "Invalid data"
+    }, 400)
+
     new_card = Card(
         message=request_body["message"],
         board = board_query
