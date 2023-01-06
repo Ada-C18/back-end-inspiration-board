@@ -47,3 +47,33 @@ def test_duplicate_board_returns_400(client):
 
     # Assert
     assert duplicate_response.status_code == 400
+
+
+def test_read_all_boards(client, three_boards):
+    # Act
+    response = client.get("/board")
+    response_body = response.get_json()
+    
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 3
+    assert response_body == [
+        {
+            "id": 1,
+            "title": "Inspirational Quotes",
+            "owner": "Cristal",
+            # cards=[],
+        },
+        {
+            "id": 2,
+            "title": "To-do",
+            "owner": "Annie",
+            # cards=[],
+        },
+        {
+            "id": 3,
+            "title": "Thoughts",
+            "owner": "Cristal",
+            # cards=[],
+        },
+    ]

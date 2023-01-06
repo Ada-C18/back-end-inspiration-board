@@ -1,6 +1,7 @@
 import pytest
 from app import create_app
 from app import db
+from app.models.board import Board
 
 
 @pytest.fixture
@@ -20,3 +21,24 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def three_boards(app):
+    db.session.add_all([
+        Board(
+            title="Inspirational Quotes",
+            owner="Cristal",
+            # cards=[],
+        ),
+        Board(
+            title="To-do",
+            owner="Annie",
+            # cards=[],
+        ),
+        Board(
+            title="Thoughts",
+            owner="Cristal",
+            # cards=[],
+        ),
+    ])
+    db.session.commit()
