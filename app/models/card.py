@@ -17,7 +17,8 @@ class Card(db.Model):
         card_dict = {
             "card_id" : self.card_id,
             "message" : self.message,
-            "likes_count" : self.likes_count
+            "likes_count" : self.likes_count,
+            "board_id": self.board_id
         }
         if self.card_id:
             card_dict["card_id"] = self.card_id
