@@ -29,21 +29,25 @@ def get_cards_by_board_id(id):
     board = validate_model(Board, id)
     if not board:
         return make_response({"details": "Id not found"}, 404)
+    
+    cards = Card.query.filter_by(board=board)
 
-    cards = Card.query.all()
-    cards_response = []
-    for card in cards:
-        if card.board_id == board.id: 
-            cards_response.append(
-                { 
-                "card_id": card.id, 
-                "message": card.message, 
-                "likes_count": card.likes_count,
-                "board_id": card.board_id
-                }
-            )
+    return jsonify([{"message": card.message, "like_count": card.likes_count, "card_id": card.id, "board_id": card.board_id} for card in cards]), 200
 
-    return jsonify(cards_response)
+    # cards = Card.query.all()
+    # cards_response = []
+    # for card in cards:
+    #     if card.board_id == board.id: 
+    #         cards_response.append(
+    #             { 
+    #             "card_id": card.id, 
+    #             "message": card.message, 
+    #             "likes_count": card.likes_count,
+    #             "board_id": card.board_id
+    #             }
+    #         )
+
+    # return jsonify(cards_response)
  
 
 # create one card under board id - /boards/id/cards (POST)
