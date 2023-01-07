@@ -28,7 +28,7 @@ def validate_model(cls, model_id):
 ################################################################
 ###################### BOARD ROUTES ############################
 
-#create a post route
+# create a post route //works!
 @boards_bp.route("", methods = ["POST"])
 def create_board():
     request_body = request.get_json()
@@ -43,14 +43,14 @@ def create_board():
 
     return make_response(new_board.to_dict_boards(), 201)
 
-# create a get one board route 
+# create a get one board route //works!
 @boards_bp.route("/<board_id>", methods = ["GET"])
 def get_one_board(board_id):
     board = validate_model(Board, board_id)
 
     return jsonify(board.to_dict_boards(), 200)
 
-# create get all route
+# create get all route //works!
 @boards_bp.route("", methods = ["GET"])
 def get_all_boards():
     boards_response = []
@@ -90,7 +90,7 @@ def delete_board():
 #     db.session.commit()
 #     return make_response(new_card.to_dict_cards(), 201)
 
-# create a post route to assign card to board
+# create a post route to assign card to board //works!
 
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def assign_card_to_board(board_id):
@@ -127,7 +127,7 @@ def assign_card_to_board(board_id):
 
     
 
-# create a get route to see all card of a board
+# create a get route to see all card of a board //works!
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def gets_cards_of_one_board(board_id):
@@ -184,8 +184,16 @@ def delete_card(card_id):
 
 
 
-# make a patch route to increase likes count
+# make a patch route to increase likes count //works!
+@cards_bp.route("/<card_id>", methods=["PATCH"])
+def add_likes(card_id):
+    card = validate_model(Card, card_id)
 
+    card.likes += 1
+
+    db.session.commit()
+
+    return make_response(jsonify({"id":card.card_id,"likes": card.likes})),200 
 
 
 
