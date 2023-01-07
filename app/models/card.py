@@ -5,7 +5,7 @@ class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     message = db.Column(db.String, nullable=False)
     likes_count = db.Column(db.Integer)
-    board_id = db.Column(db.Integer, db.ForeignKey('board.id'), nullable=False)
+    board_id = db.Column(db.Integer, db.ForeignKey('board.id'))
     board = db.relationship("Board", back_populates='cards')
 
     
@@ -23,7 +23,7 @@ class Card(db.Model):
         }
 
     
-    def update(self,req_body):
+    def update(self, req_body):
         try:
             self.message = req_body["message"]
         except KeyError:

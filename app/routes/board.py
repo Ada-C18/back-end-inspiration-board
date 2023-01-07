@@ -30,11 +30,21 @@ def get_cards_by_board_id(id):
     if not board:
         return make_response({"details": "Id not found"}, 404)
 
-    cards = Card.query.filter_by(board=board)
+    cards = Card.query.all()
+    cards_response = []
+    for card in cards:
+        if card.board_id == board.id: 
+            cards_response.append(
+                { 
+                "card_id": card.id, 
+                "message": card.message, 
+                "likes_count": card.likes_count,
+                "board_id": card.board_id
+                }
+            )
 
-    return jsonify([{"message": card.message, "like_count": card.like_count, "card_id": card.card_id, "board_id": card.board_id} for card in cards]), 200
-
-
+    return jsonify(cards_response)
+ 
 
 # create one card under board id - /boards/id/cards (POST)
 @boards_bp.route("/<id>/cards", methods=["POST"])
@@ -48,7 +58,7 @@ def create_card(id):
     db.session.add(new_card)
     db.session.commit()
 
-    return make_response({"card": new_card.to_json()}, 201)
+    return make_response({"card": new_card.to_dict()}, 201)
 
 
 # create a board - /boards (POST) 
@@ -85,5 +95,5 @@ def delete_board(id):
     db.session.delete(board)
     db.session.commit()
 
-    return(make_response({"details": f"board {id} \"{title}\" successfully deleted"}), 200)
+    return(make_response({f'board {id} "{title}" successfully deleted'}), 200)
 
