@@ -1,8 +1,8 @@
-"""recreating migrations folder
+"""recreated migrations folder
 
-Revision ID: 82b1f651d906
+Revision ID: 5944b7878d5d
 Revises: 
-Create Date: 2023-01-07 15:19:01.754801
+Create Date: 2023-01-07 16:30:24.790546
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '82b1f651d906'
+revision = '5944b7878d5d'
 down_revision = None
 branch_labels = None
 depends_on = None
