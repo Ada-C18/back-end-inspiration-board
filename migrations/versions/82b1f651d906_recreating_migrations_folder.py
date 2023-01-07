@@ -1,8 +1,8 @@
-"""empty message
+"""recreating migrations folder
 
-Revision ID: 9df41d638ec5
+Revision ID: 82b1f651d906
 Revises: 
-Create Date: 2023-01-05 17:55:15.135389
+Create Date: 2023-01-07 15:19:01.754801
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9df41d638ec5'
+revision = '82b1f651d906'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,7 +28,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('message', sa.String(), nullable=False),
     sa.Column('likes_count', sa.Integer(), nullable=True),
-    sa.Column('board_id', sa.Integer(), nullable=False),
+    sa.Column('board_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['board_id'], ['board.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
