@@ -95,5 +95,5 @@ def delete_board(id):
     db.session.delete(board)
     db.session.commit()
 
-    return(make_response({f'board {id} "{title}" successfully deleted'}), 200)
+    return(make_response({"details": f"Board {id} {title} successfully deleted"}), 200)
 
