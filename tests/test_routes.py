@@ -64,7 +64,7 @@ def test_create_board(client):
     }
 
 
-def test_create_board_missing_title(client):
+def test_create_board_missing_data(client):
     response = client.post("/boards", json={})
     response_body = response.get_json()
 
@@ -125,6 +125,7 @@ def test_delete_board_not_found(client):
         "message": "Board 1 not found"}
     assert Board.query.all() == []
 
+
 @pytest.mark.skip(reason="likes count is returning None instead of default 0")
 def test_get_all_cards_for_specific_board(client, one_card_belongs_to_one_board):
     response = client.get("/boards/1/cards")
@@ -149,7 +150,7 @@ def test_get_cards_for_specific_board_without_cards(client, one_board):
     assert response_body == []
 
 
-def test_get_card_for_non_existent_board(client):
+def test_get_card_for_missing_board(client):
     response = client.get("/boards/1/cards")
     response_body = response.get_json()
 

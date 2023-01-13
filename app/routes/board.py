@@ -32,21 +32,6 @@ def get_cards_by_board_id(id):
 
     return jsonify([{"message": card.message, "likes_count": card.likes_count, "card_id": card.id, "board_id": card.board_id} for card in cards]), 200
 
-    # cards = Card.query.all()
-    # cards_response = []
-    # for card in cards:
-    #     if card.board_id == board.id: 
-    #         cards_response.append(
-    #             { 
-    #             "card_id": card.id, 
-    #             "message": card.message, 
-    #             "likes_count": card.likes_count,
-    #             "board_id": card.board_id
-    #             }
-    #         )
-
-    # return jsonify(cards_response)
-
 
 # create one card under board id - /boards/id/cards 
 @boards_bp.route("/<id>/cards", methods=["POST"])
