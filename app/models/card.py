@@ -10,8 +10,8 @@ class Card(db.Model):
 
     
     @classmethod
-    def from_dict(cls, board_id, data_dict):
-        return cls(message=data_dict["message"], likes_count=0, board_id=board_id)
+    def from_dict(cls, board_id, request_body):
+        return cls(message=request_body["message"], likes_count=0, board_id=board_id)
 
     def to_dict(self):
         return {

@@ -18,9 +18,9 @@ def validate_model(cls, model_id):
     return model
 
 
-def validate_input_data(cls, data_dict):
+def validate_input_data(cls, request_body):
     try:
-        return cls.from_dict(data_dict)
+        return cls.from_dict(request_body)
     except KeyError:
         abort(make_response(jsonify(dict(details="Invalid data")), 400))
 
