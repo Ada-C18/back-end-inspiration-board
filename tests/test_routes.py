@@ -45,4 +45,31 @@ def test_get_board_not_found(client):
     assert response_body == {
         "message": "Board 1 not found"}
 
+def test_create_board(client):
+    response = client.post("/boards", json={
+        "title": "A New Board",
+        "owner": "Andrea",
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert "board" in response_body
+    assert response_body == {
+        "board": {
+            "id": 1,
+            "title": "A New Board",
+            "owner": "Andrea",
+        }
+    }
+
+
+def test_create_board_missing_title(client):
+    response = client.post("/boards", json={})
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert response_body == {
+        "details": "Invalid data"
+    }
+
 
