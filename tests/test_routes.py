@@ -105,4 +105,25 @@ def test_update_board_not_found(client):
         "message": "Board 1 not found"}
 
 
+def test_delete_board(client, one_board):
+    response = client.delete("/boards/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Board 1 A New Board successfully deleted"
+    }
+
+
+def test_delete_board_not_found(client):
+    response = client.delete("/boards/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {
+        "message": "Board 1 not found"}
+    assert Board.query.all() == []
+
+
 
