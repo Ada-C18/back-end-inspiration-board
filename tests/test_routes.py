@@ -190,6 +190,29 @@ def test_create_card_for_board_with_no_cards(client, one_board):
     }
 
 
+def test_delete_card_from_board(client, all_cards):
+    response = client.delete("cards/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Card 1 successfully deleted"
+    }
+    assert Card.query.get(1) == None
+
+
+def test_delete_card_from_board_card_not_found(client):
+    response = client.delete("cards/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {
+        "message": "Card 1 not found"}
+    assert Card.query.all() == []
+
+
+
 
 
 
