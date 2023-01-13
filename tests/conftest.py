@@ -66,6 +66,7 @@ def all_cards(app, one_board):
     board.cards.append(card1)
     board.cards.append(card2)
     board.cards.append(card3)
+    
     db.session.commit()
 
 

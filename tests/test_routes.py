@@ -1,6 +1,6 @@
+import pytest
 from app.models.board import Board
 from app.models.card import Card
-import pytest
 
 def test_get_all_board_with_no_records(client):
     response = client.get("/boards")
@@ -124,6 +124,40 @@ def test_delete_board_not_found(client):
     assert response_body == {
         "message": "Board 1 not found"}
     assert Board.query.all() == []
+
+@pytest.mark.skip(reason="no way of currently testing this")
+def test_get_all_cards_for_specific_board(client, one_card_belongs_to_one_board):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == [
+        {
+            "card_id": 1,
+            "message": "New card",
+            "likes_count": 0,
+            "board_id": 1,
+        }
+    ]
+
+
+def test_get_cards_for_specific_board_without_cards(client, one_board):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == []
+
+
+def test_get_card_for_non_existent_board(client):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {
+        "message": "Board 1 not found"}
+
+
 
 
 
