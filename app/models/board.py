@@ -26,7 +26,7 @@ class Board(db.Model):
             self.title = request_body["title"]
             self.owner = request_body["owner"]
         except KeyError:
-            abort(make_response(jsonify(dict(details="Invalid data")), 400))
+            abort(make_response(jsonify(dict(details="Please provide a title and owner")), 400))
 
     
 

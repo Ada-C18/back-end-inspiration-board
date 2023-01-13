@@ -27,8 +27,6 @@ def read_all_boards():
 @boards_bp.route("/<id>/cards", methods=["GET"])
 def get_cards_by_board_id(id):
     board = validate_model(Board, id)
-    if not board:
-        return make_response({"details": "Board not found"}, 404)
     
     cards = Card.query.filter_by(board=board)
 
@@ -54,9 +52,7 @@ def get_cards_by_board_id(id):
 @boards_bp.route("/<id>/cards", methods=["POST"])
 def create_card(id):
     request_body = request.get_json()
-    if "message" not in request_body:
-        error_message("Message not found", 400) 
-
+    
     new_card = Card.from_dict(id, request_body)
     
     db.session.add(new_card)

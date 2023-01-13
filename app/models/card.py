@@ -11,6 +11,9 @@ class Card(db.Model):
     
     @classmethod
     def from_dict(cls, board_id, request_body):
+        if "message" not in request_body:
+            return abort(make_response({"message": "Invalid data"}, 400))
+            
         return cls(message=request_body["message"], likes_count=0, board_id=board_id)
 
     def to_dict(self):
