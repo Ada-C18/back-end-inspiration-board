@@ -27,21 +27,9 @@ def client(app):
 @pytest.fixture
 def one_board(app):
     new_board = Board(
-        title="A new board", owner="Andrea")
+        title="A New Board", owner="Andrea")
     db.session.add(new_board)
     db.session.commit()
-
-
-# db.session.add_all([
-#         Task(
-#             title="Water the garden 🌷", description="", completed_at=None),
-#         Task(
-#             title="Answer forgotten email 📧", description="", completed_at=None),
-#         Task(
-#             title="Pay my outstanding tickets 😭", description="", completed_at=None)
-#     ])
-#     
-
 
 
 @pytest.fixture
@@ -50,17 +38,18 @@ def all_boards(app):
         Board(
             title="Test Board 1", owner="Jan"),
         Board(
-            title="Test Board 3", owner="Farrah"),
+            title="Test Board 2", owner="Farrah"),
         Board(
-            title="Test Board 2", owner="Maria")
+            title="Test Board 3", owner="Maria")
     ])
     db.session.commit()
+
 
 # Fixtures for Cards
 @pytest.fixture
 def one_card(app):
     new_card = Card(
-        message="New card")
+        message="New Card")
     db.session.add(new_card)
     db.session.commit()
 

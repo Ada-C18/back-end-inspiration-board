@@ -30,7 +30,7 @@ def get_cards_by_board_id(id):
     
     cards = Card.query.filter_by(board=board)
 
-    return jsonify([{"message": card.message, "like_count": card.likes_count, "card_id": card.id, "board_id": card.board_id} for card in cards]), 200
+    return jsonify([{"message": card.message, "likes_count": card.likes_count, "card_id": card.id, "board_id": card.board_id} for card in cards]), 200
 
     # cards = Card.query.all()
     # cards_response = []
