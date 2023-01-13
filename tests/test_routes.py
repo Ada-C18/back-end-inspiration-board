@@ -45,6 +45,7 @@ def test_get_board_not_found(client):
     assert response_body == {
         "message": "Board 1 not found"}
 
+
 def test_create_board(client):
     response = client.post("/boards", json={
         "title": "A New Board",
@@ -71,5 +72,37 @@ def test_create_board_missing_title(client):
     assert response_body == {
         "details": "Invalid data"
     }
+
+
+def test_update_board(client, one_board):
+    response = client.put("/boards/1", json={
+        "title": "Updated Board Title",
+        "owner": "Andrea"
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert "board" in response_body
+    assert response_body == {
+        "board": {
+            "id": 1,
+            "title": "Updated Board Title",
+            "owner": "Andrea"
+        }
+    }
+    board = Board.query.get(1)
+    assert board.title == "Updated Board Title"
+
+
+def test_update_board_not_found(client):
+    response = client.put("/boards/1", json={
+        "title": "Updated Board Title"
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {
+        "message": "Board 1 not found"}
+
 
 
