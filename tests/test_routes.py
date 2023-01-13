@@ -125,7 +125,7 @@ def test_delete_board_not_found(client):
         "message": "Board 1 not found"}
     assert Board.query.all() == []
 
-@pytest.mark.skip(reason="no way of currently testing this")
+@pytest.mark.skip(reason="likes count is returning None instead of default 0")
 def test_get_all_cards_for_specific_board(client, one_card_belongs_to_one_board):
     response = client.get("/boards/1/cards")
     response_body = response.get_json()
@@ -156,6 +156,42 @@ def test_get_card_for_non_existent_board(client):
     assert response.status_code == 404
     assert response_body == {
         "message": "Board 1 not found"}
+
+
+def test_create_card_for_board_with_cards(client, one_card_belongs_to_one_board):
+    response = client.post("/boards/1/cards", json={"message": "New Card"})
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == {
+        "card": {
+            "board": "A New Board",
+            "board_id": 1,
+            "id": 2,
+            "likes_count": 0,
+            "message": "New Card"
+        }
+    }
+
+
+def test_create_card_for_board_with_no_cards(client, one_board):
+    response = client.post("/boards/1/cards", json={"message": "New Card"})
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == {
+        "card": {
+            "board": "A New Board",
+            "board_id": 1,
+            "id": 1,
+            "likes_count": 0,
+            "message": "New Card"
+        }
+    }
+
+
+
+
 
 
 
