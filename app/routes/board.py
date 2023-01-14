@@ -55,4 +55,14 @@ def get_one_board(board_id):
     return jsonify(board_dict), 200
 
 
+@board_bp.route("/<board_id>",methods = ['DELETE'])
+def delete_board(board_id):
+    board = validate_board_id(board_id)
+
+    db.session.delete(board)
+
+    db.session.commit()
+
+    return jsonify({"details":f"Goal {board.board_id} \"{board.title}\" successfully deleted"}),200
+
 
