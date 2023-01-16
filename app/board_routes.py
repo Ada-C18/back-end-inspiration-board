@@ -41,20 +41,53 @@ def read_all_cards(board_id):
     return(jsonify(boards_response))
 
 
+
+
 @board_bp.route("/<board_id>/cards", methods=["POST"])
 def add_card_to_board(board_id):
     request_body = request.get_json()
-    if len(request_body) != 1:
+    message = request_body["message"]
+    if not message or len(request_body)!= 1:
         return {"details": "Invalid Data"}, 400
+    if len(message) > 40:
+        return {"details": "You have gone over the 40 character message limit."}
+    new_card = Card.from_dict_to_object(request_body)
+
+    db.session.add(new_card)
 
     board = validate_model(Board,board_id)
-    card_id = request_body["card_id"]
-
-    board.cards.append(Card.query.get(card_id))
+    board.cards.append(new_card)
     
     db.session.commit()
 
     return make_response(jsonify({'board_id': board.board_id, 'cards': [card.message for card in board.cards]}), 200)
+
+# old version below
+# @board_bp.route("/<board_id>/cards", methods=["POST"])
+# def add_card_to_board(board_id):
+#     request_body = request.get_json()
+#     if len(request_body) != 1:
+#         return {"details": "Invalid Data"}, 400
+
+#     board = validate_model(Board,board_id)
+#     card_id = request_body["card_id"]
+
+#     board.cards.append(Card.query.get(card_id))
+    
+#     db.session.commit()
+
+#     return make_response(jsonify({'board_id': board.board_id, 'cards': [card.message for card in board.cards]}), 200)
+
+# THIS CODE BELOW IS TAKEN FROM CARD_ROUTES AND MODIFIED
+@board_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
+def delete_card(board_id, card_id):
+    board = validate_model(Board, board_id)
+    card = validate_model(Card, card_id)
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return make_response(jsonify({"details": f"Card {card_id} '{card.message}' successfully deleted"}),200)
 
 @board_bp.route("/<id>", methods=["DELETE"])
 def delete_board(id):
@@ -63,4 +96,5 @@ def delete_board(id):
     db.session.delete(board)
     db.session.commit()
 
-    return make_response(jsonify({"details": f"Board {id} '{board.title}' successfully deleted"}),200)
+    return make_response(jsonify({"details": f"Board {id} '{board.title}' successfully deleted"}), 200)
+
