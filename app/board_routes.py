@@ -102,13 +102,13 @@ def read_all_cards(board_id):
         }), 200)
 
 
-# Read one card
-@board_bp.route("/<board_id>/cards/<card_id>", strict_slashes=False, methods=["GET"])
-def read_one_card(board_id, card_id):
-    card = get_validate_model(Card, card_id)
-    board = get_validate_model(Board, board_id)
+# # Read one card
+# @board_bp.route("/<board_id>/cards/<card_id>", strict_slashes=False, methods=["GET"])
+# def read_one_card(board_id, card_id):
+#     card = get_validate_model(Card, card_id)
+#     board = get_validate_model(Board, board_id)
 
-    return make_response(jsonify({"card_id": card.to_dict()}), 200)     # board_id
+#     return make_response(jsonify(card.to_dict()), 200)     # board_id
 
 
 # Create card
@@ -117,8 +117,15 @@ def create_card(board_id):
     board = get_validate_model(Board, board_id)
     request_body = request.get_json()
 
-    board.cards = [Card.query.get(card_id) for card_id in request_body["card_ids"]]
+    # board.cards = [Card.query.get(card_id) for card_id in request_body["card_ids"]]
+    new_card = Card(message=request_body["message"])
 
+    db.session.add(new_card)
     db.session.commit()
-
+    return make_response(jsonify({
+        "board_id": board_id,
+        "card_id": new_card.card_id,
+        "message": new_card.message,
+        "likes": new_card.likes
+    }), 200)
     return make_response(jsonify(dict(board_id=board.board_id, card_ids=[card.id for card in board.cards])), 200)   # 201

@@ -24,6 +24,13 @@ def get_validate_model(cls, model_id):
     return model
 
 
+# Read one card
+@card_bp.route("/<card_id>", strict_slashes=False, methods=["GET"])
+def read_one_card(card_id):
+    card = get_validate_model(Card, card_id)
+
+    return make_response(jsonify(card.to_dict()), 200)     # board_id
+
 #Delete Card
 
 @card_bp.route("/<card_id>", strict_slashes=False, methods=["DELETE"])
@@ -37,14 +44,14 @@ def delete_card(card_id):
         "message": f'Card #{card_id} was deleted.'}
     return make_response(jsonify(response_body), 200)
 
-# Update Card
-@card_bp.route("/<card_id>", strict_slashes=False, methods=["PUT"])
+# Update count of Likes Card
+@card_bp.route("/<card_id>", strict_slashes=False, methods=["PATCH"])
 def update_card(card_id):
     card = get_validate_model(Card, card_id)
 
     request_body = request.get_json()
-    card.message = request_body["message"]
-    card.likes = request_body["likes"]
+    # card.message = request_body["message"]
+    card.likes += 1
 
     db.session.commit()
 
