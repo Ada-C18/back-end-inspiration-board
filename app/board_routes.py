@@ -119,6 +119,7 @@ def create_card(board_id):
 
     # board.cards = [Card.query.get(card_id) for card_id in request_body["card_ids"]]
     new_card = Card(message=request_body["message"])
+    board.cards.append(new_card)
 
     db.session.add(new_card)
     db.session.commit()
