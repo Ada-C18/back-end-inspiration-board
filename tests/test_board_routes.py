@@ -14,21 +14,19 @@ def test_get_boards_no_saved_boards(client):
 
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
-def test_get_boards_one_saved_board(client, one_board): 
+def test_get_boards_one_saved_board(client, one_board):
     # Act
-    response = client.get("/tasks")
+    response = client.get("/boards/1")
     response_body = response.get_json()
 
 # Assert
     assert response.status_code == 200
-    assert len(response_body) == 1
-    assert response_body == [
-        {
-            'id': 1,
+    assert len(response_body) == 3
+    assert response_body == {
+            'owner': 'Sika',
             'title': 'Cool programming websites to checkout',
-            'owner': 'Sika'        
-        }
-    ]
+            'id': 1,
+    }
 
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
@@ -41,21 +39,14 @@ def test_create_board(client):
     
     # Assert
     assert response.status_code == 201
-    assert "board" in response_body
-    assert response_body == {
-        "board": {
-            "id": 1,
-            "title": "Cool programming websites to checkout" ,
-            "owner": "Sika"
-        }
-    }
+    assert "Cool programming websites to checkout" in response_body
     new_board = Board.query.first()
     assert new_board
     assert new_board.board_id == 1
-    assert new_board.title == "Cool programming websites to checkout" 
+    assert new_board.title == "Cool programming websites to checkout"
     assert new_board.owner == "Sika"
 
-    
+
 # @pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_board_failed(client):
     response = client.post("/boards", json={})
@@ -64,7 +55,7 @@ def test_create_board_failed(client):
     assert response.status_code == 400
     assert "details" in response_body
     assert response_body == {
-        "details": "unsuccessful post"
+        "details": 'Invalid data'
     }
     assert Board.query.all() == []
 
@@ -79,7 +70,7 @@ def test_delete_board(client, one_board):
     assert response.status_code == 200
     assert "details" in response_body
     assert response_body == {
-        "details": "Cool programming websites to checkout successfully deleted"
+        "details": 'Board 1 "Cool programming websites to checkout" successfully deleted'
     } 
     assert Board.query.get(1) == None
     
@@ -91,21 +82,47 @@ def test_delete_board_not_found(client):
 
     assert response.status_code == 404
     assert Board.query.all() == []
-    assert response_body == {"msg": "Board with id #1 not found"}
+    assert response_body == ''
 
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
-def test_get_one_card_from_one_board(client, one_card_belongs_to_one_board):
-    response = client.get("/boards/1")
+def test_get_cards_from_one_board(client, one_card_belongs_to_one_board):
+    # Act
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+    
+    # Assert
+    assert response.status_code == 200
+    assert "cards" in response_body
+    assert len(response_body["cards"]) == 1
+    assert response_body == {
+        "title": "Cool programming websites to checkout",
+        "owner": "Sika",
+        "cards": [
+            {
+                "card_id": 1,
+                "message": "https:/dev.to",
+                "likes_count": 0
+            }
+        ],
+        "id": 1
+    }
+
+
+# @pytest.mark.skip(reason="No way to test this feature yet")
+def test_get_card_includes_board_id(client, one_card_belongs_to_one_board):
+    response = client.get("/cards/1")
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert response_body["title"] == "Cool programming websites to checkout"
-    assert response_body["owner"] == "Sika"
-    assert response_body["id"] == 1
-    assert len(response_body["cards"]) == 1
-    assert {
-            "id": 1,
+    assert "card" in response_body
+    assert "board_id" in response_body["card"]
+    assert response_body == {
+        "card": {
+            "card_id": 1,
+            "board_id": 1,
             "message": "https:/dev.to",
             "likes_count": 0
-            } in response_body["cards"]
+
+        }
+    }

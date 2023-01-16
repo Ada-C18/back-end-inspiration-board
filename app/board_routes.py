@@ -18,6 +18,17 @@ def get_all_boards():
     return jsonify(board_titles), 200
 
 
+@boards_bp.route("/<id>",  methods=["GET"])
+def get_one_board(id):
+    board = Board.query.get(id)
+    return {
+        'owner': board.owner,
+        'title': board.title,
+        'id': board.board_id
+    }
+
+
+
 @boards_bp.route("",  methods=["POST"])
 def create_one_board():
     if not request.is_json:
@@ -41,6 +52,7 @@ def create_one_board():
     # rsp = {"board": new_board.get_dict()}
     # return jsonify(rsp), 201
     return jsonify(request_body["title"]), 201
+
 
 
 @boards_bp.route("/<id>/cards", methods=["POST"])

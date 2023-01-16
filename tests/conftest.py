@@ -23,6 +23,14 @@ def app():
 def client(app):
     return app.test_client()
 
+@pytest.fixture
+def one_card(app):
+    new_card = Card(
+        message="https:/dev.to"
+    )
+    db.session.add(new_card)
+    db.session.commit()
+
 
 @pytest.fixture
 def one_board(app):
