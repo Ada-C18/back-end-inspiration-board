@@ -75,3 +75,39 @@ def test_get_specific_board(client, four_boards):
         "title": "test board 3",
         "owner": "QP/Lin"
     }
+
+def test_get_one_board_not_found(client):
+    # Act
+    response = client.get("boards/5")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {"message": "5 not found"}
+
+
+def test_get_cards_no_saved_cards(client):
+    # Act
+    response = client.get("boards/1/cards")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == []
+
+
+@pytest.mark.skip
+def test_get_one_card(client):
+    # Act
+    response = client.get("boards/3/cards")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert "message" in response_body
+    assert response_body == {
+        "id": 1,
+        "message": "test card 1",
+        "likes_count": 0,
+        "board_id": 3
+    }

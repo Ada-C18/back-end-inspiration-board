@@ -23,7 +23,7 @@ def app():
 def client(app):
     return app.test_client()
 
-# This fixture creates a task and saves it in the database
+# This fixture creates a board and saves it in the database
 @pytest.fixture
 def one_board(app):
     new_board = Board(
@@ -33,7 +33,7 @@ def one_board(app):
     db.session.add(new_board)
     db.session.commit()
 
-#  This fixture creates four tasks and saves them in the database
+#  This fixture creates four boards and saves them in the database
 @pytest.fixture
 def four_boards(app):
     db.session.add_all([
@@ -44,9 +44,20 @@ def four_boards(app):
     ])
     db.session.commit()
 
-# This fixture creates a goal and saves it in the database
+# This fixture creates a card and saves it in the database
 @pytest.fixture
 def one_card(app):
-    new_card = Card(message="test to get the third card", likes_count=0)
+    new_card = Card(message="test to get one card", likes_count=0, board_id=3)
     db.session.add(new_card)
+    db.session.commit()
+
+
+# This fixture creates a board and a card
+# It associates the board and card, so that the
+# board has this card, and the card belongs to one board
+@pytest.fixture
+def one_card_belongs_to_one_board(app, one_board, one_card):
+    card = Card.query.first()
+    board = Board.query.first()
+    board.cards.append(card)
     db.session.commit()
