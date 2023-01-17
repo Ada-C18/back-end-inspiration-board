@@ -1,27 +1,10 @@
-from flask import Blueprint, request, jsonify, make_response, abort
-
+from flask import Blueprint, request, jsonify, make_response
+from app.helper_func import get_validate_model
 from app.models.board import Board
 from app.models.card import Card
 from app import db
 
-# example_bp = Blueprint('example_bp', __name__)
-
 card_bp = Blueprint ("card", __name__, url_prefix= "/cards")
-
-def get_validate_model(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except:
-        abort(make_response(
-            {"message": f"{cls.__name__} {model_id} invalid"}, 400))
-
-    model = cls.query.get(model_id)
-
-    if not model:
-        abort(make_response(
-            {"message": f"{cls.__name__} {model_id} not found"}, 404))
-
-    return model
 
 
 # Read one card

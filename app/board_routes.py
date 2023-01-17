@@ -1,25 +1,10 @@
-from flask import Blueprint, request, jsonify, make_response, abort
+from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.models.board import Board
 from app.models.card import Card
+from app.helper_func import get_validate_model, send_message_to_slack
 
 board_bp = Blueprint("board", __name__, url_prefix="/boards")
-
-
-def get_validate_model(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except:
-        abort(make_response(
-            {"message": f"{cls.__name__} {model_id} invalid"}, 400))
-
-    model = cls.query.get(model_id)
-
-    if not model:
-        abort(make_response(
-            {"message": f"{cls.__name__} {model_id} not found"}, 404))
-
-    return model
 
 
 # Read ALL boards
@@ -109,5 +94,6 @@ def create_card(board_id):
 
     db.session.add(new_card)
     db.session.commit()
-
+    send_message_to_slack(new_card)
     return make_response(jsonify(new_card.to_dict()), 201)
+
