@@ -38,7 +38,7 @@ def delete_card(card_id):
 @cards_bp.route("/<card_id>/like", methods=["PUT"])
 def like_card(card_id):
     card = validate_cards(card_id)
-    card.like_count += 1
+    card.likes_count += 1
     db.session.add(card)
     db.session.commit()
     response_body= {}

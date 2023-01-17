@@ -57,7 +57,7 @@ def get_all_board():
         boards = Board.query.order_by(desc(Board.title))
     else:
         boards = Board.query.all()
-    return jsonify([board.to_dict_board() for board in boards]), 200
+    return jsonify([board.to_dict() for board in boards]), 200
 
 
 # update board by id
@@ -71,10 +71,6 @@ def create_one_card(board_id):
     new_card = Card(message=request_body['message'],
                     board_id=int(board_id)
                     )
-    # for card_id in request_body["card_ids"]:
-    #     card = validate_cards(card_id)
-    #     card.board = board
-    #     card_list.append(card_id)
 
     db.session.add(new_card)
     db.session.commit()
@@ -83,7 +79,6 @@ def create_one_card(board_id):
         "id": new_card.card_id,
         "message": new_card.message,
         "likes_count": new_card.likes_count,
-        "board_id": new_board.id
     }), 201
 
 # helper function
@@ -105,17 +100,8 @@ def get_board_or_abort(board_id):
 @boards_bp.route('/<board_id>', methods=["GET"])
 def get_one_board(board_id):
     board = get_board_or_abort(board_id)
-    return jsonify({"board": board.to_dict_board()}), 200
+    return jsonify({"board": board.to_dict()}), 200
 
-
-@boards_bp.route("/<board_id>/cards", methods=["GET"])
-def get_cards_of_board(board_id):
-    board = validate_board(board_id)
-    card_dict = [card.to_dict() for card in board.cards]
-    result = board.to_dict()
-    result["cards"] = card_dict
-
-    return jsonify(result), 200
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def get_cards_by_board(board_id):

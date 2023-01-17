@@ -16,10 +16,10 @@ class Card(db.Model):
             card_dict["board_id"] = self.board_id
         return card_dict
     
-    # def one_card_in_dict(self):
-    #     result = {}
-    #     result["card"] = self.to_dict()
-    #     return result
+    def one_card_in_dict(self):
+        result = {}
+        result["card"] = self.to_dict()
+        return result
 
    
 
