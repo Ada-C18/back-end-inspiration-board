@@ -51,3 +51,17 @@ def increase_likes(card_id):
     db.session.commit()
 
     return make_response(jsonify({"card": card.to_dict()}), 200)
+
+
+@bp.route("", methods=["GET"])
+def read_all_cards():
+    sort_query = request.args.get("sort")
+    card_query = Card.query
+    if sort_query == "asc":
+        card_query = Card.query.order_by(Card.message.asc())
+    if sort_query == "likes":
+        card_query = Card.query.order_by(Card.likes_count.desc()) 
+    cards = card_query.order_by(Card.card_id).all() 
+    card_response = [card.to_dict() for card in cards]
+    
+    return jsonify(card_response), 200
