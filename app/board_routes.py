@@ -14,7 +14,8 @@ boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 @boards_bp.route("",  methods=["GET"])
 def get_all_boards():
     all_boards = Board.query.all()
-    board_titles = [{board.owner, board.title, board.board_id} for board in all_boards]
+    board_titles = [{"owner": board.owner, "title": board.title, "board_id": 
+        board.board_id} for board in all_boards]
     return jsonify(board_titles), 200
 
 
