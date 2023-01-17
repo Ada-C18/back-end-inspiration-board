@@ -12,7 +12,7 @@ class Board(db.Model):
     def to_dict(self):
         board_dict = {
             "id": self.id,
-            "date_created": self.dated_created,
+            "date_created": self.date_created,
             "title": self.title,
             "visible": self.visible,
             "owner": self.owner.name
@@ -22,9 +22,10 @@ class Board(db.Model):
     @classmethod
     def from_dict(cls, board_data):
         new_board = Board( 
-            date_created=board_data["date"],
+            date_created=board_data["date_created"],
             title=board_data["title"],
-            visible=board_data["visible"]
+            visible=board_data["visible"],
+            owner_id= board_data["owner_id"]
             )
 
         return new_board
