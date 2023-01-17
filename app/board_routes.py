@@ -98,12 +98,18 @@ def delete_card(board_id, card_id):
 
 @board_bp.route("", methods=["GET"])
 def get_all_boards():
+    title_sort_query = request.args.get("sort")
+    if title_sort_query == "asc":
+        tasks = Board.query.order_by(Board.title.asc())
+    elif title_sort_query == "desc":
+        tasks = Board.query.order_by(Board.title.desc())
+    else:
+        tasks = Board.query.all()
+
     response = []
-    boards = Board.query.all()
-    for board in boards:
-        response.append(board.to_dict())
+    for task in tasks:
+        response.append(task.to_dict())
     return jsonify(response)
-    # return response.to_dict()
 
 # READ ONE BOARD/ GET
 @board_bp.route("/<board_id>", methods=["GET"])
