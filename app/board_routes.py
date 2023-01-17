@@ -6,6 +6,7 @@ from app.models.card import Card
 # example_bp = Blueprint('example_bp', __name__)
 board_bp = Blueprint('board_bp', __name__, url_prefix='/board')
 
+# non-route functions
 def validate_board(board_id):
     try:
         board_id = int(board_id)
