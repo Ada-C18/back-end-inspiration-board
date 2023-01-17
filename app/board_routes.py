@@ -36,18 +36,6 @@ def create_board():
 
 # Get all board
 
-# @boards_bp.route("", methods=["GET"])
-# def get_all_board():
-#     board_param = request.args
-#     boards = Board.query.all()
-#     boards_response = []
-#     for board in boards:
-#         boards_response.append({
-#             "id": board.board_id,
-#             "title": board.title,
-#             "owner": board.owner
-#         })
-#     return jsonify(boards_response), 200
 @boards_bp.route("", methods =["GET"])
 def get_all_board():
     sort_query = request.args.get("sort")
