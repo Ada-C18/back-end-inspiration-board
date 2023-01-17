@@ -154,7 +154,6 @@ def test_get_all_cards_for_nonexistant_board(client):
 def test_create_one_card_for_board(client, one_board):
     response = client.post("/boards/1/cards", json={
         "message": "Drink water",
-        "likes_count": 0,
     })
     response_body = response.get_json()
 

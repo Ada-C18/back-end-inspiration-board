@@ -3,7 +3,7 @@ from app import db
 class Card(db.Model):
     card_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     message = db.Column(db.String)
-    likes_count = db.Column(db.Integer)
+    likes_count = db.Column(db.Integer, default=0)
     board_id = db.Column(db.Integer, db.ForeignKey("board.board_id"))
     board = db.relationship("Board", back_populates="cards")
 
@@ -22,4 +22,4 @@ class Card(db.Model):
 
     @classmethod
     def from_dict(cls, card_data, board):
-        return cls(message=card_data["message"], likes_count=card_data["likes_count"], board_id=board.board_id)
+        return cls(message=card_data["message"], board_id=board.board_id)
