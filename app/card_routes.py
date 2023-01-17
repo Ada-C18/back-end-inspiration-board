@@ -10,7 +10,7 @@ load_dotenv()
 # example_bp = Blueprint('example_bp', __name__)
 card_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
-
+# dont need this route @Tazmeen
 @card_bp.route("", methods=["POST"])
 def create_card():
     request_body = request.get_json()
