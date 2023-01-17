@@ -111,11 +111,40 @@ def test_create_one_board_no_owner(client):
         "details": "Invalid request; missing necessary field(s)"
     }
 
-def test_get_all_cards_for_board(client):
-    pass
+def test_get_all_cards_for_board(client, one_card_to_one_board):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert len(response_body) == 1
+    assert response_body == [
+        {
+            "board_id": 1,
+            "id": 1,
+            "likes_count": 0,
+            "message": "Finish Inspiration Board"
+        }
+    ]
 
 def test_get_all_cards_for_invalid_board(client):
-    pass
+    response = client.get("/boards/xxx/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "message" in response_body
+    assert response_body == {
+        "message": "Board xxx has an invalid id"
+    }
+
+def test_get_all_cards_for_nonexistant_board(client):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert "message" in response_body
+    assert response_body == {
+        "message": "Board 1 not found"
+    }
 
 def test_create_one_card_for_board(client, one_board):
     response = client.post("/boards/1/cards", json={
