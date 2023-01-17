@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
 
-bp = Blueprint("board_bp", __name__, url_prefix="/board")
+bp = Blueprint("board_bp", __name__, url_prefix="/boards")
 
 
 @bp.route("", methods=["POST"])
