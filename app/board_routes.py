@@ -91,6 +91,8 @@ def delete_card(board_id, card_id):
 
 @board_bp.route("/<id>", methods=["DELETE"])
 def delete_board(id):
+    #delete cards first
+    #cascading delete
     board = validate_model(Board, id)
 
     db.session.delete(board)

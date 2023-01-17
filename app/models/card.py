@@ -7,7 +7,7 @@ class Card(db.Model):
     # an object from the card class can accept a relationship from an object 
     # that's from the Board class. backpopulates signals that the specific board 
     # object will now display this specific card in its board.cards attribute
-    board_id = db.Column(db.Integer, db.ForeignKey('board.board_id'), nullable=True)
+    board_id = db.Column(db.Integer, db.ForeignKey('board.board_id', ondelete='CASCADE'), nullable=True)
     likes_count = db.Column(db.Integer, default=0)
 
     def to_dict(self):
