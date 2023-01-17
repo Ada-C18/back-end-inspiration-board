@@ -82,21 +82,14 @@ def create_a_card(board_id):
 
 @boards_bp.route("/<board_id>/cards/<card_id>", methods=["PATCH"])
 def like_card(board_id, card_id):
-    board = validate_id(Board, board_id)
-    request_body = request.get_json()
-
-    # take in likes_count from front end
-    # update card
-    # return updated card
-    for card in board.cards:
-        if card.id == card_id:
-            card.likes_count = request_body["likes_count"]
-            response = card.to_dict()
+    validate_id(Board, board_id)
+    card = validate_id(Card, card_id)
     
+    card.likes_count += 1
 
     db.session.commit()
 
-    return make_response(jsonify(response), 200)
+    return make_response(jsonify(card.to_dict()), 200)
 
 
 @boards_bp.route('/<board_id>/cards/<card_id>', methods=['DELETE'])
