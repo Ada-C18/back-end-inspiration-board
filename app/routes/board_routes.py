@@ -49,6 +49,8 @@ def get_board_cards(board_id):
 @boards_bp.route("", methods = ["POST"])
 def create_board():
     request_body = request.get_json()
+    if "title" not in request_body or "owner" not in request_body:
+        return jsonify({"message": "Title and Owner must be specified."}, 400)
     new_board = Board(
         title = request_body["title"],
         owner = request_body["owner"],

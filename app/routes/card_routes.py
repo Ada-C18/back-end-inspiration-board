@@ -26,6 +26,12 @@ def get_all_cards():
 def create_card():
     board = Board.query.get(board.id)
     request_body = request.get_json()
+    
+    if "message" not in request_body:
+        return jsonify({"message": "Message cannot be blank!"}, 400)
+    if len(request_body.message) > 40:
+        return jsonify({"message": "Maximum length 40 characters."}, 400)
+
     new_card = Card(
         board_id = board.id,
         message = request_body["message"],
