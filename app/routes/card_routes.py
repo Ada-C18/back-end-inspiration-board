@@ -23,17 +23,17 @@ def get_all_cards():
 
 # POST create new card
 @cards_bp.route("/<board_id>", methods = ["POST"])
-def create_card():
-    board = Board.query.get(board.id)
+def create_card(board_id):
+    # board = Board.query.get(board_id)
     request_body = request.get_json()
     
     if "message" not in request_body:
         return jsonify({"message": "Message cannot be blank!"}, 400)
-    if len(request_body.message) > 40:
+    if len(request_body["message"]) > 40:
         return jsonify({"message": "Maximum length 40 characters."}, 400)
 
     new_card = Card(
-        board_id = board.id,
+        board_id = board_id,
         message = request_body["message"],
         likes_count = 0
     )
@@ -53,8 +53,12 @@ def update_likes(card_id):
     
 
 #Delete
-@cards_bp.route("", methods = ["DELETE"])
+@cards_bp.route("/<card_id>", methods = ["DELETE"])
 def delete_card(card_id):
     card = Card.query.get(card_id)
     db.session.delete(card)
     db.session.commit()
+
+# @cards_bp.route("", methods = ["DELETE"])
+# def delete_all_cards():
+#     card = Card.query.
