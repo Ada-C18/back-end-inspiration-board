@@ -10,12 +10,12 @@ def validate_board(board_id):
     try:
         board_id = int(board_id)
     except:
-        abort(make_response({"message":f"Board {board_id} invalid"}, 400))
+        abort(make_response({"error message":f"Board {board_id} invalid"}, 400))
 
     board = Board.query.get(board_id)
 
     if not board:
-        abort(make_response({"message":f"Board {board_id} not found"}, 404))
+        abort(make_response({"error message":f"Board {board_id} not found"}, 404))
 
 def validate_card(card_id):
     # used to determine correct type for card search
@@ -52,11 +52,11 @@ def create_board():
     request_body = request.get_json()
 
     if "title" not in request_body:
-        return make_response({
+        return make_response({ "error message" :
             "Invalid data. Must include title"
         }, 400)
     if "owner" not in request_body:
-        return make_response({
+        return make_response({"error message" :
             "Invalid data. Must include owner"
         }, 400)
 
@@ -85,11 +85,11 @@ def update_one_board(board_id):
     request_body = request.get_json()
 
     if "title" not in request_body:
-        return make_response({
+        return make_response({"error message":
             "Invalid data. Must include title"
         }, 400)
     if "owner" not in request_body:
-        return make_response({
+        return make_response({"error message":
             "Invalid data. Must include owner"
         }, 400)
 
@@ -110,7 +110,7 @@ def delete_one_board(board_id):
     db.session.delete(board)
     db.session.commit()
 
-    return make_response({"details": f'Board {board_id} "{board.title}" successfully deleted'}, 200)
+    return make_response({"message": "Board successfully deleted"}, 200)
 
 @board_bp.route("/<board_id>/cards", methods=["POST"])
 def add_card_to_board(board_id):
@@ -124,8 +124,10 @@ def add_card_to_board(board_id):
         return make_response({"error message": "Invalid input"}, 400)
 
     # managing the character limit
+    if len(request_body["message"]) < 1:
+        return make_response({"error message": "Input cannot be empty."}, 400)
     if len(request_body["message"]) > 40:
-        return make_response({"error message": "Input exceeds character limit."})
+        return make_response({"error message": "Input exceeds character limit."}, 400)
 
     # id and likes count should be automatically added
     new_card = Card(

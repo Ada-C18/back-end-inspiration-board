@@ -10,7 +10,7 @@ migrate = Migrate()
 load_dotenv()
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
 
 
@@ -36,7 +36,7 @@ def create_app():
     from .board_routes import board_bp
     app.register_blueprint(board_bp)
 
-    from .card_routes import cards_bp
-    app.register_blueprint(cards_bp)
+    # from .card_routes import cards_bp
+    # app.register_blueprint(cards_bp)
 
     return app
