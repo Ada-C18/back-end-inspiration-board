@@ -5,10 +5,36 @@ import pytest
 
 
 def test_get_all_boards_with_no_records(client):
-    pass
+    response = client.get("/boards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == []
+    assert Board.query.all() == []
 
 def test_get_all_boards_with_three_records(client, three_boards):
-    pass
+    response = client.get("/boards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert len(response_body) == 3
+    assert response_body == [
+        {
+            "board_id": 1,
+            "title": "Reminders",
+            "owner": "Thao"
+        },
+        {
+            "board_id": 2,
+            "title": "Pick Me Up Quotes",
+            "owner": "Masha"
+        },
+        {
+            "board_id": 3,
+            "title": "Inspiration",
+            "owner": "Neema"
+        }
+    ]
 
 def test_get_one_board_with_invalid_id(client, three_boards):
     # Act
@@ -44,6 +70,18 @@ def test_get_one_board(client, three_boards):
         }
     }
 
+def test_create_one_board_no_title(client):
+    response = client.post("/boards", json={
+        "owner": "Thao"
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid request; missing necessary field(s)"
+    }
+
 def test_create_one_board(client): # Thao check nesting of response
     # Act
     response = client.post("/boards", json={
@@ -66,52 +104,62 @@ def test_create_one_board(client): # Thao check nesting of response
     assert new_board 
     assert new_board.title == "A Brand New Board"
     assert new_board.owner == "Test Owner"
-    
-def test_create_one_board_no_title(client):     # THAO
-    # Act
-    response = client.post("/boards", json={
-        "owner": "Test Owner"
-    })
-    response_body = response.get_json()
-
-    # Assert
-    assert response.status_code == 400
-    assert "details" in response_body
-    assert response_body == {
-        "details": "Invalid Data"
-    }
-    assert Board.query.all() == []
-
-
-def test_create_one_board_no_owner(client):   # THAO
-    # Act
-    response = client.post("/boards", json={
-        "title": "A Brand New Board"
-    })
-    response_body = response.get_json()
-
-    # Assert
-    assert response.status_code == 400
-    assert "details" in response_body
-    assert response_body == {
-        "details": "Invalid Data"
-    }
-    assert Board.query.all() == []
-
 
 def test_create_one_board_no_owner(client):
-    pass
+    response = client.post("/boards", json={
+        "title": "Star Wars Quotes"
+    })
+    response_body = response.get_json()
 
-def test_get_all_cards_for_board(client):
-    pass
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid request; missing necessary field(s)"
+    }
+
+def test_get_all_cards_for_board(client, one_card_to_one_board):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert len(response_body["cards"]) == 1
+    assert response_body == {
+        "id": 1,
+        "title": "Reminders",
+        "owner": "Thao",
+        "cards": [
+            {
+                "board_id": 1,
+                "id": 1,
+                "likes_count": 0,
+                "message": "Finish Inspiration Board"
+            }
+        ]
+    }
 
 def test_get_all_cards_for_invalid_board(client):
-    pass
+    response = client.get("/boards/xxx/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "message" in response_body
+    assert response_body == {
+        "message": "Board xxx has an invalid id"
+    }
+
+def test_get_all_cards_for_nonexistant_board(client):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert "message" in response_body
+    assert response_body == {
+        "message": "Board 1 not found"
+    }
 
 def test_create_one_card_for_board(client, one_board):
     response = client.post("/boards/1/cards", json={
         "message": "Drink water",
-        "likes_count": 0,
     })
     response_body = response.get_json()
 

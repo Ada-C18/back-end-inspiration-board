@@ -18,17 +18,7 @@ def read_all_cards():
 
     cards = Card.query.all()
 
-    cards_response = []  # returns empty list if no cards
-
-    for card in cards:
-        cards_response.append({
-            "card_id": card.card_id,
-            "message": card.message,
-            "likes_count": card.likes_count,
-            "board_id": card.board_id
-        })
-
-    return jsonify(cards_response), 200
+    return jsonify([card.to_dict() for card in cards])
 
 # ===================================
 #        DELETE ONE CARD BY ID

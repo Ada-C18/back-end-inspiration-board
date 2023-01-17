@@ -16,8 +16,7 @@ def create_board():
     request_body = request.get_json()
     if "title" not in request_body or \
             "owner" not in request_body:
-        return jsonify({"details": "Invalid Data"}), 400
-        # return make_response("Invalid Request", 400)
+        return make_response({"details":"Invalid request; missing necessary field(s)"}, 400)
 
     new_board = Board.from_dict(request_body)
 
@@ -93,12 +92,6 @@ def create_card(board_id):
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def get_cards_for_board(board_id):
-    validate_board = validate_model(Board, board_id)
-    board = Board.query.get(validate_board.board_id)
+    board = validate_model(Board, board_id)
 
-    cards_response = []
-
-    for card in board.cards:
-        cards_response.append(card.to_dict())
-    
-    return jsonify(cards_response)
+    return board.to_dict(cards=True)
