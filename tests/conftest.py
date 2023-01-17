@@ -38,5 +38,10 @@ def three_boards(app):
     ])
     db.session.commit()
 
-# TO DO:
-#    - Testing fixtures for cards
+@pytest.fixture
+def one_card_to_one_board(app, one_board):
+    new_card = Card(message="Finish Inspiration Board", likes_count=0, board_id=1)
+    board = Board.query.first()
+    db.session.add(new_card)
+    board.cards.append(new_card)
+    db.session.commit()
