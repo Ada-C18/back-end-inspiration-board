@@ -13,7 +13,7 @@ def test_get_boards_no_saved_boards(client):
     assert response_body == []
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_boards_one_saved_board(client, one_board):
     # Act
     response = client.get("/boards/1")
