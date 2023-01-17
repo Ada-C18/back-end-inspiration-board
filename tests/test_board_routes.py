@@ -70,27 +70,6 @@ def test_get_one_board(client, three_boards):
         }
     }
 
-def test_create_one_board(client):
-    response = client.post("/boards", json={
-        "title": "Star Wars Quotes",
-        "owner": "Thao"
-    })
-    response_body = response.get_json()
-
-    assert response.status_code == 201
-    assert "title" in response_body["board"] and "owner" in response_body["board"]
-    assert response_body == {
-        "board": {
-            "id": 1,
-            "title": "Star Wars Quotes",
-            "owner": "Thao"
-        }
-    }
-    new_board = Board.query.get(1)
-    assert new_board
-    assert new_board.title == "Star Wars Quotes"
-    assert new_board.owner == "Thao"
-
 def test_create_one_board_no_title(client):
     response = client.post("/boards", json={
         "owner": "Thao"
@@ -102,6 +81,29 @@ def test_create_one_board_no_title(client):
     assert response_body == {
         "details": "Invalid request; missing necessary field(s)"
     }
+
+def test_create_one_board(client): # Thao check nesting of response
+    # Act
+    response = client.post("/boards", json={
+        "title": "A Brand New Board",
+        "owner": "Test Owner",
+    })
+    response_body = response.get_json()
+    
+    #Assert
+    assert response.status_code == 201
+    assert "board" in response_body
+    assert response_body == {
+        "board": {
+            "id": 1,
+            "title": "A Brand New Board",
+            "owner": "Test Owner"
+        }
+    }
+    new_board = Board.query.get(1)
+    assert new_board 
+    assert new_board.title == "A Brand New Board"
+    assert new_board.owner == "Test Owner"
 
 def test_create_one_board_no_owner(client):
     response = client.post("/boards", json={
@@ -195,3 +197,4 @@ def test_create_one_card_missing_message(client, one_board):
 
     assert response.status_code == 400
     assert response_body == {"details":"Invalid request; message field missing"}
+
