@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
+from app.models.card import Card
 
 bp = Blueprint("board_bp", __name__, url_prefix="/boards")
 
@@ -45,11 +46,16 @@ def read_all_boards():
     return jsonify(boards_response), 200
 
 
-@bp.route("<board_title>", methods=["GET"])
-def read_one_board(board_title):
-    try:
-        test_board = Board.query.filter(Board.title == board_title).first()
+@bp.route("<board_id>/cards", methods=["GET"])
+def read_all_cards(board_id):
+    sort_query = request.args.get("sort")
+    card_query = Card.query.filter(Card.board_id == board_id)
+    if sort_query == "asc":
+        card_query = card_query.order_by(Card.message.asc())
+    elif sort_query == "likes":
+        card_query = card_query.order_by(Card.likes_count.desc())
+    else:
+        card_query = card_query.order_by(Card.card_id)
+    card_response = [card.to_dict() for card in card_query]
 
-        return make_response(jsonify({"board": test_board.to_dict(cards=True)}))
-    except:
-        abort(make_response({"details": f"Board {board_title} invalid"}, 400))
+    return jsonify(card_response), 200
