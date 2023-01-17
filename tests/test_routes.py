@@ -13,10 +13,10 @@ def test_get_boards_no_saved_boards(client):
     assert response_body == []
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_get_boards_one_saved_board(client, one_board):
     # Act
-    response = client.get("/boards/1")
+    response = client.get("/boards")
     response_body = response.get_json()
 
     # Assert
@@ -25,8 +25,8 @@ def test_get_boards_one_saved_board(client, one_board):
     assert response_body == [
         {
             "board_id": 1,
-            "name": "New Year",
-            "owner": "Ada"
+            "name":"Create the future", 
+            "owner":"Ada"
         }
     ]
 
@@ -42,7 +42,7 @@ def test_get_board_not_found(client):
     assert response_body == {"message": "Board 345 not found"}
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_delete_board(client, one_board):
     # Act
     response = client.delete("/boards/1")
@@ -52,7 +52,7 @@ def test_delete_board(client, one_board):
     assert response.status_code == 200
     assert "message" in response_body
     assert response_body == {
-        "message": "Board #1 was deleted"
+        "message": "Board #1 was deleted."
     }
     assert Board.query.get(1) == None
 
@@ -70,6 +70,41 @@ def test_delete_board_not_found(client):
                             }
     assert Board.query.all() == []
 
+# @pytest.mark.skip
+def test_create_board_must_contain_name(client):
+    # Act
+   
+     response = client.post("owner", json={
+        "owner: "Ada"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert "message" in response_body
+    assert response_body == {
+        "message": "Invalid data. Please check input for board."
+    }
+    assert Board.query.all() == []
+
+
+# @pytest.mark.skip
+def test_create_board_must_contain_owner(client):
+    # Act
+    response = client.post("/boards", json={
+        "name": "Capstone"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert "message" in response_body
+    assert response_body == {
+        "message": "Invalid data. Please check input for board."
+    }
+    assert Task.query.all() == []
+
+
 
 #Card TESTS
 # @pytest.mark.skip
@@ -86,3 +121,6 @@ def test_delete_board_not_found(client):
     
 # @pytest.mark.skip
 # def test_delete_card():
+
+# @pytest.mark.skip
+# def test_delete_card_not_found():

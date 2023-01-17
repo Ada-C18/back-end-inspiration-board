@@ -74,7 +74,7 @@ def create_board():
         new_board = Board.from_dict(request_body)
         print(new_board)
     except:
-        return make_response({"message": "Invalid data"}, 400)
+        return make_response({"message": "Invalid data. Please check input for board."}, 400)
 
     db.session.add(new_board)
     db.session.commit()
@@ -100,9 +100,12 @@ def read_all_cards(board_id):
 # Create card
 @board_bp.route("/<board_id>/cards/", strict_slashes=False, methods=["POST"])
 def create_card(board_id):
-    board = get_validate_model(Board, board_id)
-    request_body = request.get_json()
-    new_card = Card(message=request_body["message"], board_id=board_id)
+    try:
+        board = get_validate_model(Board, board_id)
+        request_body = request.get_json()
+        new_card = Card(message=request_body["message"], board_id=board_id)
+    except:
+        return make_response({"message": "Invalid data. Please check input for card."}, 400)
 
     db.session.add(new_card)
     db.session.commit()
