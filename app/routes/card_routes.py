@@ -35,5 +35,17 @@ def create_card():
     return make_response(jsonify({"card": new_card.message}), 201)
 
 # UPDATE heart count on a card
+@cards_bp.route("/<card_id>", methods = ["PATCH"])
+def update_likes(card_id):
+    card = Card.query.get(card_id)
+    card.likes_count += 1
+    db.session.commit()
+
+    
 
 #Delete
+@cards_bp.route("", methods = ["DELETE"])
+def delete_card(card_id):
+    card = Card.query.get(card_id)
+    db.session.delete(card)
+    db.session.commit()
