@@ -6,11 +6,10 @@ import pytest
 def test_delete_one_card(client):
     pass
 
-@pytest.mark.skip(reason="No way to test this feature yet")
-def test_update_one_card_likes(client, one_card): # Thao
+# @pytest.mark.skip(reason="No way to test this feature yet")
+def test_update_one_card_likes(client, one_card_to_one_board): # Thao
     # Act
-    response = client.put("/cards/1/like", json={
-        "message": "Test Message",
+    response = client.patch("/cards/1/like", json={
         "likes_count": 2
     })
     response_body = response.get_json()

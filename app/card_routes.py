@@ -48,7 +48,7 @@ def delete_card(card_id):
 # ===================================
 #        LIKE (UPDATE) ONE CARD 
 # ===================================
-@cards_bp.route("/<card_id>/like", methods=["PUT"])
+@cards_bp.route("/<card_id>/like", methods=["PATCH"])
 def like_card(card_id):
     card = validate_model(Card, card_id)
     card.likes_count += 1
