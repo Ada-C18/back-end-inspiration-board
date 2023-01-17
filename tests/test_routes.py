@@ -111,11 +111,11 @@ def test_delete_board(client, one_board):
     assert response_body == {"details": 'Board 1 successfully deleted'}
     assert Board.query.get(1) == None
     
-@pytest.mark.skip
-def test_delete_board_not_found(client, one_board):
+# @pytest.mark.skip
+def test_delete_board_not_found(client):
     #Act
     response = client.delete("/boards/1")
-    response_body = response.get.json()
+    response_body = response.get_json()
 
     #Assert
     assert response.status_code == 404
@@ -148,13 +148,46 @@ def test_get_cards_from_one_board(client,four_boards, one_card):
         assert response["board_id"] == 3
 
 # @pytest.mark.skip
-def test_create_card(client):
+def test_create_card(client, four_boards, one_card):
     #Act
-    #Assert
-    pass
+    response = client.post("boards/3/cards", json={
+        "message": "A New Card for Board 3",
+        "likes_count": 0,
+        "board_id": 3
+    })
 
-# @pytest.mark.skip
-def test_update_card(client):
-    #Act
+    response_body = response.get_json()
+
     #Assert
-    pass
+    assert response.status_code == 201
+    new_card = Card.query.get(1)
+    assert new_card
+    assert new_card.message == "A New Card for Board 3"
+    assert new_card.likes_count == 0
+    assert new_card.board_id == 3
+
+
+def test_update_card(client, four_boards, one_card):
+    #Act
+    response = client.put("cards/1/like", json={
+        "message": "A New Card for Board 3",
+        "likes_count": 0 
+    })
+
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 200
+    # assert response_body["likes_count"] == 1
+
+
+def test_delete_card(client, one_card_belongs_to_one_board):
+    #Act
+    response = client.delete("cards/1")
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 200
+    response_body == {"details": "Card 1 successfully deleted"}
+    assert Card.query.get(1) == None
+

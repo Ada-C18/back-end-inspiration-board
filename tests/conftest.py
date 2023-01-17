@@ -47,7 +47,7 @@ def four_boards(app):
 # This fixture creates a card and saves it in the database
 @pytest.fixture
 def one_card(app):
-    new_card = Card(message="test to get one card", likes_count=0, board_id=3)
+    new_card = Card(message="A New Card for Board 3", likes_count=0, board_id=3)
     db.session.add(new_card)
     db.session.commit()
 
