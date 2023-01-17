@@ -116,8 +116,8 @@ def post_card_belonging_to_a_board(board_id):
     db.session.add(new_card)
     db.session.commit()
 
-    return jsonify({"message":f"Card {new_card.message} belonging to {new_card.board.title} successfully added"}), 201
-
+    # return jsonify({"message":f"Card {new_card.message} belonging to {new_card.board.title} successfully added"}), 201
+    return jsonify(new_card.to_dict())
 
 
 
