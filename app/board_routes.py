@@ -32,6 +32,11 @@ def read_all_boards():
         boards_response.append(board.to_dict())
     return jsonify(boards_response)
 
+@boards_bp.route("/<board_id>", methods=["GET"])
+def read_one_board(board_id):
+    board = validate_model(Board, board_id)
+    return board.to_dict()
+
 
 # POST /boards
 @boards_bp.route("", methods=["POST"])
