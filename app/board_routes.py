@@ -16,7 +16,7 @@ def create_board():
     request_body = request.get_json()
     if "title" not in request_body or \
             "owner" not in request_body:
-        return make_response("Invalid Request", 400)
+        return make_response({"details":"Invalid request; missing necessary field(s)"}, 400)
 
     new_board = Board.from_dict(request_body)
 

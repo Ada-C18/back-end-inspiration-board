@@ -5,10 +5,36 @@ import pytest
 
 
 def test_get_all_boards_with_no_records(client):
-    pass
+    response = client.get("/boards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == []
+    assert Board.query.all() == []
 
 def test_get_all_boards_with_three_records(client, three_boards):
-    pass
+    response = client.get("/boards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert len(response_body) == 3
+    assert response_body == [
+        {
+            "board_id": 1,
+            "title": "Reminders",
+            "owner": "Thao"
+        },
+        {
+            "board_id": 2,
+            "title": "Pick Me Up Quotes",
+            "owner": "Masha"
+        },
+        {
+            "board_id": 3,
+            "title": "Inspiration",
+            "owner": "Neema"
+        }
+    ]
 
 def test_get_one_board_with_invalid_id(client, three_boards):
     # Act
@@ -45,13 +71,45 @@ def test_get_one_board(client, three_boards):
     }
 
 def test_create_one_board(client):
-    pass
+    response = client.post("/boards", json={
+        "title": "Star Wars Quotes",
+        "owner": "Thao"
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert "title" in response_body["board"] and "owner" in response_body["board"]
+    assert response_body == {
+        "board": {
+            "id": 1,
+            "title": "Star Wars Quotes",
+            "owner": "Thao"
+        }
+    }
 
 def test_create_one_board_no_title(client):
-    pass
+    response = client.post("/boards", json={
+        "owner": "Thao"
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid request; missing necessary field(s)"
+    }
 
 def test_create_one_board_no_owner(client):
-    pass
+    response = client.post("/boards", json={
+        "title": "Star Wars Quotes"
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid request; missing necessary field(s)"
+    }
 
 def test_get_all_cards_for_board(client):
     pass
