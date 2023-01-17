@@ -31,8 +31,8 @@ def read_one_card(card_id):
 
     return make_response(jsonify(card.to_dict()), 200)     # board_id
 
-#Delete Card
 
+#Delete Card
 @card_bp.route("/<card_id>", strict_slashes=False, methods=["DELETE"])
 def delete_card(card_id):
     card = get_validate_model(Card, card_id)
@@ -44,12 +44,13 @@ def delete_card(card_id):
         "message": f'Card #{card_id} was deleted.'}
     return make_response(jsonify(response_body), 200)
 
+
 # Update count of Likes Card
 @card_bp.route("/<card_id>", strict_slashes=False, methods=["PATCH"])
 def update_card(card_id):
     card = get_validate_model(Card, card_id)
 
-    request_body = request.get_json()
+    # request_body = request.get_json()
     # card.message = request_body["message"]
     card.likes += 1
 
@@ -57,8 +58,3 @@ def update_card(card_id):
 
     current_card_response = card.to_dict()
     return make_response(jsonify(current_card_response), 200)
-
-
-#increase likes
-# def increase_likes():
-

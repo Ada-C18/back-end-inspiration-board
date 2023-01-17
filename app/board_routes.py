@@ -25,7 +25,6 @@ def get_validate_model(cls, model_id):
 # Read ALL boards
 @board_bp.route("", strict_slashes=False, methods=["GET"])
 def read_all_boards():
-
     boards = Board.query.all()
     boards_list = [board.to_dict() for board in boards]
     return make_response(jsonify(boards_list), 200)
@@ -35,7 +34,6 @@ def read_all_boards():
 @board_bp.route("/<board_id>", strict_slashes=False, methods=["GET"])
 def read_one_board(board_id):
     board = get_validate_model(Board, board_id)
-
     return make_response(jsonify({"board": board.to_dict()}), 200)
 
 
@@ -70,13 +68,11 @@ def update_board(board_id):
 # Create Board
 @board_bp.route("/", strict_slashes=False, methods=["POST"])
 def create_board():
-
     try:
         request_body = request.get_json()
         print(request_body)
         new_board = Board.from_dict(request_body)
         print(new_board)
-
     except:
         return make_response({"message": "Invalid data"}, 400)
 
@@ -107,16 +103,15 @@ def read_all_cards(board_id):
 def create_card(board_id):
     board = get_validate_model(Board, board_id)
     request_body = request.get_json()
-
     # board.cards = [Card.query.get(card_id) for card_id in request_body["card_ids"]]
-    new_card = Card(message=request_body["message"])
+    new_card = Card(message=request_body["message"], board_id=board_id)
     # board.cards = Card.query.get(new_card.card_id)
-    board.cards.append(Card.query.get(board_id))
+    # board.cards.append(Card.query.get(board_id))
 
     db.session.add(new_card)
     db.session.commit()
     return make_response(jsonify({
-        "board_id": board_id,
+        "board_id": int(board_id),
         "card_id": new_card.card_id,
         "message": new_card.message,
         "likes": new_card.likes
