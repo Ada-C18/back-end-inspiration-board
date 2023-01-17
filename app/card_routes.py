@@ -15,42 +15,29 @@ from app.board_routes import validate_model
 # creating blueprint
 card_bp = Blueprint("Card", __name__, url_prefix="/cards")
 
-# def validate_model(cls, model_id):
-#     try:
-#         model_id = int(model_id)
-#     except:
-#         abort(make_response({"message":f"{cls.__name__} {model_id} invalid"}, 400))
+#send a request to read all cards on a particular board in the database.
+@card_bp.route("/<card_id>/like", methods=["PUT"])
+def update_card( card_id):
+    card = validate_model(Card, card_id)
 
-#     model = cls.query.get(model_id)
-#     if not model:
-#         abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))
+    request_body = request.get_json()
 
-#     return model
-# # create a card
-# @card_bp.route("boards/<board_id>", methods=["POST"])
-# def create_card():
-#     request_body = request.get_json()
+    card.message = request_body["message"]
+    card.likes_count = request_body["likes_count"] + 1
 
-#     if not all(["message" in request_body, "likes_count" in request_body]):
-#         return {"details" : "Invalid data: Please provide a message and likes count"}, 400
+    db.session.commit()
 
-#     new_card = Card.from_dict(request_body)
+    return card.to_dict(), 200
+    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully updated"), 200)
 
-#     db.session.add(new_card)
-#     db.session.commit
 
-#     return {"card": new_card.to_dict()}, 201
+# send a request to delete a card from a particular board in the database
+@card_bp.route("/<card_id>", methods=["DELETE"])
+def delete_card(card_id):
+    card = validate_model(Card, card_id)
 
-# read all cards
+    db.session.delete(card)
+    db.session.commit()
 
-# # send a request to delete a card from a particular board in the database
-# @card_bp.route("boards/<board_id>/cards/<id>", methods=["DELETE"])
-# def delete_card(board_id, card_id):
-#     board = validate_model(Board, board_id)
-#     card = validate_model(Card, card_id)
-
-#     db.session.delete(card)
-#     db.session.commit()
-
-#     # return {"details": f'Card {card.id} "{card.message}" successfully deleted'}
-#     return make_response(jsonify(f"Card {card.id} on {board.title} successfully deleted"), 200)
+    return {"details": f'Card {card.card_id} successfully deleted")'}
+    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully deleted"), 200)

@@ -31,9 +31,8 @@ def create_board():
 
     db.session.add(new_board)
     db.session.commit()
-    response_body = {
-        "board": new_board.to_dict()
-        }
+    response_body = new_board.to_dict()
+
     return make_response(response_body, 201)
 
 # send a request to create a new card and connect it to a board already found in the database
@@ -51,7 +50,7 @@ def create_card_associated_with_board(board_id):
     db.session.add(new_card)
     db.session.commit()
 
-    return {"card": new_card.to_dict()}, 201
+    return new_card.to_dict(), 201
     # return make_response(jsonify(f"Card {new_card.message} on {new_card.board.title} successfully created"), new_card.to_dict(), 201)
 
 #send a request to read all cards on a particular board in the database.
@@ -64,35 +63,6 @@ def read_all_cards_from_board(board_id):
     for card in board.cards:
         cards_response.append(card.to_dict())
     return jsonify(cards_response)
-
-#send a request to read all cards on a particular board in the database.
-@board_bp.route("/<board_id>/cards/<card_id>/like", methods=["PUT"])
-def update_card(board_id, card_id):
-    board = validate_model(Board, board_id)
-    card = validate_model(Card, card_id)
-
-    request_body = request.get_json()
-
-    card.message = request_body["message"]
-    card.likes_count = request_body["likes_count"] + 1
-
-    db.session.commit()
-
-    return {"card": card.to_dict()}, 200
-    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully updated"), 200)
-
-# send a request to delete a card from a particular board in the database
-@board_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
-def delete_card(board_id, card_id):
-    board = validate_model(Board, board_id)
-    card = validate_model(Card, card_id)
-
-    db.session.delete(card)
-    db.session.commit()
-
-    return {"details": f'Card {card.card_id} on {board.title} successfully deleted")'}
-    # return make_response(jsonify(f"Card {card.card_id} on {board.title} successfully deleted"), 200)
-
 
 # READ ALL BOARDS/ GET
 
@@ -107,9 +77,11 @@ def get_all_boards():
         tasks = Board.query.all()
 
     response = []
-    for task in tasks:
-        response.append(task.to_dict())
-    return jsonify(response)
+    boards = Board.query.all()
+    for board in boards:
+        response.append(board.to_dict())
+    return jsonify(response), 200
+    # return response.to_dict()
 
 # READ ONE BOARD/ GET
 @board_bp.route("/<board_id>", methods=["GET"])
@@ -119,7 +91,7 @@ def get_one_board(board_id):
     # if board.card_id is None:
     #     return {"board": board.to_dict()}
     # else:
-    return {"board": board.to_dict()}
+    return board.to_dict()
 
 # UPDATE BOARD/ PUT
 @board_bp.route("/<board_id>", methods=["PUT"])
@@ -130,9 +102,7 @@ def update_board(board_id):
     board.owner = request_body["owner"]
 
     db.session.commit()
-    response_body =  {
-        "board": board.to_dict()
-        }
+    response_body = board.to_dict()
     return make_response(response_body, 200)
 
 # DELETE BOARD/ DELETE
