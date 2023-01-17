@@ -86,6 +86,10 @@ def test_create_one_board(client):
             "owner": "Thao"
         }
     }
+    new_board = Board.query.get(1)
+    assert new_board
+    assert new_board.title == "Star Wars Quotes"
+    assert new_board.owner == "Thao"
 
 def test_create_one_board_no_title(client):
     response = client.post("/boards", json={
