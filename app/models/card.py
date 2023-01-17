@@ -13,6 +13,7 @@ class Card(db.Model):
         result_dict["card_id"] = self.card_id
         result_dict["message"] = self.message
         result_dict["likes"] = self.likes
+        result_dict["board_id"] = self.board_id
 
         return result_dict
 
