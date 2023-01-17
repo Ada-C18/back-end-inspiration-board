@@ -72,3 +72,10 @@ def one_card_belongs_to_one_board(app, one_board, one_card):
 
     db.session.commit()
 
+@pytest.fixture
+def two_cards_belongs_to_one_board(app, one_board, two_cards):
+    cards = Card.query.all()
+    board = Board.query.first()
+    board.cards.extend(cards)
+
+    db.session.commit()
