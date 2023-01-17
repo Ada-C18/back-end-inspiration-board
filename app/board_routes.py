@@ -149,7 +149,7 @@ def get_all_cards_per_board(board_id):
     return_body = board.to_dict()
     return_body["cards"] = [card.to_dict() for card in board.cards]
 
-    return make_response(jsonify(return_body), 200)
+    return make_response(jsonify(return_body["cards"]), 200)
 
 @board_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
 def delete_card_from_board(board_id, card_id):
