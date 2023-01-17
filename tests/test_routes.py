@@ -73,9 +73,8 @@ def test_delete_board_not_found(client):
 # @pytest.mark.skip
 def test_create_board_must_contain_name(client):
     # Act
-   
-     response = client.post("owner", json={
-        "owner: "Ada"
+    response = client.post("/boards", json={
+        "owner":"Ada"
     })
     response_body = response.get_json()
 
@@ -102,7 +101,7 @@ def test_create_board_must_contain_owner(client):
     assert response_body == {
         "message": "Invalid data. Please check input for board."
     }
-    assert Task.query.all() == []
+    assert Board.query.all() == []
 
 
 
