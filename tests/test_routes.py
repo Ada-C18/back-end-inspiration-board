@@ -4,7 +4,7 @@ from app.models.board import Board
 from app.models.card import Card
 import pytest
 
-def test_get_all_books_no_saved_boards(client):
+def test_get_all_boards_no_saved_boards(client):
     # Act
     response = client.get("/boards")
     response_body = response.get_json()
@@ -13,7 +13,7 @@ def test_get_all_books_no_saved_boards(client):
     assert response.status_code == 200
     assert response_body == []
 
-def test_get_all_books_one_saved_boards(client, one_board):
+def test_get_all_boards_one_saved_boards(client, one_board):
     # Act
     response = client.get("/boards")
     response_body = response.get_json()
@@ -30,7 +30,7 @@ def test_get_all_books_one_saved_boards(client, one_board):
     ]
 
 
-def test_get_all_books_four_saved_boards(client, four_boards):
+def test_get_all_boards_four_saved_boards(client, four_boards):
     # Act
     response = client.get("/boards")
     response_body = response.get_json()
