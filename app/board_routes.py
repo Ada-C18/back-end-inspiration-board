@@ -58,3 +58,12 @@ def create_card(board_id):
     db.session.commit()
 
     return new_card.to_dict(), 201
+
+@boards_bp.route("/<board_id>", methods=["DELETE"])
+def delete_board(board_id):
+    board = validate_model(Board, board_id)
+    
+    db.session.delete(board)
+    db.session.commit()
+    
+    return make_response("success deleting",200)
