@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.models.card import Card
+from app.models.board import Board
 
 # example_bp = Blueprint('example_bp', __name__)
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
@@ -21,10 +22,12 @@ def get_all_cards():
     return jsonify(cards_response)
 
 # POST create new card
-@cards_bp.route("", methods = ["POST"])
+@cards_bp.route("/<board_id>", methods = ["POST"])
 def create_card():
+    board = Board.query.get(board.id)
     request_body = request.get_json()
     new_card = Card(
+        board_id = board.id,
         message = request_body["message"],
         likes_count = 0
     )

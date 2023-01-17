@@ -34,6 +34,17 @@ def get_one_board(board_id):
             }
     ), 200)
 
+#GET endpoint to get cards for one board
+@boards_bp.route("/<board_id>/cards", methods = ["GET"])
+def get_board_cards(board_id):
+    board = Board.query.get(board_id)
+    cards_response = []
+    for card in board.cards:
+        cards_response.append(card)
+    return make_response(jsonify(
+        cards_response
+    ), 200)
+
 # POST create a new board
 @boards_bp.route("", methods = ["POST"])
 def create_board():
