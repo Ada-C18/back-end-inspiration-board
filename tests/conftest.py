@@ -55,9 +55,10 @@ def one_card(app):
 # This fixture creates a board and a card
 # It associates the board and card, so that the
 # board has this card, and the card belongs to one board
-# @pytest.fixture
-# def one_card_belongs_to_one_board(app, four_boards, one_card):
-#     card = Card.query.first()
-#     board = Board.query.first()
-#     board.cards.append(card)
-#     db.session.commit()
+@pytest.fixture
+def one_card_belongs_to_one_board(app, four_boards, one_card):
+    card = Card.query.first()
+    board = Board.query.first()
+    board.cards.append(card)
+    db.session.commit()
+
