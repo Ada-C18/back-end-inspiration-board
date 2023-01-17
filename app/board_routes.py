@@ -55,9 +55,8 @@ def update_board(board_id):
 def create_board():
     try:
         request_body = request.get_json()
-        print(request_body)
         new_board = Board.from_dict(request_body)
-        print(new_board)
+
     except:
         return make_response({"message": "Invalid data. Please check input for board."}, 400)
 
