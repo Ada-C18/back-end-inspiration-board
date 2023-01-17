@@ -4,13 +4,11 @@ from app.models.user import User
 
 bp = Blueprint("users_bp", __name__, url_prefix="/users")
 
-def validate_model(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except:
-        abort(make_response({"message":f"{cls.__name__} {model_id} invalid"}, 400))
+def validate_model(cls, name):
+    model = cls.query.filter(cls.name == name).one_or_none()
 
-    model = cls.query.get(model_id)
+    if not model:
+        abort(make_response({"message":f"{cls.__name__} {name} not found"}, 404))
 
     return model
 
@@ -25,14 +23,14 @@ def create_user():
 
     for user in users:
         if request_body["name"] == user.name:
-            abort(make_response({"message":f"{request_body['name']} is taken. Please choose another name."}, 404))
+            abort(make_response({"message":f"{request_body['name']} is taken. Please choose another name."}, 400))
 
     new_user = User(name=request_body["name"])
 
     db.session.add(new_user)
     db.session.commit()
 
-    return make_response(jsonify(f"User {new_user.name} successfully created"), 201)
+    return make_response(jsonify({"id": new_user.id, "name": new_user.name}), 201)
 
 @bp.route("", methods=["GET"])
 def read_all_users():
@@ -46,3 +44,10 @@ def read_all_users():
             }
         )
     return jsonify(users_response)
+
+@bp.route("/<name>", methods=["GET"])
+def read_one_user(name):
+    user = validate_model(User, name)
+
+    return make_response(jsonify({"id": user.id, "name": user.name}), 201) 
+
