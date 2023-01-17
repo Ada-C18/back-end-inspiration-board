@@ -57,7 +57,7 @@ def delete_board(board_id):
     db.session.delete(board)
     db.session.commit()
 
-    return make_response(f'Board #{board.id} "{board.title}" was successfully deleted'), 200
+    return make_response(jsonify({'details':f'Board #{board.id} "{board.title}" was successfully deleted'})), 200
 
 
 # <-----------------------Cards--------------------->
@@ -100,7 +100,7 @@ def delete_card(board_id, card_id):
     db.session.delete(card)
     db.session.commit()
 
-    return make_response(f"Card #{card.id} was successfully deleted"), 200
+    return make_response(jsonify({'details': f"Card #{card.id} was successfully deleted"})), 200
 
 
 @boards_bp.route('/<board_id>/cards', methods=['GET'])

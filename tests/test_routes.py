@@ -50,7 +50,7 @@ def test_get_all_boards_no_saved_boards(client):
 #@pytest.mark.skip
 def test_get_all_boards_two_saved_board(client, two_boards):
     # Act
-    response = client.get("boards")
+    response = client.get("/boards")
     response_body = response.get_json()
 
     # Assert
@@ -82,7 +82,7 @@ def test_delete_a_board(client, two_boards):
 
     # Assert
     assert response.status_code == 200
-    assert response_body == 'Board #1 "Our inspo board" was successfully deleted'
+    assert response_body == {'details': 'Board #1 "Our inspo board" was successfully deleted'}
 
 
 # <---- cards ---->
@@ -117,11 +117,10 @@ def test_create_a_card_missing_attribute(client, two_boards):
 
 # <---- read ---->
 
-#TODO: finish test
 #@pytest.mark.skip
-def test_get_all_cards_from_a_board(client, boards_with_cards):
+def test_get_all_cards_from_a_board(client, board_with_cards):
     # Act
-    response = client.get("boards/1/cards")
+    response = client.get("/boards/1/cards")
     response_body = response.get_json()
 
     # Assert
@@ -130,22 +129,20 @@ def test_get_all_cards_from_a_board(client, boards_with_cards):
     assert response_body["cards"] == [
         {
             "id": 1,
-            "title": "Our inspo board",
-            "owner": "JJ",
-            "cards": []
+            "message": "This is a card",
+            "likes_count": 0,
+            "board_id": 1
         },
         {
             "id": 2,
-            "title": "Aspirations",
-            "owner": "Team Serval",
-            "cards": []
+            "message": "Second card",
+            "likes_count": 0,
+            "board_id": 1
         }
     ]
 
-
 # <---- delete ---->
 
-#TODO: finish test
 #pytest.mark.skip
 def test_delete_a_card(client, board_with_cards):
     # Act
@@ -154,4 +151,4 @@ def test_delete_a_card(client, board_with_cards):
 
     # Assert
     assert response.status_code == 200
-    assert response_body == {"details":'Board #1 "Our inspo board" was successfully deleted'}
+    assert response_body == {"details":'Card #1 was successfully deleted'}
