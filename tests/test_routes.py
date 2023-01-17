@@ -83,6 +83,47 @@ def test_get_one_board_not_found(client):
     # Assert
     assert response.status_code == 404
     assert response_body == {"message": "5 not found"}
+    
+
+def test_create_board(client):
+    #Act
+    response = client.post("/boards", json={
+        "title": "A New Board",
+        "owner": "Lin/QP"
+    })
+
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 201
+    new_board = Board.query.get(1)
+    assert new_board
+    assert new_board.title == "A New Board"
+    assert new_board.owner == "Lin/QP"
+
+
+def test_delete_board(client, one_board):
+    #Act
+    response = client.delete("/boards/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response_body == {"details": 'Board 1 successfully deleted'}
+    assert Board.query.get(1) == None
+    
+# @pytest.mark.skip
+def test_delete_board_not_found(client):
+    #Act
+    response = client.delete("/boards/1")
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 404
+    assert response_body == {
+        "message" : "1 not found"
+    }
+    assert  Board.query.all() == []
+
 
 def test_get_cards_from_one_board_no_saved_cards(client, one_board):
     # Act
@@ -93,7 +134,7 @@ def test_get_cards_from_one_board_no_saved_cards(client, one_board):
     assert response.status_code == 200
     assert response_body == []
 
-# @pytest.mark.skip
+
 def test_get_cards_from_one_board(client,four_boards, one_card):
     # Act
     response = client.get("boards/3/cards")
@@ -105,4 +146,48 @@ def test_get_cards_from_one_board(client,four_boards, one_card):
     for response in response_body:
         assert "message" in response
         assert response["board_id"] == 3
-    
+
+# @pytest.mark.skip
+def test_create_card(client, four_boards, one_card):
+    #Act
+    response = client.post("boards/3/cards", json={
+        "message": "A New Card for Board 3",
+        "likes_count": 0,
+        "board_id": 3
+    })
+
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 201
+    new_card = Card.query.get(1)
+    assert new_card
+    assert new_card.message == "A New Card for Board 3"
+    assert new_card.likes_count == 0
+    assert new_card.board_id == 3
+
+
+def test_update_card(client, four_boards, one_card):
+    #Act
+    response = client.put("cards/1/like", json={
+        "message": "A New Card for Board 3",
+        "likes_count": 0 
+    })
+
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 200
+    # assert response_body["likes_count"] == 1
+
+
+def test_delete_card(client, one_card_belongs_to_one_board):
+    #Act
+    response = client.delete("cards/1")
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 200
+    response_body == {"details": "Card 1 successfully deleted"}
+    assert Card.query.get(1) == None
+
