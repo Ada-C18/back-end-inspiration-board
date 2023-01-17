@@ -26,10 +26,13 @@ def create_board():
     if request_body["title"] is None:
         abort(make_response({"message":"Please include a title"}, 400))
     
-    if request_body["owner"] is None:
-        abort(make_response({"message":"Please include an owner"}, 400))
+    # if request_body["owner"] is None:
+    #     abort(make_response({"message":"Please include an owner"}, 400))
+    # Since we have a login, they can't encounter this error in the first place
     
-    new_board = Board.from_dict(date_created=datetime.utcnow(), title=request_body["title"], visible=True)
+    date = str(datetime.utcnow())
+
+    new_board = Board.from_dict(date_created=date, title=request_body["title"], visible=True)
 
     db.session.add(new_board)
     db.session.commit()

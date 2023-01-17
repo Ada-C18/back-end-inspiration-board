@@ -22,7 +22,9 @@ class Board(db.Model):
     @classmethod
     def from_dict(cls, board_data):
         new_board = Board( 
-            title=board_data["title"]
+            date_created=board_data["date"],
+            title=board_data["title"],
+            visible=board_data["visible"]
             )
 
         return new_board
