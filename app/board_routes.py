@@ -64,17 +64,20 @@ def create_one_board():
 def create_card_for_specific_board(id):
     board = Board.query.get(id)
     request_body = request.get_json()
+    card_ids = request_body["card_ids"]
     
     if not request.is_json:
         return {"msg": "Missing JSON request body"}, 400
     try:
         message = request_body["message"]
-        card_ids = request_body["card_id"]
+
     except KeyError:
         return {"details": "Invalid message"}, 400
 
     new_card = Card(
-        message=request_body["message"])
+        message=request_body["message"],
+        
+        )
 
     message = new_card.message
     if len(message) > 40:
@@ -97,8 +100,8 @@ def create_card_for_specific_board(id):
     db.session.add(new_card)
     db.session.commit()
 
-    # rsp = {"id": board.board_id, "card_ids": card_ids, "message": message}
-    rsp = {"id": board.board_id, "message": message}
+    rsp = {"id": board.board_id, "card_ids": card_ids, "message": message}
+    # rsp = {"id": board.board_id, "message": message}
     return jsonify(rsp), 200
 
     
