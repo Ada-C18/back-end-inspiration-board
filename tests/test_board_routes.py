@@ -116,15 +116,20 @@ def test_get_all_cards_for_board(client, one_card_to_one_board):
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert len(response_body) == 1
-    assert response_body == [
-        {
-            "board_id": 1,
-            "id": 1,
-            "likes_count": 0,
-            "message": "Finish Inspiration Board"
-        }
-    ]
+    assert len(response_body["cards"]) == 1
+    assert response_body == {
+        "id": 1,
+        "title": "Reminders",
+        "owner": "Thao",
+        "cards": [
+            {
+                "board_id": 1,
+                "id": 1,
+                "likes_count": 0,
+                "message": "Finish Inspiration Board"
+            }
+        ]
+    }
 
 def test_get_all_cards_for_invalid_board(client):
     response = client.get("/boards/xxx/cards")
