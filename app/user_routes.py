@@ -24,8 +24,8 @@ def create_user():
     users = User.query.all()
 
     for user in users:
-        if request_body["name"] == user["name"]:
-            abort(make_response({"message":f"{request_body.name} is taken. Please choose another name."}, 404))
+        if request_body["name"] == user.name:
+            abort(make_response({"message":f"{request_body['name']} is taken. Please choose another name."}, 404))
 
     new_user = User(name=request_body["name"])
 
