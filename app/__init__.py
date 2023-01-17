@@ -12,6 +12,7 @@ load_dotenv()
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    CORS(app)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     if test_config is None:
@@ -37,5 +38,5 @@ def create_app(test_config=None):
     from .routes.card_routes import card_bp
     app.register_blueprint(card_bp)
 
-    CORS(app)
+
     return app
