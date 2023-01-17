@@ -2,7 +2,7 @@ import pytest
 from app.models.board import Board
 from app.models.card import Card
 
-def test_get_all_board_with_no_records(client):
+def test_get_all_boards_with_no_records(client):
     response = client.get("/boards")
     response_body = response.get_json()
 
@@ -126,7 +126,7 @@ def test_delete_board_not_found(client):
     assert Board.query.all() == []
 
 
-@pytest.mark.skip(reason="likes count is returning None instead of default 0")
+@pytest.mark.skip(reason="likes_count returning None instead of default 0")
 def test_get_all_cards_for_specific_board(client, one_card_belongs_to_one_board):
     response = client.get("/boards/1/cards")
     response_body = response.get_json()
@@ -134,10 +134,10 @@ def test_get_all_cards_for_specific_board(client, one_card_belongs_to_one_board)
     assert response.status_code == 200
     assert response_body == [
         {
-            "card_id": 1,
-            "message": "New card",
-            "likes_count": 0,
             "board_id": 1,
+            "card_id": 1,
+            "likes_count": 0,
+            "message": "New Card",
         }
     ]
 

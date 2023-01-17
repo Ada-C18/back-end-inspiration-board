@@ -7,7 +7,6 @@ class Card(db.Model):
     likes_count = db.Column(db.Integer)
     board_id = db.Column(db.Integer, db.ForeignKey('board.id'))
     board = db.relationship("Board", back_populates='cards')
-
     
     @classmethod
     def from_dict(cls, board_id, request_body):
@@ -25,7 +24,6 @@ class Card(db.Model):
             "board": self.board.title
         }
 
-    
     def update(self, req_body):
         try:
             self.message = req_body["message"]

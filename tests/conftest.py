@@ -23,7 +23,7 @@ def app():
 def client(app):
     return app.test_client()
 
-
+# fixtures for board
 @pytest.fixture
 def one_board(app):
     new_board = Board(
@@ -45,11 +45,11 @@ def all_boards(app):
     db.session.commit()
 
 
-# Fixtures for Cards
+# fixtures for card
 @pytest.fixture
 def one_card(app):
     new_card = Card(
-        message="New Card")
+        message="New Card", likes_count=0)
     db.session.add(new_card)
     db.session.commit()
 
@@ -66,13 +66,13 @@ def all_cards(app, one_board):
     board.cards.append(card1)
     board.cards.append(card2)
     board.cards.append(card3)
-    
+
     db.session.commit()
 
 
 @pytest.fixture
 def one_card_belongs_to_one_board(app, one_board, one_card):
-    card = Card.query.first()
     board = Board.query.first()
+    card = Card.query.first()
     board.cards.append(card)
     db.session.commit()
