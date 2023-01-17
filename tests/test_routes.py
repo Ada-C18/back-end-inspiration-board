@@ -73,7 +73,6 @@ def test_get_all_boards_two_saved_board(client, two_boards):
 
 # <---- delete ---->
 
-#TODO: fix error
 #@pytest.mark.skip
 def test_delete_a_board(client, two_boards):
     # Act
