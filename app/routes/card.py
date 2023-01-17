@@ -18,6 +18,7 @@ def like_card(id):
 # delete card:
 @cards_bp.route("/<id>", methods=["DELETE"])
 def delete_card(id):
+    print(id)
     card = validate_model(Card, id)
 
     db.session.delete(card)
