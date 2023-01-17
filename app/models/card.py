@@ -15,7 +15,8 @@ class Card(db.Model):
             "id": self.id,
             "date_created": self.date_created,
             "likes": self.likes,
-            "message": self.message
+            "message": self.message,
+            "author_id": self.author_id,
         }
         
         if self.board:
@@ -25,8 +26,11 @@ class Card(db.Model):
 
     @classmethod
     def from_dict(cls, card_data):
-        new_card = Card(date_created=card_data["date_created"],
-        likes=card_data["likes"], 
-        message=card_data["message"])
+        new_card = Card(
+            date_created=card_data["date_created"],
+            likes = card_data["likes"], 
+            message = card_data["message"],
+            board_id = card_data["board_id"],
+            author_id = card_data["author_id"])
 
         return new_card
