@@ -43,6 +43,7 @@ def get_boards():
             "board_id": board.board_id,
             "title": board.title,
             "owner": board.owner,
+            "cards": [card.to_dict() for card in board.cards]
         })
     return make_response(jsonify(boards_response), 200)
 
