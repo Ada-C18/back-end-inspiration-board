@@ -22,27 +22,27 @@ def get_all_cards():
         )
     return jsonify(cards_response)
 
-# POST create new card
-@cards_bp.route("/<board_id>", methods = ["POST"])
-def create_card(board_id):
-    # board = Board.query.get(board_id)
-    request_body = request.get_json()
+# # POST create new card
+# @cards_bp.route("/<board_id>", methods = ["POST"])
+# def create_card(board_id):
+#     # board = Board.query.get(board_id)
+#     request_body = request.get_json()
     
-    if "message" not in request_body:
-        return jsonify({"message": "Message cannot be blank!"}, 400)
-    if len(request_body["message"]) > 40:
-        return jsonify({"message": "Maximum length 40 characters."}, 400)
+#     if "message" not in request_body:
+#         return jsonify({"message": "Message cannot be blank!"}, 400)
+#     if len(request_body["message"]) > 40:
+#         return jsonify({"message": "Maximum length 40 characters."}, 400)
 
-    new_card = Card(
-        board_id = board_id,
-        message = request_body["message"],
-        likes_count = 0
-    )
+#     new_card = Card(
+#         board_id = board_id,
+#         message = request_body["message"],
+#         likes_count = 0
+#     )
 
-    db.session.add(new_card)
-    db.session.commit()
+#     db.session.add(new_card)
+#     db.session.commit()
     
-    return make_response(jsonify({"card": new_card.message}), 201)
+#     return make_response(jsonify({"card": new_card.message}), 201)
 
 # UPDATE heart count on a card
 @cards_bp.route("/<card_id>", methods = ["PATCH"])
