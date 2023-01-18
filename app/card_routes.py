@@ -10,20 +10,6 @@ load_dotenv()
 # example_bp = Blueprint('example_bp', __name__)
 card_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
-# dont need this route @Tazmeen
-@card_bp.route("", methods=["POST"])
-def create_card():
-    request_body = request.get_json()
-
-    new_card = Card(message=request_body["message"])
-    message = new_card.message
-
-    db.session.add(new_card)
-    db.session.commit()
-
-    return make_response({"message": message}, 200)
-
-
 def validate_card_id(card_id):
     try:
         card_id = int(card_id)
@@ -70,3 +56,15 @@ def delete_card(card_id):
     db.session.commit()
 
     return make_response({"details": f'Card {card_id} "{card.message}" successfully deleted'}, 200)
+
+
+@card_bp.route("/<card_id>/likes", methods=["PUT"])
+def update_card_likes(card_id):
+    card = validate_card_id(card_id)
+    request_body = request.get_json()
+
+    card.likes_count = request_body["likes_count"]
+
+    db.session.commit()
+
+    return make_response({"card": card.to_dict()}, 200)
