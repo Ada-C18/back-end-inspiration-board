@@ -10,8 +10,13 @@ board_bp = Blueprint('board_bp', __name__, url_prefix='/boards')
 @board_bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
+    title = request_body['title']
+    owner = request_body['owner']
     if len(request_body) != 2:
         return {"details": "Invalid Data"}, 400
+
+    if not owner or not title:
+        return {"details": "Title and/or Owner was left blank"}
     new_board = Board.from_dict_to_object(request_body)
 
     db.session.add(new_board)
