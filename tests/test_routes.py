@@ -82,7 +82,7 @@ def test_read_all_cards_for_one_board(client, one_board):
 
     # Assert
     assert response.status_code == 200
-    # assert len(response_body) == 1
+    assert len(response_body) == 5
     assert response_body == [
         {
             "board_id": 1,
@@ -108,5 +108,79 @@ def test_read_all_cards_for_one_board(client, one_board):
             "id": 1,
             "likes_count": 54,
             "message": "does this return an int",
+        },
+    ]
+
+
+def test_read_all_cards_for_one_board_alphabetical(client, one_board):
+    # Act
+    response = client.get("/boards/1/cards?sort=asc")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 5
+    assert response_body == [
+        {
+            "board_id": 1,
+            "id": 1,
+            "likes_count": 54,
+            "message": "does this return an int",
+        },
+        {"board_id": 1, "id": 3, "likes_count": 17, "message": "lots of cards"},
+        {
+            "board_id": 1,
+            "id": 5,
+            "likes_count": 6,
+            "message": "no concept of migrations",
+        },
+        {
+            "board_id": 1,
+            "id": 4,
+            "likes_count": 20,
+            "message": "no sql databases",
+        },
+        {
+            "board_id": 1,
+            "id": 2,
+            "likes_count": 0,
+            "message": "we're testing more",
+        },
+    ]
+
+
+def test_read_all_cards_for_one_board_likes(client, one_board):
+    # Act
+    response = client.get("/boards/1/cards?sort=likes")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 5
+    assert response_body == [
+        {
+            "board_id": 1,
+            "id": 1,
+            "likes_count": 54,
+            "message": "does this return an int",
+        },
+        {
+            "board_id": 1,
+            "id": 4,
+            "likes_count": 20,
+            "message": "no sql databases",
+        },
+        {"board_id": 1, "id": 3, "likes_count": 17, "message": "lots of cards"},
+        {
+            "board_id": 1,
+            "id": 5,
+            "likes_count": 6,
+            "message": "no concept of migrations",
+        },
+        {
+            "board_id": 1,
+            "id": 2,
+            "likes_count": 0,
+            "message": "we're testing more",
         },
     ]
