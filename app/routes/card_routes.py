@@ -16,7 +16,8 @@ def get_all_cards():
             {
               "card_id": card.card_id,
               "message": card.message,
-              "likes": card.likes_count  
+              "likes": card.likes_count,
+              "board_id": card.board_id  
             }
         )
     return jsonify(cards_response)
