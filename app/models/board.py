@@ -8,6 +8,7 @@ class Board(db.Model):
     cards = db.relationship("Card", back_populates="board")
     owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     owner = db.relationship("User", back_populates="boards")
+    card_color = db.Column(db.String)
 
     def to_dict(self):
         board_dict = {
@@ -18,6 +19,9 @@ class Board(db.Model):
             "owner": self.owner.name,
             "num_cards": (len(self.cards) if self.cards else 0)
         }
+        if self.card_color:
+            board_dict["card_color"] = self.card_color
+
         return board_dict
 
     @classmethod
@@ -26,7 +30,9 @@ class Board(db.Model):
             date_created=board_data["date_created"],
             title=board_data["title"],
             visible=board_data["visible"],
-            owner_id= board_data["owner_id"]
+            owner_id=board_data["owner_id"]
             )
+            if board_data["card_color"]:
+                new_board["card_color"] = board_data["card_color"]
 
         return new_board

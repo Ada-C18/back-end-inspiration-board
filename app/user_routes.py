@@ -40,6 +40,7 @@ def read_all_users():
     for user in users:
         users_response.append(
             {
+                "id": user.id,
                 "name": user.name
             }
         )
