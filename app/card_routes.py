@@ -52,6 +52,30 @@ def read_all_cards_on_board(board_id):
     return jsonify(cards_response)
 
 
-# Update information on a card [PATCH]
+# Update information on a card [PUT] &[PATCH]
+@bp.route("/<id>", methods=["PUT"])
+def update_card(id):
+    card = validate_model(Card, id)
+    request_body = request.get_json()
+
+    card.message = request_body["message"]
+    db.session.commit()
+    return jsonify(card.to_dict())
+
+
+@bp.route("/<id>/like", methods=["PATCH"])
+def update_card_likes(id):
+    card = validate_model(Card, id)
+    card.likes += 1
+
+    db.session.commit()
+    return jsonify(card.to_dict())
+
 
 # Delete card from database / board [DELETE]
+@bp.route("/<id>", methods=["DELETE"])
+def delete_card(id):
+    card = validate_model(Card, id)
+    db.session.delete(card)
+    db.session.commit()
+    return make_response(f"card {id} deleted", 200)
