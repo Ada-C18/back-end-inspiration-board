@@ -53,7 +53,7 @@ def get_one_board(board_id):
 
 # ***************************** NESTED ROUTES FOR BOARDS AND CARDS *********************************
 
-@boards_bp.route("/<board_id>/cards", methods=["POST"])
+@boards_bp.route("/cards", methods=["POST"])
 def add_board_card(board_id):
     chosen_board = get_one_obj_or_abort(Board, board_id)
     request_body = request.get_json()
