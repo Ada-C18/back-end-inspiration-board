@@ -47,10 +47,12 @@ def create_card(board_id):
 @cards_bp.route("/<card_id>", methods = ["PATCH"])
 def update_likes(card_id):
     card = Card.query.get(card_id)
-    card.likes_count += 1
+    request_body = request.get_json()
+    card.likes_count = request_body["likes_count"]
+ 
     db.session.commit()
 
-    
+    return make_response(f"Book #{card_id} successfully updated")
 
 #Delete
 @cards_bp.route("/<card_id>", methods = ["DELETE"])
