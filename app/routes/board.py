@@ -29,8 +29,10 @@ def get_cards_by_board_id(id):
     board = validate_model(Board, id)
     
     cards = Card.query.filter_by(board=board)
+    cards_response = [card.to_dict() for card in cards]
 
-    return jsonify([{"message": card.message, "likes_count": card.likes_count, "card_id": card.id, "board_id": card.board_id} for card in cards]), 200
+    return jsonify(cards_response)
+    # return jsonify([{"message": card.message, "likes_count": card.likes_count, "card_id": card.id, "board_id": card.board_id} for card in cards]), 200
 
 
 # create one card under board id - /boards/id/cards 
