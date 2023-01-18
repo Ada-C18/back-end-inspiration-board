@@ -14,6 +14,9 @@ class Board(db.Model):
         }
         if self.cards:
             board["cards"]= [card.to_dict() for card in self.cards]
+        else: 
+            board['cards'] = []
+
 
         return board 
 
