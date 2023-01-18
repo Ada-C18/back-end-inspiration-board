@@ -65,14 +65,21 @@ def read_all_cards_from_board(board_id):
     return jsonify(cards_response)
 
 # READ ALL BOARDS/ GET
-
 @board_bp.route("", methods=["GET"])
 def get_all_boards():
+    title_sort_query = request.args.get("sort")
+    if title_sort_query == "asc":
+        board = Board.query.order_by(Board.title.asc())
+    elif title_sort_query == "desc":
+        board = Board.query.order_by(Board.title.desc())
+    else:
+        board = Board.query.all()
+
     response = []
     boards = Board.query.all()
     for board in boards:
         response.append(board.to_dict())
-    return jsonify(response)
+    return jsonify(response), 200
     # return response.to_dict()
 
 # READ ONE BOARD/ GET
