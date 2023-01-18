@@ -51,7 +51,12 @@ def create_card():
     db.session.add(new_card)
     db.session.commit()
 
-    return make_response(f"Card {new_card.body} created")
+    return ({
+            "card_id":new_card.card_id,
+            "body":new_card.body,
+            "likes": 0,
+            "board_id": new_card.board_id
+        })
 
 # GET ALL CARDS 
 @cards_bp.route("", methods=["GET"])
