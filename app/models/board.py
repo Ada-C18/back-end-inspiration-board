@@ -31,8 +31,7 @@ class Board(db.Model):
             title=board_data["title"],
             visible=board_data["visible"],
             owner_id=board_data["owner_id"]
+            card_color=board_data["card_color"]
             )
-        if board_data["card_color"]:
-            new_board["card_color"] = board_data["card_color"]
 
         return new_board
