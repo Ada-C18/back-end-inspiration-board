@@ -85,13 +85,30 @@ def update_card(card_id):
     card = Card.query.get(card_id)
     request_body = request.get_json()
 
-    card.body = request_body["body"]
-    card.likes = request_body["likes"]
-    card.board_id = request_body["board_id"]
+    if request_body["body"]:
+        card.body = request_body["body"]
+    if request_body["likes"]:
+        card.likes = request_body["likes"]
+    if request_body["board_id"]:
+        card.board_id = request_body["board_id"]
 
     db.session.commit()
 
     return make_response(f"card '{card.card_id}' updated")
+
+# LIKE / UNLIKE CARD
+@cards_bp.route("/<card_id>/like", methods=["PATCH"])
+def like_card(card_id):
+    card_id = int(card_id)
+    card = Card.query.get(card_id)
+    card.likes += 1
+
+@cards_bp.route("/<card_id>/unlike", methods=["PATCH"])
+def unlike_card(card_id):
+    card_id = int(card_id)
+    card = Card.query.get(card_id)
+    card.likes -= 1
+
 
 # DELETE CARD
 @cards_bp.route("/<card_id>", methods=["DELETE"])
