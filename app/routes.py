@@ -37,6 +37,7 @@ def get_all_boards():
     for board in boards:
         boards_response.append(
             {
+                "id": board.id,
                 "title": board.title,
                 "owner": board.owner
             }
