@@ -55,17 +55,10 @@ def create_one_board():
     return jsonify(request_body["title"]), 201
 
 
-# Create
-# Create a new card for the selected board, by filling out a form and filling out a "message."
-# See an error message if I try to make the card's "message" more than 40 characters.
-# All error messages can look like a new section on the screen, a red outline around the input field, and/or disabling the input, as long as it's visible
-# See an error message if I try to make a new card with an empty/blank/invalid/missing "message."
 @boards_bp.route("/<id>/cards", methods=["POST"])
 def create_card_for_specific_board(id):
     board = Board.query.get(id)
     request_body = request.get_json()
-    card_ids = request_body["card_ids"]
-    
     if not request.is_json:
         return {"msg": "Missing JSON request body"}, 400
     try:
@@ -78,32 +71,22 @@ def create_card_for_specific_board(id):
         message=request_body["message"],
         
         )
-
-    message = new_card.message
     if len(message) > 40:
         return "message more than 40 characters"
     
-    for card_id in card_ids:
-        card = Card.query.get(card_id)
-        if card_id not in board.cards:
-            card.board = board
-
-    # for card_id in card_ids:
-    #     card = Card.query.get(card_id)
-    #     if card_id not in board.cards:
-    #         card.board = board
-
-    # db.session.add(new_card)
-    # db.session.commit()
-
-    # return make_response({"message": message}, 200)       
     db.session.add(new_card)
+    board.cards.append(new_card)
     db.session.commit()
 
-    rsp = {"id": board.board_id, "card_ids": card_ids, "message": message}
-    # rsp = {"id": board.board_id, "message": message}
-    return jsonify(rsp), 200
-
+    card_info = { 
+        "card_id": new_card.card_id,
+        "board_id": new_card.board_id,
+        "message": new_card.message,
+        "likes_count": new_card.likes_count
+        }
+    
+    return jsonify(card_info), 200
+    
     
 @boards_bp.route("/<id>/cards", methods=["GET"])
 def get_cards_from_board(id):
@@ -120,8 +103,8 @@ def get_cards_from_board(id):
             })
         
     board_info = {
-        # "title": board.title,
-        # "owner": board.owner,
+        "title": board.title,
+        "owner": board.owner,
         "cards": cards,
         "id": board.board_id
     }
