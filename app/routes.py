@@ -49,13 +49,17 @@ def add_one_card(board_id):
         'id':new_card.card_id,
         'msg':f'Card created with id {new_card.card_id}'}),201)
 
-@board_bp.route('/<board_id>/<card_id>', methods=['DELETE'])
-def delete_one_card(board_id, card_id):
+@board_bp.route('/<board_id>/<card_id>', methods=['PATCH','DELETE'])
+def modify_one_card(board_id, card_id):
     card=validate_id(Card, card_id)
-    db.session.delete(card)
+    method_string = "deleted" if request.method == 'DELETE' else 'upvoted'
+    if request.method=='DELETE':
+        db.session.delete(card)
+    else:
+        card.likes_count+=1
     db.session.commit()
 
-    return make_response(jsonify({'msg':f"card {card_id} deleted from Board with id {board_id}"}),200)
+    return make_response(jsonify({'msg':f"card {card_id} {method_string} from Board with id {board_id}"}),200)
 
 
 
