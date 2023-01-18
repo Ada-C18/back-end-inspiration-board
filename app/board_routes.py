@@ -65,16 +65,16 @@ def read_all_cards_from_board(board_id):
     return jsonify(cards_response)
 
 # READ ALL BOARDS/ GET
-
+# https://learn-2.galvanize.com/cohorts/3431/blocks/1310/content_files/api-9-deployment/deploying-to-heroku.md
 @board_bp.route("", methods=["GET"])
 def get_all_boards():
     title_sort_query = request.args.get("sort")
     if title_sort_query == "asc":
-        tasks = Board.query.order_by(Board.title.asc())
+        board = Board.query.order_by(Board.title.asc())
     elif title_sort_query == "desc":
-        tasks = Board.query.order_by(Board.title.desc())
+        board = Board.query.order_by(Board.title.desc())
     else:
-        tasks = Board.query.all()
+        board = Board.query.all()
 
     response = []
     boards = Board.query.all()
