@@ -6,7 +6,7 @@ from app.models.board import Board
 def test_create_board(client):
     # Act
     response = client.post(
-        "/board",
+        "/boards",
         json={
             "title": "Inspirational Quotes",
             "owner": "Cristal",
@@ -30,7 +30,7 @@ def test_create_board(client):
 def test_duplicate_board_returns_400(client, three_boards):
     # Act
     duplicate_response = client.post(
-        "/board",
+        "/boards",
         json={
             "title": "Inspirational Quotes",
             "owner": "Cristal",
@@ -47,7 +47,7 @@ def test_duplicate_board_returns_400(client, three_boards):
 
 def test_read_all_boards(client, three_boards):
     # Act
-    response = client.get("/board")
+    response = client.get("/boards")
     response_body = response.get_json()
 
     # Assert
@@ -77,7 +77,7 @@ def test_read_all_boards(client, three_boards):
 
 def test_read_one_board(client, one_board):
     # Act
-    response = client.get("/board/Inspiration")
+    response = client.get("/boards/Inspiration")
     response_body = response.get_json()
 
     # Assert
@@ -121,7 +121,7 @@ def test_read_one_board(client, one_board):
 
 def test_read_one_board_invalid_title_returns_400(client, three_boards):
     # Act
-    response = client.get("/board/Inspiration")
+    response = client.get("/boards/Inspiration")
     response_body = response.get_json()
 
     # Assert
