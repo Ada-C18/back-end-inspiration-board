@@ -33,7 +33,7 @@ def get_one_board(board_id):
             }
     ), 200)
 
-#GET endpoint to get cards for one board
+# #GET endpoint to get cards for one board
 @boards_bp.route("/<board_id>/cards", methods = ["GET"])
 def get_board_cards(board_id):
     board = Board.query.get(board_id)
