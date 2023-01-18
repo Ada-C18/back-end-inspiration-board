@@ -3,6 +3,7 @@ from app import db
 from app.models.card import Card
 from datetime import datetime
 from app.board_routes import validate_model
+from app.models.board import Board
 
 
 bp = Blueprint("cards_bp", __name__, url_prefix="/cards")
@@ -36,9 +37,20 @@ def read_card(id):
     card = validate_model(Card, id)
     return card.to_dict()
     
-
-
 # Get information on all cards associated with a board [GET]
+@bp.route("/board/<board_id>", methods=["GET"])
+def read_all_cards_on_board(board_id):
+    board = validate_model(Board, board_id)
+    
+    cards = board.cards
+
+    cards_response = []
+
+    for card in cards:
+        cards_response.append(card.to_dict())
+    
+    return jsonify(cards_response)
+
 
 # Update information on a card [PATCH]
 
