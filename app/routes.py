@@ -103,11 +103,17 @@ def like_card(card_id):
     card = Card.query.get(card_id)
     card.likes += 1
 
+    db.session.commit()
+
+
 @cards_bp.route("/<card_id>/unlike", methods=["PATCH"])
 def unlike_card(card_id):
     card_id = int(card_id)
     card = Card.query.get(card_id)
     card.likes -= 1
+
+    db.session.commit()
+
 
 
 # DELETE CARD
