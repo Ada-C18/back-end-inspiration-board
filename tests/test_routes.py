@@ -151,3 +151,22 @@ def test_delete_a_card(client, board_with_cards):
     # Assert
     assert response.status_code == 200
     assert response_body == {"details":'Card #1 was successfully deleted'}
+
+# <---- like count ---->
+
+def test_get_like_count_for_zero_likes(client, board_with_cards):
+    # Act
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body ["cards"][0]["likes_count"] == 0
+    
+    response = client.patch("/boards/1/cards/1")
+    response_body = response.get_json()
+    # Assert
+    assert response.status_code == 200
+    assert response_body ["likes_count"]== 1
+
+
