@@ -20,7 +20,6 @@ def get_all_cards():
             }
         )
     return jsonify(cards_response)
-
 # POST create new card
 @cards_bp.route("/<board_id>", methods = ["POST"])
 def create_card(board_id):
