@@ -93,5 +93,14 @@ def create_card(board_id):
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def get_cards_for_board(board_id):
     board = validate_model(Board, board_id)
+    board_dict = board.to_dict(cards=True)
+    sort_param = request.args.get("sort")
 
-    return board.to_dict(cards=True)
+    if sort_param == "id":
+        board_dict["cards"].sort(key=lambda c: c.get("id"))
+    elif sort_param == "alphabet":
+        board_dict["cards"].sort(key=lambda c: c.get("message"))
+    elif sort_param == "likes":
+        board_dict["cards"].sort(key=lambda c: c.get("likes_count"), reverse=True) #descending order starting from lagest number of likes
+
+    return board_dict
