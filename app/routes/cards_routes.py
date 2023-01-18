@@ -28,6 +28,7 @@ def create_card():
         "card": {
             "id": new_card.card_id,
             "message": new_card.message,
+            "board_id": new_card.board_id
         }
     }, 201
 
