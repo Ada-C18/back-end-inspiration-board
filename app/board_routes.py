@@ -7,8 +7,6 @@ from app import db
 board_bp = Blueprint('board_bp', __name__, url_prefix='/boards')
 
 
-
-
 @board_bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
@@ -21,11 +19,13 @@ def create_board():
 
     return make_response(jsonify({"board": new_board.to_dict()}), 201)
 
+
 @board_bp.route("/<id>", methods=["GET"])
 def read_specific_board(id):
     board = validate_model(Board, id)
     response_body = board.to_dict()
     return make_response(jsonify(response_body), 200)
+
 
 @board_bp.route("", methods=["GET"])
 def read_all_boards():
@@ -34,6 +34,7 @@ def read_all_boards():
 
     return make_response(jsonify(board_response), 200)
 
+
 @board_bp.route("/<board_id>/cards", methods=["GET"])
 def read_all_cards(board_id):
     board = validate_model(Board, board_id)
@@ -41,13 +42,11 @@ def read_all_cards(board_id):
     return(jsonify(boards_response))
 
 
-
-
 @board_bp.route("/<board_id>/cards", methods=["POST"])
 def add_card_to_board(board_id):
     request_body = request.get_json()
     message = request_body["message"]
-    if not message or len(request_body)!= 1:
+    if not message:
         return {"details": "Invalid Data"}, 400
     if len(message) > 40:
         return {"details": "You have gone over the 40 character message limit."}
@@ -55,22 +54,20 @@ def add_card_to_board(board_id):
 
     db.session.add(new_card)
 
-    board = validate_model(Board,board_id)
+# this add commit seperated??
+    board = validate_model(Board, board_id)
     board.cards.append(new_card)
-    
-    db.session.commit()
 
-    return make_response(jsonify({'board_id': board.board_id, 'cards': [card.message for card in board.cards]}), 200)
+    db.session.commit()
+# do we need to changet to card
+    return make_response(jsonify({'board_id': board.board_id, 'cards': [card.to_dict() for card in board.cards]}), 200)
 
 
 @board_bp.route("/<id>", methods=["DELETE"])
 def delete_board(id):
-    #delete cards first
-    #cascading delete
     board = validate_model(Board, id)
 
     db.session.delete(board)
     db.session.commit()
 
     return make_response(jsonify({"details": f"Board {id} '{board.title}' successfully deleted"}), 200)
-
