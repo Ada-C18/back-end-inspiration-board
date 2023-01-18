@@ -15,7 +15,8 @@ class Board(db.Model):
             "date_created": self.date_created,
             "title": self.title,
             "visible": self.visible,
-            "owner": self.owner.name
+            "owner": self.owner.name,
+            "num_cards": (len(self.cards) if self.cards else 0)
         }
         return board_dict
 
