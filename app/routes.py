@@ -104,6 +104,7 @@ def like_card(card_id):
     card.likes += 1
 
     db.session.commit()
+    return make_response(f"card '{card.card_id}' liked")
 
 
 @cards_bp.route("/<card_id>/unlike", methods=["PATCH"])
@@ -113,6 +114,7 @@ def unlike_card(card_id):
     card.likes -= 1
 
     db.session.commit()
+    return make_response(f"card '{card.card_id}' unliked")
 
 
 
