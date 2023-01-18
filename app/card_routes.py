@@ -43,3 +43,11 @@ def delete_card(id):
     db.session.commit()
 
     return make_response(jsonify({"details": f"Card {id} '{card.message}' successfully deleted"}), 200)
+
+@cards_bp.route("/<id>", methods=["PATCH"])
+def like_card_with_id(id):
+    card = validate_model(Card, id)
+    card.likes_count += 1
+
+    db.session.commit()
+    return jsonify(card.to_dict())
