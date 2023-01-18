@@ -20,7 +20,7 @@ class Card(db.Model):
         }
         
         if self.board:
-            card_dict["board"] = self.board
+            card_dict["board_id"] = self.board.id
 
         return card_dict
 
