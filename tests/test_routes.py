@@ -43,6 +43,7 @@ def test_get_all_boards(client, one_board):
     assert response.status_code == 200
     assert response_body == [{
         "board_id": 1,
+        "cards" : [],
         "owner": "Ada",
         "title": "A test board"
     }]
