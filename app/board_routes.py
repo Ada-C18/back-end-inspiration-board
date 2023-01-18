@@ -55,11 +55,6 @@ def create_one_board():
     return jsonify(request_body["title"]), 201
 
 
-# Create
-# Create a new card for the selected board, by filling out a form and filling out a "message."
-# See an error message if I try to make the card's "message" more than 40 characters.
-# All error messages can look like a new section on the screen, a red outline around the input field, and/or disabling the input, as long as it's visible
-# See an error message if I try to make a new card with an empty/blank/invalid/missing "message."
 @boards_bp.route("/<id>/cards", methods=["POST"])
 def create_card_for_specific_board(id):
     board = Board.query.get(id)
@@ -76,7 +71,6 @@ def create_card_for_specific_board(id):
         message=request_body["message"],
         
         )
-    # message = new_card.message
     if len(message) > 40:
         return "message more than 40 characters"
     
@@ -109,8 +103,8 @@ def get_cards_from_board(id):
             })
         
     board_info = {
-        # "title": board.title,
-        # "owner": board.owner,
+        "title": board.title,
+        "owner": board.owner,
         "cards": cards,
         "id": board.board_id
     }
