@@ -94,7 +94,12 @@ def update_card(card_id):
 
     db.session.commit()
 
-    return make_response(f"card '{card.card_id}' updated")
+    #return make_response(f"card '{card.card_id}' updated")
+    return ({
+        "card_id": card.card_id, 
+        "body" : card.body,
+        "likes": card.likes,
+        "board_id": card.board_id})
 
 # LIKE / UNLIKE CARD
 @cards_bp.route("/<card_id>/like", methods=["PATCH"])
@@ -104,8 +109,12 @@ def like_card(card_id):
     card.likes += 1
 
     db.session.commit()
-    return make_response(f"card '{card.card_id}' liked")
-
+    #return make_response(f"card '{card.card_id}' liked")
+    return ({
+        "card_id": card.card_id, 
+        "body" : card.body,
+        "likes": card.likes,
+        "board_id": card.board_id})
 
 @cards_bp.route("/<card_id>/unlike", methods=["PATCH"])
 def unlike_card(card_id):
@@ -114,8 +123,12 @@ def unlike_card(card_id):
     card.likes -= 1
 
     db.session.commit()
-    return make_response(f"card '{card.card_id}' unliked")
-
+    #return make_response(f"card '{card.card_id}' unliked")
+    return ({
+        "card_id": card.card_id, 
+        "body" : card.body,
+        "likes": card.likes, 
+        "board_id": card.board_id})
 
 
 # DELETE CARD
