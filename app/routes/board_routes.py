@@ -99,7 +99,7 @@ def add_card_to_board(board_id):
     }, 200
 
 @board_bp.route("/<board_id>", methods=["DELETE"])
-def delete_card(board_id):
+def delete_board(board_id):
     board = validate_model(Board, board_id)
 
     db.session.delete(board)
