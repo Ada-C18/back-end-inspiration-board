@@ -44,7 +44,7 @@ def create_card(board_id):
     return make_response(jsonify({"card": new_card.message}), 201)
 
 # UPDATE heart count on a card
-@cards_bp.route("/<card_id>", methods = ["PATCH"])
+@cards_bp.route("/<card_id>", methods = ["PUT"])
 def update_likes(card_id):
     card = Card.query.get(card_id)
     request_body = request.get_json()
