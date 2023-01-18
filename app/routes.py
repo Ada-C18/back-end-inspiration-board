@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response,abort
 from app import db
 from app.models.board import Board
 from app.models.card import Card
+from sqlalchemy import asc, desc
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
@@ -106,6 +107,44 @@ def delete_card(board_id, card_id):
 @boards_bp.route('/<board_id>/cards', methods=['GET'])
 def get_all_cards_from_one_board(board_id):
     board = validate_id(Board, board_id)
-    board_cards = [card.to_dict() for card in board.cards]
+    cards = Card.query.filter(Card.board_id==board_id)
+    sort_query = request.args.get("sort")
+
+    if sort_query == "id":
+        cards = Card.query.filter(Card.board_id==board_id).order_by(Card.id)
+    # if sort_query == "message":
+    #     cards_query = cards_query.order_by(desc("message"))
+    # if sort_query == "likes_count":
+    #     cards_query = cards_query.order_by(asc("likes_count"))
+
+
+    board_cards = [card.to_dict() for card in cards]
     
     return jsonify({"cards": board_cards}), 200
+
+# GET request for sorting cards
+# sort by id, by message, by hearts liked
+# sort by descending
+# axios
+#       .get(
+#         `${process.env.REACT_APP_BACKEND_URL}/boards/${currentBoard.id}/cards?sort={WHAT WE WANT TO SORT BY}`
+
+# sorting route
+# @boards_bp.route("/<board_id>/cards", methods=["GET"])
+# def sort_cards_from_one_board(board_id):
+#     board = validate_id(Board, board_id)
+#     cards_query = board.cards.query
+#     sort_query = request.args.get("sort")
+
+#     if sort_query == "id":
+#         cards_query = board.cards.query.order_by(desc("id"))
+#     if sort_query == "message":
+#         cards_query = board.cards.query.order_by(desc("message"))
+#     if sort_query == "likes_count":
+#         cards_query = board.cards.query.order_by(asc("likes_count"))
+
+
+#     cards = cards_query.all()
+#     cards_response = [card.to_dict() for card in cards]
+    
+#     return jsonify({"cards": cards_response}), 200
