@@ -97,3 +97,14 @@ def add_card_to_board(board_id):
     return {
         "message": "New card successfully created"
     }, 200
+
+@board_bp.route("/<board_id>", methods=["DELETE"])
+def delete_card(board_id):
+    board = validate_model(Board, board_id)
+
+    db.session.delete(board)
+    db.session.commit()
+
+    return make_response({
+        f"details": f'Board {board_id} successfully deleted'
+    }), 200
