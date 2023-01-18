@@ -50,5 +50,5 @@ def read_all_users():
 def read_one_user(name):
     user = validate_model(User, name)
 
-    return make_response(jsonify({"id": user.id, "name": user.name}), 201) 
+    return make_response(jsonify({"id": user.id, "name": user.name}), 200) 
 

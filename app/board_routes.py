@@ -33,7 +33,7 @@ def create_board():
     date = str(datetime.utcnow())
 
     new_board = Board.from_dict({'date_created': date, 'title':request_body["title"], 
-                                'owner_id':request_body['user_id'], 'visible':True})
+                                'owner_id':request_body['user_id'], 'card_color': request_body['card_color'], 'visible':True})
 
     db.session.add(new_board)
     db.session.commit()
@@ -53,7 +53,7 @@ def read_all_boards():
 
     for board in boards:
         boards_response.append(board.to_dict())
-  
+
     return jsonify(boards_response)
 
 @bp.route("<board_id>", methods=["GET"])
