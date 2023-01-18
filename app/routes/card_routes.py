@@ -53,7 +53,7 @@ def update_likes(card_id):
  
     db.session.commit()
 
-    return make_response(f"Book #{card_id} successfully updated")
+    return make_response(f"Card #{card_id} successfully updated")
 
 #Delete
 @cards_bp.route("/<card_id>", methods = ["DELETE"])
@@ -61,6 +61,7 @@ def delete_card(card_id):
     card = Card.query.get(card_id)
     db.session.delete(card)
     db.session.commit()
+    return make_response(f"Card #{card_id} successfully deleted")
 
 # @cards_bp.route("", methods = ["DELETE"])
 # def delete_all_cards():
