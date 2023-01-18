@@ -30,7 +30,7 @@ class Board(db.Model):
             date_created=board_data["date_created"],
             title=board_data["title"],
             visible=board_data["visible"],
-            owner_id=board_data["owner_id"]
+            owner_id=board_data["owner_id"],
             card_color=board_data["card_color"]
             )
 
