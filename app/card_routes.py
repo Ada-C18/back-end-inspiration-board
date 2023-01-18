@@ -41,7 +41,7 @@ def add_like_card(card_id):
 
     return jsonify(card.to_dict()), 200
 
-@cards_bp.route("/<card_id>/", methods=["GET"])
+@cards_bp.route("/<card_id>", methods=["GET"])
 def read_one_card(card_id):
     card = validate_model(Card, card_id)
     return card.to_dict()
