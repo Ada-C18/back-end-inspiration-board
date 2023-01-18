@@ -127,3 +127,5 @@ def test_read_one_board_invalid_title_returns_400(client, three_boards):
     # Assert
     assert response.status_code == 400
     assert response_body == {"details": "Board Inspiration invalid"}
+
+
