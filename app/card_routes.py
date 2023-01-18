@@ -18,17 +18,7 @@ def read_all_cards():
 
     cards = Card.query.all()
 
-    cards_response = []  # returns empty list if no cards
-
-    for card in cards:
-        cards_response.append({
-            "card_id": card.card_id,
-            "message": card.message,
-            "likes_count": card.likes_count,
-            "board_id": card.board_id
-        })
-
-    return jsonify(cards_response), 200
+    return jsonify([card.to_dict() for card in cards])
 
 # ===================================
 #        DELETE ONE CARD BY ID
@@ -44,3 +34,16 @@ def delete_card(card_id):
 
     delete_message = f'Card {card_id} successfully deleted'
     return delete_message, 200
+
+# ===================================
+#        LIKE (UPDATE) ONE CARD 
+# ===================================
+@cards_bp.route("/<card_id>/like", methods=["PATCH"])
+def like_card(card_id):
+    card = validate_model(Card, card_id)
+    card.likes_count += 1
+    
+    db.session.commit()
+    
+    return make_response("card liked", 200)
+

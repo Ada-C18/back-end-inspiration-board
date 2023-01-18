@@ -103,6 +103,4 @@ def get_cards_for_board(board_id):
     elif sort_param == "likes":
         board_dict["cards"].sort(key=lambda c: c.get("likes_count"), reverse=True) #descending order starting from lagest number of likes
 
-
-
     return board_dict

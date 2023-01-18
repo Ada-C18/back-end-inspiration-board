@@ -14,6 +14,8 @@ class Board(db.Model):
             owner=req_body["owner"]
         )
 
+
+
     def to_dict(self, cards=False):
         board = {
             "id": self.board_id,
