@@ -40,10 +40,10 @@ def get_board_cards(board_id):
     board = Board.query.get(board_id)
     cards_response = []
     for card in board.cards:
-        cards_response.append(card)
-    return make_response(jsonify(
-        cards_response
-    ), 200)
+        cards_response.append(
+            {"id": card.card_id,
+            "message": card.message})
+    return jsonify(cards_response)
 
 # POST create a new board
 @boards_bp.route("", methods = ["POST"])
