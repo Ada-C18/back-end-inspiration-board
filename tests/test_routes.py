@@ -87,6 +87,7 @@ def test_delete_a_board(client, two_boards):
 # <---- cards ---->
 # <---- create ---->
 
+
 #@pytest.mark.skip
 def test_create_a_card(client, two_boards):
     # Act
@@ -154,7 +155,7 @@ def test_delete_a_card(client, board_with_cards):
 
 # <---- like count ---->
 
-def test_get_like_count_for_zero_likes(client, board_with_cards):
+def test_update_likes_count(client, board_with_cards):
     # Act
     response = client.get("/boards/1/cards")
     response_body = response.get_json()
