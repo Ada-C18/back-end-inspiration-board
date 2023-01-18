@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.card import Card
 from datetime import datetime
+from app.board_routes import validate_model
 
 
 bp = Blueprint("cards_bp", __name__, url_prefix="/cards")
@@ -27,9 +28,15 @@ def create_card():
     db.session.add(new_card)
     db.session.commit()
 
-    return make_response(jsonify(new_card.to_dict()))
+    return make_response(jsonify(new_card.to_dict()), 201)
 
-# Get information on a card by ID [GET]
+# Get information on a card by ID [GET] 200 will come automatically
+@bp.route("/<id>", methods=["GET"])
+def read_card(id):
+    card = validate_model(Card, id)
+    return card.to_dict()
+    
+
 
 # Get information on all cards associated with a board [GET]
 
