@@ -17,12 +17,11 @@ card_bp = Blueprint("Card", __name__, url_prefix="/cards")
 
 #send a request to read all cards on a particular board in the database.
 @card_bp.route("/<card_id>/like", methods=["PUT"])
-def update_card( card_id):
+def update_card(card_id):
     card = validate_model(Card, card_id)
 
     request_body = request.get_json()
 
-    card.message = request_body["message"]
     card.likes_count = request_body["likes_count"] + 1
 
     db.session.commit()
