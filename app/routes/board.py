@@ -55,7 +55,7 @@ def read_all_cards(board_id):
     elif sort_query == "likes":
         card_query = card_query.order_by(Card.likes_count.desc())
     else:
-        card_query = card_query.order_by(Card.card_id)
+        card_query = card_query.order_by(Card.card_id.desc())
     card_response = [card.to_dict() for card in card_query]
 
     return jsonify(card_response), 200
