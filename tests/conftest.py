@@ -23,10 +23,11 @@ def app():
 def client(app):
     return app.test_client()
 
+
 @pytest.fixture
 def one_card(app):
     new_card = Card(
-        message="https:/dev.to"
+        message="You regret 100 percent of the chances you did not take"
     )
     db.session.add(new_card)
     db.session.commit()
