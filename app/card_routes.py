@@ -4,6 +4,8 @@ from app.models.card import Card
 
 
 cards_bp = Blueprint("cards_bp", __name__, url_prefix="/cards")
+
+
 def validate_cards(card_id):
     try:
         card_id = int(card_id)
@@ -14,14 +16,15 @@ def validate_cards(card_id):
         abort(make_response({"message": f"card {card_id} not found"}, 404))
     return card
 
+
 @cards_bp.route("", methods=["POST"])
 def create_card():
     try:
         request_body = request.get_json()
         new_card = Card(
-            id = request_body["card_id"],
-            message = request_body["message"],
-            like_count = request_body["is_like"],)
+            id=request_body["card_id"],
+            message=request_body["message"],
+            likes_count=request_body["likes_count"],)
     except KeyError:
         return jsonify({"details": "Invalid data"}), 400
     db.session.add(new_card)
@@ -35,13 +38,13 @@ def delete_card(card_id):
     db.session.commit()
     return make_response({"details": f"Card {card_id} successfully deleted"}), 200
 
+
 @cards_bp.route("/<card_id>/like", methods=["PUT"])
 def like_card(card_id):
     card = validate_cards(card_id)
     card.likes_count += 1
     db.session.add(card)
     db.session.commit()
-    response_body= {}
-    response_body['card']= card.to_dict()
+    response_body = {}
+    response_body['card'] = card.to_dict()
     return jsonify(response_body), 200
-
