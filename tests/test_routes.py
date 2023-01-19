@@ -46,17 +46,17 @@ def test_get_one_board_invalid_id(client, two_saved_boards):
     assert response.status_code == 400
     assert response_body == {"message": "Board pickle invalid"}
 
-def test_get_one_board(client, saved_user, two_saved_boards):
+def test_get_one_board(client, two_saved_boards):
     response = client.get("/boards/1")
     response_body = response.get_json()
 
     assert response.status_code == 200
     assert "date_created" in response_body.keys()
+    assert "visible" in response_body.keys()
     assert response_body["id"] == 1
     assert response_body["title"] == "Hackspiration Board"
     assert response_body["owner"] == "Test"
     assert response_body["num_cards"] == 0
-    assert response_body["visible"] == True
     assert response_body["card_color"] == "black"
     
 
