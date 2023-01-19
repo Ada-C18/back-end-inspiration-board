@@ -85,7 +85,8 @@ def delete_one_card(board_id, card_id):
     card_to_delete = None
 
     for card in chosen_board.cards:
-        if chosen_card == card.id:
+        print(f"🌼 {card.__dict__}")
+        if chosen_card == card.card_id:
             card_to_delete = card
 
     db.session.delete(card_to_delete)
