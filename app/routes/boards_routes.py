@@ -46,7 +46,7 @@ def get_board_cards(board_id):
     return jsonify(cards_response), 200
 
 
-@boards_bp.route("/<board_id>/cards", methods=["DELETE"])
+@boards_bp.route("/<board_id>", methods=["DELETE"])
 def delete_boards(board_id):
     board = validate(Board, board_id)
 
