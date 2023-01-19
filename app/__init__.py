@@ -20,7 +20,7 @@ def create_app(test_config=None):
     else:
         app.config["TESTING"] = True
         app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQL_ALCHEMY_TEST_DATABASE_URI")
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_TEST_DATABASE_URI")
 
     # Import models here for Alembic setup
     # from app.models.ExampleModel import ExampleModel
