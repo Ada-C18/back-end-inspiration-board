@@ -35,7 +35,7 @@ def validate_id(cls, id):
     try: 
         id = int(id)
     except:
-        abort(make_response ({"message":f"{cls.__name__}{id} invalid"}, 400))
+        abort(make_response ({"message":f"{cls.__name__} {id} invalid"}, 400))
 
     obj = cls.query.get(id)
 
@@ -58,7 +58,9 @@ def delete_card(card_id):
     card=validate_id(Card,card_id)
     db.session.delete(card)
     db.session.commit()
-    return make_response({"details":f'Card{card_id} "{card.message} "  successfully deleted'})
+    return make_response({"details":f'Card {card_id} "{card.message}" successfully deleted'})
+
+
 
 boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
 
@@ -74,7 +76,7 @@ boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
 
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
-def get_boards(board_id):
+def get_cards_for_boards(board_id):
     board = validate_id(Board, board_id)
 
     response_body = []
@@ -96,28 +98,39 @@ def create_board():
     db.session.add(new_board)
     db.session.commit()
 
-    return make_response(f"Board {new_board.title} successfully created", 201)
+    return {
+        "id": new_board.id,
+        "title": new_board.title,
+        "author": new_board.author,    
+    }, 201
 
 
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
-def create_card(board_id):
-    board_query = Board.query.get(board_id)
+def post_card_id_to_board(board_id):
+    board = validate_id(Board, board_id)
 
     request_body = request.get_json()
+
 
     if "message" not in request_body: 
         return make_response({"details": "Invalid data"
     }, 400)
 
+
     new_card = Card(
         message=request_body["message"],
-        board = board_query
+        board = board
     ) 
 
     db.session.add(new_card)
     db.session.commit()
 
-    return make_response(f"Card {new_card.message} has been created", 201)
+
+    return {
+        "id": new_card.id,
+        "message": new_card.message
+    }, 201
+
 
 
 @boards_bp.route("", methods=["GET"])
@@ -135,6 +148,4 @@ def get_all_boards():
 def get_one_board(board_id):
     board = validate_id(Board, board_id)
 
-    return {
-        "title": board.title
-    }
+    return board.board_dict(), 200

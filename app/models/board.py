@@ -10,5 +10,7 @@ class Board(db.Model):
     def board_dict(self):
         return {
             "id": self.id,
-            "title": self.title
+            "title": self.title,
+            "author": self.author,
+            "cards": [card.card_dict() for card in self.cards]
         }
