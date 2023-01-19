@@ -76,20 +76,20 @@ def get_board_cards(board_id):
     return jsonify({"chosen board id": chosen_board.board_id, "title": chosen_board.title, "chosen board cards": cards_response})
 
 
-@boards_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
-def delete_one_card(board_id, card_id):
-    chosen_board = get_one_obj_or_abort(Board, board_id)
+@boards_bp.route("/cards/<card_id>", methods=["DELETE"])
+def delete_one_card(card_id):
+    # chosen_board = get_one_obj_or_abort(Board, board_id)
 
     chosen_card = get_one_obj_or_abort(Card, card_id)
 
-    card_to_delete = None
+    # card_to_delete = None
 
-    for card in chosen_board.cards:
-        print(f"🌼 {card.__dict__}")
-        if chosen_card == card.card_id:
-            card_to_delete = card
+    # for card in chosen_board.cards:
+    #     print(f"🌼 {card.__dict__}")
+    #     if chosen_card == card.card_id:
+    #         card_to_delete = card
 
-    db.session.delete(card_to_delete)
+    db.session.delete(chosen_card)
 
     db.session.commit()
 
