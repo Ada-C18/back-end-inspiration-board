@@ -31,14 +31,14 @@ def client(app):
 @pytest.fixture
 def saved_user(app):
     test_user = User(name="Test")
-
-    db.session.add_all()
+    db.session.add(test_user)
     db.session.commit()
 
 @pytest.fixture
 def two_saved_boards(app):
-    hacker_board = Board(title="Hackspiration Board", owner_id = 1)
-    underwater_clown_board = Board(title="Underwater Clown Board", owner_id = 1)
-
-    db.session.add_all()
+    db.session.add_all([
+        User(name="Test"),
+        Board(title="Hackspiration Board", user_id = 1, card_color = "black"),
+        Board(title="Underwater Clown Board", user_id = 1, card_color = "black")
+    ])
     db.session.commit()
