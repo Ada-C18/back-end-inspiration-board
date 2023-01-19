@@ -54,7 +54,7 @@ def create_board():
     db.session.add(new_board)
     db.session.commit()
 
-    return make_response(f"{new_board.title} created", 201)
+    return new_board.to_dict(), 201
 
 #GET - /boards/<board_id>/cards
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
@@ -77,7 +77,7 @@ def post_card_belonging_to_board(board_id):
     db.session.add(new_card)
     db.session.commit()
 
-    return jsonify({"Message": f"{new_card.message} successfully added."}), 201
+    return new_card.to_dict(), 201
 
 #DELETE - /cards/<card_id>
 @cards_bp.route("/<card_id>", methods=["DELETE"])

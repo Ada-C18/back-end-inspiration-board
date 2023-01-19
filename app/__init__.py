@@ -12,11 +12,12 @@ load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
         "SQLALCHEMY_DATABASE_URI")
-
     # Import models here for Alembic setup
     # from app.models.ExampleModel import ExampleModel
     from app.models.board import Board
@@ -33,5 +34,4 @@ def create_app():
     app.register_blueprint(cards_bp)
 
 
-    CORS(app)
     return app
