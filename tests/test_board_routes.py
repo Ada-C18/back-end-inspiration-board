@@ -102,7 +102,7 @@ def test_get_all_cards_belonging_to_one_board_one_card(client, one_card_belongs_
         {
             "card_id": 1,
             "message": "Do your best",
-            "likes_count": None
+            "likes_count": 0
         }
     ]
     
@@ -121,11 +121,11 @@ def test_get_all_cards_belonging_to_a_board_two_cards(client, two_cards_belongs_
     assert response_body == [{
         "card_id": 1,
         "message": "We've got this",
-        "likes_count": None
+        "likes_count": 0
     },{
         "card_id": 2,
         "message": "Practice makes perfect",
-        "likes_count": None
+        "likes_count": 0
     }]
 
 

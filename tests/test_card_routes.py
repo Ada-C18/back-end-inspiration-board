@@ -9,7 +9,7 @@ def test_delete_one_card(client, one_card):
         "message": "Successfully deleted card with id: 1"
     }
 
-def test_delete_one_card_
+def test_delete_one_card(client, one_card):
     response = client.delete("/card/1")
     response_body = response.get_json()
 
