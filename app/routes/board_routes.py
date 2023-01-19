@@ -47,7 +47,8 @@ def post_card_belonging_to_a_board(board_id):
     db.session.add(new_card)
     db.session.commit()
 
-    return jsonify({"message":f"Card {new_card.message} belonging to {new_card.board.title} successfully added"}), 201
+    card_dict = new_card.to_dict()
+    return jsonify({"message":f"Card {new_card.message} belonging to {new_card.board.title} successfully added", "card": card_dict} ), 201
 
 # get all cards belonging to a board
 @board_bp.route("/<board_id>/card", methods=["GET"]) 
