@@ -76,7 +76,7 @@ def get_board_cards(board_id):
     return jsonify({"chosen board id": chosen_board.board_id, "title": chosen_board.title, "chosen board cards": cards_response})
 
 
-@boards_bp.route("/cards/<card_id>", methods=["DELETE"])
+@boards_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
 def delete_one_card(card_id):
     chosen_card = get_one_obj_or_abort(Card, card_id)
 
