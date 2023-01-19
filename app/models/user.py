@@ -5,5 +5,3 @@ class User(db.Model):
     name = db.Column(db.String)
     boards = db.relationship("Board", back_populates="owner")
     cards = db.relationship("Card", back_populates="author")
-
-# only show the delete button in the frontend itself if the owner of the board matches the currently logged in user
