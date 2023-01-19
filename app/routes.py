@@ -1,8 +1,10 @@
 from os import abort
+import os
 from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.models.board import Board
 from app.models.card import Card
+import requests
 
 # example_bp = Blueprint('example_bp', __name__)
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
@@ -24,6 +26,15 @@ def validate_model(cls, model_id):
     return model
 
 
+def send_slack_message(message):
+    path = "https://slack.com/api/chat.postMessage"
+    SLACK_TOKEN = os.environ.get("SLACK_TOKEN")
+    query_params = {
+        "channel": "team6",
+        "text": message
+    }
+    query_header = {"Authorization": f"Bearer {SLACK_TOKEN}"}
+    return requests.post(path, params = query_params, headers = query_header)
 
 ################################################################
 ###################### BOARD ROUTES ############################
@@ -110,6 +121,8 @@ def assign_card_to_board(board_id):
 
     db.session.add(board)
     db.session.commit() 
+
+    send_slack_message(f"Someone just created a new card!")
     
     return make_response(new_card.to_dict_cards(), 201)
     # board.cards = [] 
