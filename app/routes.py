@@ -67,8 +67,9 @@ boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
 
 @cards_bp.route("/<card_id>",methods=["PUT"])
 def update_card(card_id):
+    request_body=request.get_json()
     card=validate_id(Card,card_id)
-    db.session.put(card)
+    card.likescount=request_body["likes"]
     db.session.commit()
     return make_response({"details":f'Card{card_id} "{card.message} "  successfully updated'})
 
