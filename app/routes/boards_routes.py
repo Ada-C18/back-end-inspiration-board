@@ -44,6 +44,22 @@ def get_board_cards(board_id):
     cards_response = [card.to_dict() for card in cards]
 
     return jsonify(cards_response), 200
+
+
+@boards_bp.route("/<board_id>/cards", methods=["DELETE"])
+def delete_boards(board_id):
+    board = validate(Board, board_id)
+
+    db.session.delete(board)
+    db.session.commit()
+
+    return jsonify({"details": f'Board {board_id} "{board.title}"successfully deleted'}), 200
+
+
+
+
+
+
     
 
 
