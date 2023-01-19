@@ -102,4 +102,4 @@ def update_one_card_likes_count(card_id, new_likes_count):
     chosen_card.likes_count = new_likes_count
 
     db.session.commit()
-    return jsonify({"Message": f"succesfully updated card id {card_id} likes count to {new_likes_count}"}), 200
+    return chosen_card.to_dict(), 200
