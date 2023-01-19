@@ -89,17 +89,6 @@ def delete_board():
 
     return make_response(jsonify(deleted_board_dict), 200)
 
-#create a post route for card # works 
-# @cards_bp.route("", methods = ["POST"])
-# def create_card():
-#     request_body = request.get_json()
-#     try:
-#         new_card = Card.from_json(request_body)
-#     except KeyError:
-#         return make_response({"details": "Invalid data"}, 400)
-#     db.session.add(new_card)
-#     db.session.commit()
-#     return make_response(new_card.to_dict_cards(), 201)
 
 # create a post route to assign card to board //works!
 
@@ -125,21 +114,9 @@ def assign_card_to_board(board_id):
     send_slack_message(f"Someone just created a new card!")
     
     return make_response(new_card.to_dict_cards(), 201)
-    # board.cards = [] 
 
-    # needs to accept a dictionary of card data,
-    # may need to combine single card post route with this route
-
-
-    # for card in request_body['cards']:
-    #     card = validate_model(Card, card)
-
-    #board.append(new_car)
-
-    # board.cards.append(new_card)
 
     
-
 # create a get route to see all card of a board //works!
 
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
@@ -163,9 +140,6 @@ def gets_cards_of_one_board(board_id):
 
 ################################################################
 ####################### CARD ROUTES ############################
-
-
-
 
 
 #create a get all cards route # works
