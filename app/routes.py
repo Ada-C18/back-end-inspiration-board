@@ -77,10 +77,18 @@ def get_board_cards(board_id):
 
 
 @boards_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
-def delete_one_card(card_id):
+def delete_one_card(board_id, card_id):
+    chosen_board = get_one_obj_or_abort(Board, board_id)
+
     chosen_card = get_one_obj_or_abort(Card, card_id)
 
-    db.session.delete(chosen_card)
+    card_to_delete = None
+
+    for card in chosen_board.cards:
+        if chosen_card == card.id:
+            card_to_delete = card
+
+    db.session.delete(card_to_delete)
 
     db.session.commit()
 
