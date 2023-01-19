@@ -39,7 +39,7 @@ def get_board_cards(board_id):
     cards_response = []
     for card in board.cards:
         cards_response.append(
-            {"id": card.card_id,
+            {"card_id": card.card_id,
             "message": card.message})
     return jsonify(cards_response)
 

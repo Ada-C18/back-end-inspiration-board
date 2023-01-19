@@ -38,4 +38,13 @@ def delete_card(card_id):
     card = Card.query.get(card_id)
     db.session.delete(card)
     db.session.commit()
-    return make_response(f"Card #{card_id} successfully deleted")
+    return make_response(f"Card #{card_id} successfully deleted", 200)
+
+# Delete all cards
+@cards_bp.route("", methods = ["DELETE"])
+def delete_all_cards():
+    cards = Card.query.all()
+    for card in cards:
+        db.session.delete(card)
+    db.session.commit()
+    return make_response("All cards successfully deleted")
