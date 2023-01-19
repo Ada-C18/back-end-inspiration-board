@@ -10,4 +10,5 @@ class Board (db.Model):
             'id': self.board_id,
             'title': self.title,
             'owner': self.owner,
+            'cards': self.cards
         }

@@ -3,7 +3,7 @@ from app import db
 from .models.board import Board
 from .models.card import Card
 from app.card_routes import validate_cards
-from sqlalchemy import asc,desc
+from sqlalchemy import asc, desc
 
 # example_bp = Blueprint('example_bp', __name__)
 boards_bp = Blueprint('boards_bp', __name__, url_prefix="/boards")
@@ -29,18 +29,20 @@ def create_board():
 
     new_board = Board(
         title=request_body["title"],
-        owner=request_body["owner"])
+        owner=request_body["owner"],
+        cards=[])
     db.session.add(new_board)
     db.session.commit()
     return jsonify(new_board.to_dict()), 201
 
 # Get all board
 
-@boards_bp.route("", methods =["GET"])
+
+@boards_bp.route("", methods=["GET"])
 def get_all_board():
     sort_query = request.args.get("sort")
     if sort_query == "asc":
-        boards =Board.query.order_by(asc(Board.title))
+        boards = Board.query.order_by(asc(Board.title))
     elif sort_query == "desc":
         boards = Board.query.order_by(desc(Board.title))
     else:
@@ -71,6 +73,7 @@ def create_one_card(board_id):
 
 # helper function
 
+
 def get_board_or_abort(board_id):
     try:
         board_id = int(board_id)
@@ -95,11 +98,12 @@ def get_one_board(board_id):
 def get_cards_by_board(board_id):
     chosen_board = get_board_or_abort(board_id)
     response_body = [card.to_dict() for card in chosen_board.cards]
-    return jsonify(response_body),200
+    return jsonify(response_body), 200
+
 
 @boards_bp.route("/<board_id>", methods=["Delete"])
 def delete_board(board_id):
     chosen_board = get_board_or_abort(board_id)
     db.session.delete(chosen_board)
     db.session.commit()
-    return jsonify(f"successfully deleted {chosen_board.title}"),200
+    return jsonify(f"successfully deleted {chosen_board.title}"), 200
