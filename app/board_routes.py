@@ -69,14 +69,13 @@ def read_all_cards_from_board(board_id):
 def get_all_boards():
     title_sort_query = request.args.get("sort")
     if title_sort_query == "asc":
-        board = Board.query.order_by(Board.title.asc())
+        boards = Board.query.order_by(Board.title.asc())
     elif title_sort_query == "desc":
-        board = Board.query.order_by(Board.title.desc())
+        boards = Board.query.order_by(Board.title.desc())
     else:
-        board = Board.query.all()
+        boards = Board.query.all()
 
     response = []
-    boards = Board.query.all()
     for board in boards:
         response.append(board.to_dict())
     return jsonify(response), 200
