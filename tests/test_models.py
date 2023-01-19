@@ -6,10 +6,10 @@ import pytest
 def test_create_user_no_missing_data():
     name = "Test"
 
-    result = User(name=name)
+    result = User(name=name, id=1)
 
-    assert result["id"] == 1
-    assert result["name"] == "Test"
+    assert result.id == 1
+    assert result.name == "Test"
 
 def test_create_user_missing_name():
     name = None
@@ -19,12 +19,12 @@ def test_create_user_missing_name():
 
 
 def test_board_to_dict_no_missing_data():
-    user = User(name="Tester")
-    test_data = Board(id = 1, date_created = "Date is right now", title = "Test Pass Please", visible=True, owner = user.name)
+    user = User(name="Tester", id=1)
+    test_data = Board(id = 1, title = "Test Pass Please", visible=True, owner_id=1, card_color="black")
 
     result = test_data.to_dict()
 
-    assert len(result) == 6
+    assert len(result) == 7
     assert result["id"] == 1
     assert result["title"] == "Test Pass Please"
     assert result["date_created"] == "Date is right now"

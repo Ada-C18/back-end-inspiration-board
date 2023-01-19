@@ -1,6 +1,7 @@
 from werkzeug.exceptions import HTTPException
 from app.board_routes import validate_model
 from app.models.board import Board
+from app.models.user import User
 import pytest
 
 def test_get_all_boards_with_no_records(client):
