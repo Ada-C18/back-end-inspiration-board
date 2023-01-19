@@ -28,7 +28,8 @@ def client(app):
 def one_board(app):
     new_board = Board(
         title="test board 1",
-        owner="QP/Lin"
+        owner="QP/Lin",
+        cards=[]
     )
     db.session.add(new_board)
     db.session.commit()
@@ -37,10 +38,10 @@ def one_board(app):
 @pytest.fixture
 def four_boards(app):
     db.session.add_all([
-        Board(title="test board 1", owner="QP/Lin"),
-        Board(title="test board 2", owner="QP/Lin"),
-        Board(title="test board 3", owner="QP/Lin"),
-        Board(title="test board 4", owner="QP/Lin"),
+        Board(title="test board 1", owner="QP/Lin",cards=[]),
+        Board(title="test board 2", owner="QP/Lin",cards=[]),
+        Board(title="test board 3", owner="QP/Lin",cards=[]),
+        Board(title="test board 4", owner="QP/Lin",cards=[]),
     ])
     db.session.commit()
 

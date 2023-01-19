@@ -25,7 +25,8 @@ def test_get_all_boards_one_saved_boards(client, one_board):
         {
             "id": 1,
             "title": "test board 1",
-            "owner": "QP/Lin"
+            "owner": "QP/Lin",
+            "cards" :[]
         }
     ]
 
@@ -42,22 +43,26 @@ def test_get_all_boards_four_saved_boards(client, four_boards):
         {
             "id": 1,
             "title": "test board 1",
-            "owner": "QP/Lin"
+            "owner": "QP/Lin",
+            "cards" :[]
         },
         {
             "id": 2,
             "title": "test board 2",
-            "owner": "QP/Lin"
+            "owner": "QP/Lin",
+            "cards" :[]
         },
         {
             "id": 3,
             "title": "test board 3",
-            "owner": "QP/Lin"
+            "owner": "QP/Lin",
+            "cards" :[]
         },
         {
             "id": 4,
             "title": "test board 4",
-            "owner": "QP/Lin"
+            "owner": "QP/Lin",
+            "cards" :[]
         }
     ]
 
@@ -72,7 +77,8 @@ def test_get_specific_board(client, four_boards):
     assert response_body == {
         "id": 3,
         "title": "test board 3",
-        "owner": "QP/Lin"
+        "owner": "QP/Lin",
+        "cards" :[]
     }
 
 def test_get_one_board_not_found(client):
