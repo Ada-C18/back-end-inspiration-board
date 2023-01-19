@@ -73,8 +73,6 @@ def create_board():
     return make_response({"board":new_board.to_dict()}, 201)
 
 # Get a board by ID
-# Delete a board by ID
-# Patch a board by ID
 @board_bp.route("/<board_id>", methods=["GET"])
 def get_one_board(board_id):
     board = validate_board(board_id)
@@ -82,6 +80,7 @@ def get_one_board(board_id):
     
     return {"board": board.to_dict()}
 
+# Delete a board by ID
 @board_bp.route("/<board_id>", methods=["PUT"])
 def update_one_board(board_id):
     request_body = request.get_json()
@@ -104,6 +103,8 @@ def update_one_board(board_id):
     db.session.commit()
     return make_response({"board":board.to_dict()}, 200)
     
+
+# Patch a board by ID
 @board_bp.route("/<board_id>", methods=["DELETE"])
 def delete_one_board(board_id):
     board = validate_board(board_id)
@@ -114,6 +115,7 @@ def delete_one_board(board_id):
 
     return make_response({"message": "Board successfully deleted"}, 200)
 
+# post new card to board
 @board_bp.route("/<board_id>/cards", methods=["POST"])
 def add_card_to_board(board_id):
     board = validate_board(board_id)
@@ -142,6 +144,7 @@ def add_card_to_board(board_id):
 
     return make_response(new_card.to_dict(), 200)
 
+# get all cards of board
 @board_bp.route("/<board_id>/cards", methods=["GET"])
 def get_all_cards_per_board(board_id):
     board = validate_board(board_id)
@@ -152,6 +155,7 @@ def get_all_cards_per_board(board_id):
 
     return make_response(jsonify(return_body["cards"]), 200)
 
+# delete specific card
 @board_bp.route("/<board_id>/cards/<card_id>", methods=["DELETE"])
 def delete_card_from_board(board_id, card_id):
     board = validate_board(board_id)
@@ -164,3 +168,16 @@ def delete_card_from_board(board_id, card_id):
 
     return make_response({"message": "Card successfully deleted"}, 200)
 
+# increase like via api
+@board_bp.route("/<board_id>/cards/<card_id>", methods=["PATCH"])
+def increase_card_likes(board_id, card_id):
+    board = validate_board(board_id)
+
+    card = validate_card(card_id)
+    card = Card.query.get(card_id)
+
+    card.likeCount += 1
+
+    db.session.commit()
+
+    return make_response(card.likeCount, 200)
