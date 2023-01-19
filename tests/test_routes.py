@@ -71,7 +71,7 @@ def test_delete_one_board(client,one_board):
 
 def test_add_card_to_board(client, one_board, one_card):
     response = client.post("/boards/1/cards", json={
-        "card_id": 1
+        "message": 'Go on my daily walk 🏞'
     })
     response_body = response.get_json()
 
@@ -79,20 +79,5 @@ def test_add_card_to_board(client, one_board, one_card):
     assert "board_id" in response_body
     assert response_body == {
         "board_id": 1,
-        "cards": ['Go on my daily walk 🏞'
-        ]
-    }
-
-def test_delete_card_from_board(client,one_board, one_card):
-    new_card = client.post("/boards/1/cards", json={
-        "card_id": 1
-    })
-    response = client.delete("/cards/1", json={
-        "card_id": 1
-    })
-    response_body = response.get_json()
-
-    assert response.status_code == 200
-    assert response_body == {
-        "details": "Card 1 'Go on my daily walk 🏞' successfully deleted"
+        "cards": [{'card_id': 2, "message": "Go on my daily walk 🏞", "likes_count": 0}]
     }

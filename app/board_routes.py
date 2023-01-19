@@ -59,12 +59,12 @@ def add_card_to_board(board_id):
 
     db.session.add(new_card)
 
-# this add commit seperated??
+
     board = validate_model(Board, board_id)
     board.cards.append(new_card)
 
     db.session.commit()
-# do we need to changet to card
+
     return make_response(jsonify({'board_id': board.board_id, 'cards': [card.to_dict() for card in board.cards]}), 200)
 
 
