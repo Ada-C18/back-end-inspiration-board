@@ -30,8 +30,7 @@ def delete_board(board_id):
     db.session.delete(board)
     db.session.commit()
 
-    response_body = {
-        "message": f'Board #{board_id} was deleted.'}
+    response_body = {"message": f"Board #{board_id} was deleted."}
     return make_response(jsonify(response_body), 200)
 
 
@@ -58,7 +57,9 @@ def create_board():
         new_board = Board.from_dict(request_body)
 
     except:
-        return make_response({"message": "Invalid data. Please check input for board."}, 400)
+        return make_response(
+            {"message": "Invalid data. Please check input for board."}, 400
+        )
 
     db.session.add(new_board)
     db.session.commit()
@@ -70,15 +71,21 @@ def create_board():
 @board_bp.route("/<board_id>/cards", strict_slashes=False, methods=["GET"])
 def read_all_cards(board_id):
     board = get_validate_model(Board, board_id)
-    
-    cards_list = [card.to_dict() for card in board.cards]
 
-    return make_response(jsonify({
-            "board_id": board.board_id,
-            "name": board.name,
-            "owner": board.owner,
-            "cards": cards_list
-        }), 200)
+    cards_list = [card.to_dict() for card in board.cards]
+    cards_list.sort(key=lambda c: c["card_id"])
+
+    return make_response(
+        jsonify(
+            {
+                "board_id": board.board_id,
+                "name": board.name,
+                "owner": board.owner,
+                "cards": cards_list,
+            }
+        ),
+        200,
+    )
 
 
 # Create card
@@ -89,10 +96,11 @@ def create_card(board_id):
         request_body = request.get_json()
         new_card = Card(message=request_body["message"], board_id=board_id)
     except:
-        return make_response({"message": "Invalid data. Please check input for card."}, 400)
+        return make_response(
+            {"message": "Invalid data. Please check input for card."}, 400
+        )
 
     db.session.add(new_card)
     db.session.commit()
     send_message_to_slack(new_card)
     return make_response(jsonify(new_card.to_dict()), 201)
-
