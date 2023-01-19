@@ -60,7 +60,9 @@ def delete_card(card_id):
 
 @card_bp.route("/<card_id>/likes", methods=["PUT"])
 def update_card_likes(card_id):
+    print(card_id)
     card = validate_card_id(card_id)
+    
     request_body = request.get_json()
 
     card.likes_count = request_body["likes_count"]
