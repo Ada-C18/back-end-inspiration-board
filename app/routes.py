@@ -63,6 +63,16 @@ def delete_card(card_id):
 boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
 
 
+@cards_bp.route("/<card_id>",methods=["PUT"])
+def update_card(card_id):
+    card=validate_id(Card,card_id)
+    db.session.put(card)
+    db.session.commit()
+    return make_response({"details":f'Card{card_id} "{card.message} "  successfully updated'})
+
+boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
+
+
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
 def get_boards(board_id):
     board = validate_id(Board, board_id)
