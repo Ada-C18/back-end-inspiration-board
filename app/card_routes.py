@@ -25,11 +25,12 @@ cards_bp = Blueprint("cards_bp", __name__, url_prefix="/cards")
 @cards_bp.route("/<card_id>", methods=["DELETE"])
 def delete_card(card_id):
     card = validate_model(Card, card_id)
+    return_card = card.to_dict()
 
     db.session.delete(card)
     db.session.commit()
 
-    return jsonify({"details": f'Card successfully deleted'}), 200 
+    return jsonify(return_card), 200 
 
 # PUT /cards/<card_id>/like
 @cards_bp.route("/<card_id>/like", methods=["PUT"])
