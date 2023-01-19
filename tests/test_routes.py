@@ -79,8 +79,8 @@ def test_create_one_board(client, saved_user):
 
 
 def test_delete_board(client, two_saved_boards):
-    response = client.delete("/2")
+    response = client.delete("boards/2")
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert response_body == {"message": "Board #2 successfully deleted"}
+    assert response_body == 'Board #2 successfully deleted'
