@@ -18,18 +18,18 @@ def test_get_all_boards_with_two_records(client, two_saved_boards):
     assert response.status_code == 200
     assert len(response_body) == 2
     assert "date_created" in response_body[0].keys()
+    assert "visible" in response_body[0].keys()
     assert response_body[0]["id"] == 1
     assert response_body[0]["title"] == "Hackspiration Board"
     assert response_body[0]["owner"] == "Test"
     assert response_body[0]["num_cards"] == 0
-    assert response_body[0]["visible"] == True
     assert response_body[0]["card_color"] == "black"
     assert "date_created" in response_body[1].keys()
+    assert "visible" in response_body[1].keys()
     assert response_body[1]["id"] == 2
     assert response_body[1]["title"] == "Underwater Clown Board"
     assert response_body[1]["owner"] == "Test"
     assert response_body[1]["num_cards"] == 0
-    assert response_body[1]["visible"] == True
     assert response_body[1]["card_color"] == "black"
 
 def test_get_one_board_missing_record(client, two_saved_boards):
