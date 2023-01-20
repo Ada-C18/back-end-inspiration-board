@@ -1,0 +1,35 @@
+List of endpoints:
+   GET “/boards”
+input: N/A
+output:[{board_id: 1, title: “Wow!”, owner: “You”, cards: ???}]
+
+   POST "/board"
+   input: {title: TitleString, owner: OwnerNameString}
+   output:{board_id: 1, title: "Good luck", owner: "lisaMaria"}
+
+   POST "boards/<id>”
+   input: {message: MessageString, }
+   output: {card_id: 1, message: "Let's do it!", likes_count:4}
+
+   DELETE "boards/<id>" # this is optional
+   input: {id: to be deleted}
+   output: {updated db}
+
+   PATCH "/boards_id/cards_id"
+   input: {like: LikeCount, }
+   output: {LikeCount:7} # we update the like count
+
+   DELETE "/boards_id/cards_id"
+   input: {card_id: to be deleted}
+   output: {updated board}
+
+
+
+
+
+
+
+
+
+
+
