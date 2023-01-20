@@ -17,8 +17,13 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
         "SQLALCHEMY_DATABASE_URI")
 
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/inspiration_board'
+
     # Import models here for Alembic setup
     # from app.models.ExampleModel import ExampleModel
+    from app.models.card import Card
+    from app.models.board import Board
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -29,6 +34,7 @@ def create_app():
 
     from .routes import boards_bp
     app.register_blueprint(boards_bp)
-
+    from .routes import cards_bp
+    app.register_blueprint(cards_bp)
     CORS(app)
     return app
