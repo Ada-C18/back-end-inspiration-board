@@ -4,7 +4,7 @@ from app.models.board import Board
 from app.models.card import Card
 
 boards_bp = Blueprint('boards_bp', __name__, url_prefix='/boards')
-
+cards_bp = Blueprint('cards_bp',__name__, url_prefix='/cards')
 # return all boards
 # Tested and works
 @boards_bp.route("", methods=["GET"])
@@ -16,9 +16,10 @@ def get_boards():
     return jsonify(response), 200
 
 # return all cards of a board
+# tested and works
 @boards_bp.route("/<board_id>/cards", methods=["GET"])
-def get_cards(id):
-    board = Board.query.get(id)
+def get_cards(board_id):
+    board = Board.query.get(board_id)
     response = [card.to_dict() for card in board.cards]
     if len(response) == 0:
         return {"message": "this board does not have any cards."}, 201
@@ -54,7 +55,7 @@ def create_card(board_id):
     return jsonify(new_card.to_dict()), 201
 
 # increment like count for a card
-@boards_bp.route("/<board_id>/cards/<card_id>", methods=["PATCH"])
+@cards_bp.route("/<card_id>", methods=["PATCH"])
 def increment_like_count(card_id):
     card = Card.query.get(card_id)
     card.like_count += 1
