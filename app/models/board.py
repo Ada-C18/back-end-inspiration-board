@@ -21,3 +21,4 @@ class Board(db.Model):
     @classmethod
     def create_board(cls,request_body):
         return Board(title=request_body['title'], owner=request_body['owner'])
+        
