@@ -3,14 +3,15 @@ from app import db
 from app.models.board import Board
 from app.models.card import Card
 
-boards_bp = Blueprint('boards_bp',__name__, url_prefix ='/boards')
-cards_bp = Blueprint('cards_bp',__name__, url_prefix ='/cards')
+boards_bp = Blueprint('boards_bp', __name__, url_prefix='/boards')
 
 # return all boards
 # Tested and works
 @boards_bp.route("", methods=["GET"])
 def get_boards():
     boards = Board.query.all()
+    if not boards:
+        return {"message": "no boards have been created."}, 201
     response = [board.to_dict() for board in boards]
     return jsonify(response), 200
 
@@ -19,6 +20,8 @@ def get_boards():
 def get_cards(id):
     board = Board.query.get(id)
     response = [card.to_dict() for card in board.cards]
+    if len(response) == 0:
+        return {"message": "this board does not have any cards."}, 201
     return jsonify(response), 200
 
 # Post new board
@@ -27,9 +30,9 @@ def get_cards(id):
 def create_board():
     request_body = request.get_json()
     if "title" not in request_body or "owner" not in request_body:
-        return make_response({"details":"Invalid data"}, 400)
-    new_board = Board(title = request_body["title"], 
-                    owner = request_body["owner"])
+        return make_response({"details": "Invalid data"}, 400)
+    new_board = Board(title=request_body["title"],
+                      owner=request_body["owner"])
     db.session.add(new_board)
     db.session.commit()
 
