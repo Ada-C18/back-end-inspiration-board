@@ -45,5 +45,6 @@ def like_card(card_id):
     
     db.session.commit()
     
-    return make_response("card liked", 200)
+    # return make_response("card liked", 200)
+    return {"likes_count": card.likes_count}, 200
 
