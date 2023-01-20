@@ -176,8 +176,8 @@ def increase_card_likes(board_id, card_id):
     card = validate_card(card_id)
     card = Card.query.get(card_id)
 
-    card.likeCount += 1
+    card.likes_count += 1
 
     db.session.commit()
 
-    return make_response(card.likeCount, 200)
+    return make_response(jsonify(card.likes_count), 200)
