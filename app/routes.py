@@ -62,8 +62,6 @@ def delete_card(card_id):
 
 
 
-boards_bp = Blueprint("boards",__name__, url_prefix="/boards")
-
 
 @cards_bp.route("/<card_id>",methods=["PUT"])
 def update_card(card_id):
