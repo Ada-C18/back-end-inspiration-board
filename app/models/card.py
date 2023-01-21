@@ -15,6 +15,7 @@ class Card(db.Model):
         card_as_dict["card_id"] = self.card_id
         card_as_dict["message"] = self.message
         card_as_dict["likes_count"] = self.likes_count
+        card_as_dict["board_id"] = self.board_id
         return card_as_dict
     @classmethod
     def from_dict_to_object(cls,data_dict):
