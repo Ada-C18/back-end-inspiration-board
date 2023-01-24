@@ -121,7 +121,7 @@ def test_delete_board(client, one_board):
     # }
     assert Board.query.get(1) == None
 
-def test_mark_100_likes(client, one_board, one_card):
+def test_mark_100_likes(client, one_card, one_board):
     # Arrange
     with patch("requests.post") as mock_get:
         mock_get.return_value.status_code = 200
@@ -129,11 +129,13 @@ def test_mark_100_likes(client, one_board, one_card):
     # Act
     response = client.patch("/cards/1/100")
     response_body = response.get_json()
+    print("Look Here:", response_body)
 
     # Assert
     assert response.status_code == 200
-    assert "message" in response_body
-    assert response_body == {
-        "message": "Successfully updated Card ID `1`'s price to be 100"
-    }
+    assert "card" in response_body
+    assert response_body["card"]["likes_count"] == 100
+    # assert response_body == {
+    #     "message": "Successfully updated Card ID `1`'s price to be 100"
+    # }
     assert Card.query.get(1).likes_count
