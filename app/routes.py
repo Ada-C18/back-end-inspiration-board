@@ -158,3 +158,4 @@ def update_likes(board_id, card_id):
                 }
     db.session.commit()
     return jsonify(card_response)
+
