@@ -37,9 +37,9 @@ Back-end layer include:
 - pytest
 - flask_cors
 
-### Create & Read Boards
+### Create, Read, Update & Delete Boards
 
-**A user is be able to...**
+**A user can be able to...**
 
 #### Create
 
@@ -54,7 +54,19 @@ Back-end layer include:
 
 ### Create, Read, and Delete Cards
 
-**A user is be able to...**
+**A user can be able to...**
+
+#### Delete
+
+- Delete an existing board.
+
+#### Update
+
+- Update an existing board.
+
+### Create, Read, and Delete Cards
+
+**A user is able to...**
 
 #### Create
 
@@ -72,7 +84,7 @@ Back-end layer include:
 
 ### +1 Feature
 
-**A user, can be able to...**
+**A user can be able to...**
 
 - Press a "+1" icon on a single card, to indicate that an agreement with it.
 - See the number of "+1"s on a single card. Every card starts with zero "+1"s.
