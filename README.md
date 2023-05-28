@@ -74,7 +74,7 @@ Back-end layer include:
 
 **A user, can be able to...**
 
-- Press a "+1" icon on a single card, to indicate that I agree with it.
+- Press a "+1" icon on a single card, to indicate that an agreement with it.
 - See the number of "+1"s on a single card. Every card starts with zero "+1"s.
 
 ### Deployment
