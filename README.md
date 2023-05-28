@@ -11,7 +11,7 @@ Users can even "+1" the cards that they agree with!
 
 ### Demo
 
-[An example implementation of the project is deployed on Render](https://ada-inspiration-board.onrender.com/). This demonstrates only one way that a project could look.
+[An example implementation of the project is deployed on Heroku](https://team-euphoria-front-end.herokuapp.com/). 
 
 (This app may take a long time to load, so you may need to refresh it periodically.)
 
