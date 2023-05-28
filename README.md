@@ -60,7 +60,7 @@ Back-end layer include:
 
 - Create a new card _for the selected board_, by filling out a form and filling out a "message."
 - See an error message  the card's "message" is  more than 40 characters.
-- See an error message if I try to make a new card with an empty/blank/invalid/missing "message."
+- See an error message if a user tries to make a new card with an empty/blank/invalid/missing "message."
 
 #### Read
 
