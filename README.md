@@ -13,7 +13,7 @@ Users can even "+1" the cards that they agree with!
 
 [An example implementation of the project is deployed on Heroku](https://team-euphoria-front-end.herokuapp.com/). 
 
-![A web app titled "Inspiration Board," with three columns titled "Boards," "Selected Board," and "Create a New Board".](./assets/new_board_highlight.png) 
+![A web app titled "Inspiration Board," with three columns titled "Boards," "Selected Board," and "Create a New Board".](./assets/inspiration_board_highlight.png) 
 _Fig. This example displays a list of boards, the name of a selected board (if there is one), and a form to create a new board._
 
 
