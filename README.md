@@ -52,10 +52,6 @@ Back-end layer include:
 - View a list of all boards.
 - Select a board.
 
-### Create, Read, and Delete Cards
-
-**A user can be able to...**
-
 #### Delete
 
 - Delete an existing board.
@@ -66,7 +62,7 @@ Back-end layer include:
 
 ### Create, Read, and Delete Cards
 
-**A user is able to...**
+**A user can be able to...**
 
 #### Create
 
