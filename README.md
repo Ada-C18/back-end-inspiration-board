@@ -16,10 +16,10 @@ Users can even "+1" the cards that they agree with!
 ![A web app titled "Inspiration Board," with three columns titled "Boards," "Selected Board," and "Create a New Board".](./assets/new_board_highlight.png) 
 _Fig. This example displays a list of boards, the name of a selected board (if there is one), and a form to create a new board._
 
-![A web app with five sections titled "Boards," "Selected Board," "Create a New Board," "Cards for Pick-Me-Up Quotes," and "Create a New Card".](./assets/new_card_highlight.png)  
+![A web app with five sections titled "Boards," "Selected Board," "Create a New Board," "Cards for Food Cravings" and "Add a Card".](./assets/new_card_highlight.png)  
 _Fig. This example displays all cards that belong to a board, once a selected board has been chosen._
 
-![Two sections titled "Cards for Pick-Me-Up Quotes" and "Create a New Card." There is a section of cards, featuring messages.](./assets/card_list_highlight.png)  
+![Two sections titled "Cards for Food Cravings" and "Add a Card." There is a section of cards, featuring messages.](./assets/card_list_highlight.png)  
 _Fig. This example has a section of cards. Each card has a message, the number of "likes," a button to add the like, and a button to delete the card._
 
 ## Back-end Layer Requirements
