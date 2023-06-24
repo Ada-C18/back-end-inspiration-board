@@ -1,47 +1,90 @@
-# Inspiration Board: Back-end Layer
+# Full-Stack Inspiration Board: Back-end Layer
 
-This scaffold includes the following:
+## Goal
+Our goal is to create a digital inspiration board.
 
-## `app/__init__.py`
+Users should be able to create one or more boards.
 
-This file configures the app. It's where:
+Then, a user can select a single board. When a user selects a board, they can see all the cards associated with that board.
 
-We expect developers to modify this file by:
+Users can even "+1" the cards that they agree with!
 
-- Replacing the database connection string
-- Importing all models
-- Registering all blueprints
+### Demo
 
-Note that `create_app` also uses CORS. There is no extra action needed to be done with CORS.
+[An example implementation of the project is deployed on Heroku](https://team-euphoria-front-end.herokuapp.com/). 
 
-## `app/routes.py`
+![A web app titled "Inspiration Board," with three columns titled "Boards," "Selected Board," and "Create a New Board".](./assets/inpiration_board_highlight.png) 
+_Fig. This example displays a list of boards, the name of a selected board (if there is one), and a form to create a new board._
 
-We expect endpoints to be defined here.
 
-The file already imports:
+![A web app with five sections titled "Boards," "Selected Board," "Create a New Board," "Cards for Food Cravings" and "Add a Card".](./assets/new_card_highlight.png)  
+_Fig. This example displays all cards that belong to a board, once a selected board has been chosen._
 
-- `Blueprint`
-- `request`
-- `jsonify`
-- `make_response`
-- `db`
 
-Feel free to alter these import statements.
+![Two sections titled "Cards for Food Cravings" and "Add a Card." There is a section of cards, featuring messages.](./assets/cards_highlight.png)  
+_Fig. This example has a section of cards. Each card has a message, the number of "likes," a button to add the like, and a button to delete the card._
 
-This file also has a comment to define a Blueprint. Feel free to delete it.
+## Back-end Layer Requirements
 
-## `app/models` Directory
+Back-end layer include:
 
-This project already includes `app/models/board.py` and `app/models/card.py`, to anticipate the models `Board` and `Card`.
+- Flask
+- PostgreSQL
+- SQLAlchemy (including Migrate and Alembic)
+- venv
+- python-dotenv
+- gunicorn
+- pytest
+- flask_cors
 
-Both files already import `db`, for convenience!
+### Create, Read, Update & Delete Boards
 
-## `requirements.txt`
+**A user can be able to...**
 
-This file lists the dependencies we anticipate are needed for the project.
+#### Create
 
-## `Procfile`
+- Create a new board, by filling out a form. The form includes "title" and "owner" name of the board.
+- See an error message if a new board with an empty/blank/invalid/missing "title" or "owner" input is being created.
+- Hide the "New Board" form, so the "New Board" form  is not seen all the time when looking at cards.
 
-This file already has the contents needed for a Heroku deployment.
+#### Read
 
-If the `create_app` function in `app/__init__.py` is renamed or moved, the contents of this file need to change. Otherwise, we don't anticipate this file to change.
+- View a list of all boards.
+- Select a board.
+
+#### Delete
+
+- Delete an existing board.
+
+#### Update
+
+- Update an existing board.
+
+### Create, Read, and Delete Cards
+
+**A user can be able to...**
+
+#### Create
+
+- Create a new card _for the selected board_, by filling out a form and filling out a "message."
+- See an error message  the card's "message" is  more than 40 characters.
+- See an error message if a user tries to make a new card with an empty/blank/invalid/missing "message."
+
+#### Read
+
+- View a list of cards that belong to the selected board.
+
+#### Delete
+
+- Delete an existing card.
+
+### +1 Feature
+
+**A user can be able to...**
+
+- Press a "+1" icon on a single card, to indicate that an agreement with it.
+- See the number of "+1"s on a single card. Every card starts with zero "+1"s.
+
+### Deployment
+
+The back-end API was deployed on Heroku.
