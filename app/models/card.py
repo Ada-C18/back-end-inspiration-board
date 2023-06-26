@@ -19,6 +19,5 @@ class Card(db.Model):
     def from_json(cls, card_data):
         new_card = Card(
             message = card_data["message"],
-            likes_count = 0
         )
         return new_card

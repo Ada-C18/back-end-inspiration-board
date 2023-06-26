@@ -7,7 +7,7 @@ from app.helpers import validate_model
 board_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
 
-@board_bp.route("/boards", methods=["POST"])
+@board_bp.route("", methods=["POST"])
 def create_board():
     request_body = request.get_json()
 
@@ -40,4 +40,4 @@ def delete_board(board_id):
     db.session.delete(board)
     db.session.commit()
 
-    return make_response(jsonify(f"Board #{board.id} successfully deleted"))
+    return make_response(jsonify(f"Board #{board.board_id} successfully deleted"))
