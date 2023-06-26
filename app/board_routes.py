@@ -11,8 +11,7 @@ board_bp = Blueprint("boards", __name__, url_prefix="/boards")
 def create_board():
     request_body = request.get_json()
 
-    new_board = Board(title=request_body["title"],
-                      owner=request_body["owner"])
+    new_board = Board.from_json(request_body)
 
     db.session.add(new_board)
     db.session.commit()
@@ -23,27 +22,15 @@ def create_board():
 @board_bp.route("", methods=["GET"])
 def get_boards():
     boards_response = []
-    for board in boards:
-        boards_response.append(
-            {
-                "id": board.id,
-                "title": board.title,
-                "owner": board.owner
-            }
-        )
+    for board in Board.query.all():
+        boards_response.append(board.to_dict())
     return jsonify(boards_response)
 
 
 @board_bp.route("/<board_id>", methods=["GET"])
 def get_one_board(board_id):
-    board_id = int(board_id)
-    for board in boards:
-        if board.id == board_id:
-            return {
-                "id": board.id,
-                "title": board.title,
-                "owner": board.owner,
-            }
+    board = validate_model(Board, board_id)
+    return jsonify(board.to_dict())
 
 
 @board_bp.route("/<board_id>", methods=["DELETE"])
