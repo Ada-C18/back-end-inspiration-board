@@ -36,8 +36,8 @@ def delete_card(card_id):
 
     return make_response(jsonify(f"Card {card_id} deleted"))
 
-#Update card (PATCH)
-@cards_bp.route("/<card_id>/add_like", methods=["PATCH"])
+#Update card (PUT)
+@cards_bp.route("/<card_id>/add_like", methods=["PUT"])
 def update_card(card_id):
     card = validate_model(Card, card_id)
     card.likes_count += 1
