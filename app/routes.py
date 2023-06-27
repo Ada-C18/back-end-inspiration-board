@@ -57,6 +57,14 @@ def get_cards_by_board(board_id):
 
     return make_response(jsonify(cards_response))
 
+#Read all cards
+@cards_bp.route("", methods=["GET"])
+def get_cards():
+    cards = Card.query.all()
+    cards_response = [card.to_dict() for card in cards]
+
+    return make_response(jsonify(cards_response))
+
 ### UPDATE ROUTES ###
 
 #Update likes of card

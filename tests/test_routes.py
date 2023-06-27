@@ -65,7 +65,7 @@ def test_create_board_no_owner(client):
     with pytest.raises(KeyError, match="owner"):
         response = client.post("/boards", json=test_data)
 
-def test_create_book_extra_keys(client):
+def test_create_board_extra_keys(client):
     test_data = {
         "title": "Things to do on vacation",
         "owner": "Jae-lin",
@@ -83,9 +83,82 @@ def test_delete_one_board(client, two_boards):
     response = client.delete("/boards/2")
     response_body = response.get_json()
 
+    remaining_boards_response = client.get("/boards")
+    remaining_boards = remaining_boards_response.get_json()
+
     assert response.status_code == 200
     assert response_body == "Board #2 successfully deleted"
 
+    assert remaining_boards_response.status_code == 200
+    assert len(remaining_boards) == 1
+
 ### CARD TESTS ###
 
-#TBD
+def test_read_cards_from_board(client, three_cards):
+    response = client.get("/boards/1/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert len(response_body) == 2
+
+def test_read_all_cards(client, three_cards):
+    response = client.get("/cards")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert len(response_body) == 3
+
+def test_add_card_to_board(client, two_boards):
+    test_data = {"message": "Don't stop believing!"}
+    response = client.post("/boards/1/cards", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == dict(
+        card_id = 1,
+        message = "Don't stop believing!",
+        board_id = 1,
+        likes_count = 0
+    )
+
+def test_add_card_missing_message(client, two_boards):
+    with pytest.raises(KeyError, match="message"):
+        response = client.post("/boards/1/cards", json={})
+
+def test_add_card_extra_keys(client, two_boards):
+    test_data = {"message": "Jane Eyre", "author": "Charlotte Bronte", "genre": "Romance"}
+    response = client.post("/boards/2/cards", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == dict(
+        card_id = 1,
+        message="Jane Eyre",
+        board_id = 2,
+        likes_count = 0
+    )
+
+def test_add_likes_to_card(client, three_cards):
+    response = client.put("/cards/2/add_like")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == dict(
+        card_id = 2,
+        message = "You can do it!",
+        likes_count = 1,
+        board_id = 1
+    )
+
+def test_delete_card(client, three_cards):
+    response = client.delete("/cards/3")
+    response_body = response.get_json()
+
+    remaining_cards_response = client.get("/cards")
+    remaining_cards = remaining_cards_response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == "Card 3 deleted"
+
+    assert remaining_cards_response.status_code == 200
+    assert len(remaining_cards) == 2 

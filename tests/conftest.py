@@ -1,6 +1,7 @@
 import pytest
 from app import create_app
 from app import db
+from app.helpers import validate_model
 from app.models.board import Board
 from app.models.card import Card
 
@@ -46,9 +47,13 @@ def two_boards(app):
 
     db.session.add_all([quotes_board, reading_list_board])
 
+@pytest.fixture
 def three_cards(app, two_boards):
-    quote1 = Card(message="Reach for the stars", board=two_boards[0])
-    quote2 = Card(message="You can do it!", board=two_boards[0])
-    quote3 = Card(message="The Name of the Rose", board=two_boards[1])
+    quotes_board = validate_model(Board, 1)
+    reading_list_board = validate_model(Board, 2)
+
+    quote1 = Card(message="Reach for the stars", board=quotes_board)
+    quote2 = Card(message="You can do it!", board=quotes_board)
+    quote3 = Card(message="The Name of the Rose", board=reading_list_board)
 
     db.session.add_all([quote1, quote2, quote3])
