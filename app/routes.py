@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, abort
 from app import db
 from app.models.board import Board
 from app.models.card import Card
@@ -26,6 +26,10 @@ def create_board():
 def create_card(board_id):
     request_body = request.get_json()
     new_card = Card.from_json(request_body)
+
+    if len(new_card.message) > 40:
+        abort(make_response(jsonify("Card message cannot exceed 40 characters"), 404))
+
     board = validate_model(Board, board_id)
     new_card.board_id = board.board_id
 

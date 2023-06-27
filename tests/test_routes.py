@@ -138,6 +138,14 @@ def test_add_card_extra_keys(client, two_boards):
         likes_count = 0
     )
 
+def test_add_card_invalid_message(client, two_boards):
+    test_data = {"message": "Hello, I am a message exceeding forty characters in length!!!!"}
+    response = client.post("/boards/1/cards", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == "Card message cannot exceed 40 characters"
+
 def test_add_likes_to_card(client, three_cards):
     response = client.put("/cards/2/add_like")
     response_body = response.get_json()
