@@ -25,22 +25,6 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
-def quotes_board(app):
-    quotes_board = Board(title="Inspirational Quotes", owner="Jamal")
-
-    db.session.add(quotes_board)
-
-@pytest.fixture
-def reading_list_board(app):
-    reading_list_board = Board(title="Books to Read", owner="Sophie")
-
-    db.session.add(reading_list_board)
-
-@pytest.fixture
-def two_boards(app, quotes_board, reading_list_board):
-    db.session.add_all([quotes_board, reading_list_board])
-
-@pytest.fixture
 def two_boards(app):
     quotes_board = Board(title="Inspirational Quotes", owner="Jamal")
     reading_list_board = Board(title="Books to Read", owner="Sophie")
