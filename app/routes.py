@@ -19,7 +19,7 @@ def create_board():
     db.session.add(new_board)
     db.session.commit()
 
-    return make_response(jsonify(f"Board {new_board.title} successfully created"), 201)
+    return make_response(jsonify(new_board.to_dict()), 201)
 
 #Add a card to a board
 @board_bp.route("/<board_id>/cards", methods=["POST"])
