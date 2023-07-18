@@ -16,6 +16,11 @@ def create_board():
 
     new_board = Board.from_json(request_body)
 
+    if len(new_board.title) == 0:
+        abort(make_response(jsonify({'error': 'Board must have a title'}), 404))
+    if len(new_board.owner) == 0:
+        abort(make_response(jsonify({'error':'Board must have an owner'}), 404))
+
     db.session.add(new_board)
     db.session.commit()
 
@@ -28,7 +33,9 @@ def create_card(board_id):
     new_card = Card.from_json(request_body)
 
     if len(new_card.message) > 40:
-        abort(make_response(jsonify("Card message cannot exceed 40 characters"), 404))
+        abort(make_response(jsonify({'error':"Card message cannot exceed 40 characters"}), 404))
+    if len(new_card.message) == 0:
+        abort(make_response(jsonify({'error': 'Card message cannot be empty'}), 404))
 
     board = validate_model(Board, board_id)
     new_card.board_id = board.board_id
