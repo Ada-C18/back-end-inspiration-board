@@ -1,3 +1,13 @@
+## Overview
+Part of a full-stack project involving four team members. Completed in 8 days (including planning time) over three weeks.<br /><br />
+**Front-end owners:** [@kalawac](https://github.com/kalawac/), [@annalord](https://github.com/annalord/)<br />
+**Back-end owners:** [@emilyiscoding](https://github.com/EmilyIsCoding/), [@bukunmig](https://github.com/BukunmiG/)<br />
+### Related Links
+- [Deployed project](http://hackspoboard.herokuapp.com/)
+- [Front-end repo](https://github.com/kalawac/front-end-inspiration-board)<br />
+- [Back-end repo](https://github.com/EmilyIsCoding/back-end-inspiration-board/)<br />
+- [Ada C-18 repo with general full-stack project overview and requirements](https://github.com/Ada-C18/full-stack-inspiration-board)
+
 # Inspiration Board: Back-end Layer
 
 This scaffold includes the following:
